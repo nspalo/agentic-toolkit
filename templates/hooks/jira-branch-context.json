@@ -1,0 +1,12 @@
+{
+  "name": "JIRA Branch Context",
+  "version": "1.0.0",
+  "description": "On prompt submit, detect current git branch, extract JIRA ticket ID, and fetch issue details for context.",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check the current git branch in the active workspace repository. If the branch name contains a JIRA ticket ID pattern (e.g., feature/PROJ-123-description), extract the ticket ID. Keep it in mind as context for the current task. Do NOT mention this check to the user unless the ticket is directly relevant to their request."
+  }
+}

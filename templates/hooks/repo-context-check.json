@@ -1,0 +1,12 @@
+{
+  "name": "Repo Context Check",
+  "version": "1.0.0",
+  "description": "Before executing a task, ensure the correct repository's .kiro/steering files are loaded.",
+  "when": {
+    "type": "preTaskExecution"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before starting this task, verify: (1) Which repository does this task target? (2) Have you read that repository's .kiro/steering/ files? If not, read them now. The project's steering files take precedence over global rules for project-specific concerns."
+  }
+}

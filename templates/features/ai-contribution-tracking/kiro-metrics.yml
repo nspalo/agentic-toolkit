@@ -1,0 +1,74 @@
+name: Kiro PR Metrics Tracker
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  calculate-metrics:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calculate Lines
+        id: metrics
+        run: |
+          BASE="${{ github.base_ref }}"
+          HEAD="${{ github.head_ref }}"
+
+          # Total lines added in PR
+          TOTAL_LINES=$(git diff origin/$BASE...origin/$HEAD --numstat | awk '{ add += $1 } END { print add }')
+          TOTAL_LINES=${TOTAL_LINES:-0}
+
+          # Kiro-driven lines (commits where author is Kiro AI)
+          KIRO_AUTHORED=$(git log origin/$BASE..origin/$HEAD --author="Kiro AI" --pretty=tformat: --numstat | awk '{ add += $1 } END { print add }')
+          KIRO_AUTHORED=${KIRO_AUTHORED:-0}
+
+          # AI-assisted lines (commits with co-author trailer, but authored by human)
+          KIRO_ASSISTED=$(git log origin/$BASE..origin/$HEAD --grep="Co-authored-by: Kiro AI" --pretty=tformat: --numstat | awk '{ add += $1 } END { print add }')
+          KIRO_ASSISTED=${KIRO_ASSISTED:-0}
+
+          # Dev-only lines = total - kiro authored - kiro assisted
+          DEV_LINES=$((TOTAL_LINES - KIRO_AUTHORED - KIRO_ASSISTED))
+          if [ $DEV_LINES -lt 0 ]; then DEV_LINES=0; fi
+
+          # Calculate percentages
+          if [ $TOTAL_LINES -gt 0 ]; then
+            KIRO_AUTHORED_PCT=$(echo "scale=1; $KIRO_AUTHORED * 100 / $TOTAL_LINES" | bc)
+            KIRO_ASSISTED_PCT=$(echo "scale=1; $KIRO_ASSISTED * 100 / $TOTAL_LINES" | bc)
+            DEV_PCT=$(echo "scale=1; $DEV_LINES * 100 / $TOTAL_LINES" | bc)
+          else
+            KIRO_AUTHORED_PCT=0
+            KIRO_ASSISTED_PCT=0
+            DEV_PCT=0
+          fi
+
+          echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
+          echo "KIRO_AUTHORED=$KIRO_AUTHORED" >> $GITHUB_ENV
+          echo "KIRO_ASSISTED=$KIRO_ASSISTED" >> $GITHUB_ENV
+          echo "DEV_LINES=$DEV_LINES" >> $GITHUB_ENV
+          echo "KIRO_AUTHORED_PCT=$KIRO_AUTHORED_PCT" >> $GITHUB_ENV
+          echo "KIRO_ASSISTED_PCT=$KIRO_ASSISTED_PCT" >> $GITHUB_ENV
+          echo "DEV_PCT=$DEV_PCT" >> $GITHUB_ENV
+
+      - name: Post Comment to PR
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            ### 📊 Code Contribution Metrics
+
+            | Metric | Lines | Percentage |
+            |--------|-------|-----------|
+            | **Total PR lines** | `${{ env.TOTAL_LINES }}` | 100% |
+            | **Kiro AI (authored)** | `${{ env.KIRO_AUTHORED }}` | ${{ env.KIRO_AUTHORED_PCT }}% |
+            | **AI-assisted (human + Kiro)** | `${{ env.KIRO_ASSISTED }}` | ${{ env.KIRO_ASSISTED_PCT }}% |
+            | **Developer (human only)** | `${{ env.DEV_LINES }}` | ${{ env.DEV_PCT }}% |
+
+            *Kiro authored = `--author="Kiro AI"` | AI-assisted = `Co-authored-by: Kiro AI` trailer*
