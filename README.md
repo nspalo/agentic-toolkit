@@ -46,33 +46,49 @@ Toolkit provides methodology → dev-context routes artifacts → project `.kiro
 
 Follow in order. Do not commit until ingestion completes.
 
-### 1. Clone this toolkit
+### 1. Clone or locate your project repo
+
+If you already have the project cloned, skip this step. Otherwise:
+
+```bash
+git clone <your-project-repo> ~/projects/my-project
+```
+
+The project repo can live anywhere on your filesystem — it doesn't need to be inside `~/ai-workflow/`.
+
+### 2. Clone this toolkit
 
 ```bash
 mkdir -p ~/ai-workflow
 git clone <your-toolkit-repo> ~/ai-workflow/agentic-toolkit
 ```
 
-### 2. Create a dev-context workspace
+The `~/ai-workflow/` directory is the parent folder for the toolkit and all dev-context workspaces. You can name it anything (`~/dev-tools/`, `~/workspace/`, etc.) — just keep the toolkit and dev-contexts as siblings in the same parent.
+
+### 3. Create a dev-context workspace
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
 make new-workspace name=my-dev-context context="My projects"
 ```
 
-Creates `~/ai-workflow/my-dev-context/` as a sibling directory (required — bootstrap scripts use `../agentic-toolkit`).
+A **dev-context** is a companion repo that stores all AI-generated artifacts for your projects — investigation reports, tickets, test cases, project knowledge, and draft steering files. It keeps your project repo clean while preserving everything the AI produces during work.
 
-### 3. Open IDE workspace
+Creates `~/ai-workflow/my-dev-context/` as a sibling directory (required — bootstrap scripts resolve the toolkit at `../agentic-toolkit`).
 
-Add all three folders to one multi-root workspace:
+### 4. Open IDE workspace
 
-```
-~/projects/my-project/              # Your code
-~/ai-workflow/my-dev-context/       # Artifacts & knowledge
-~/ai-workflow/agentic-toolkit/      # Methodology (this repo)
-```
+Open Kiro (or VS Code) and create a multi-root workspace with all three folders:
 
-### 4. Bootstrap and link your project
+1. File → Add Folder to Workspace (repeat for each):
+   - `~/projects/my-project/` — your code
+   - `~/ai-workflow/my-dev-context/` — artifacts & knowledge
+   - `~/ai-workflow/agentic-toolkit/` — methodology (this repo)
+2. Save as a `.code-workspace` file for easy reopening
+
+All three must be open together. The toolkit's steering files auto-load into Kiro sessions, and the AI needs visibility into all three layers to route work correctly.
+
+### 5. Bootstrap and link your project
 
 ```bash
 cd ~/ai-workflow/my-dev-context
@@ -80,15 +96,45 @@ make new-project name=my-project
 make link-project name=my-project repo=~/projects/my-project
 ```
 
-This scaffolds the project directory and auto-detects the tech stack.
+`make new-project` scaffolds the project directory structure (context file, empty folders for artifacts).
 
-### 5. Ingest the project
+`make link-project` scans the repo, auto-detects the tech stack, and writes a `.detected-stack.md` summary. Expected output:
 
-In a Kiro session, say:
+```
+Scanning project repo: /home/user/projects/my-project
+...
+=== Detected ===
+Language: PHP
+Framework: Laravel 12.x
+Database: MySQL
+...
+
+✅ Detection complete.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Next: Ingest the project
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  In your Kiro session, say:
+
+    Ingest my-project
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### 6. Ingest the project
+
+In a Kiro session (with the multi-root workspace open), say:
 
 > "Ingest my-project"
 
-This reads the detected stack, fills `project-context.md`, customizes steering files, and outputs a validation handshake:
+"Ingest" is a trigger phrase defined in the toolkit's steering. It tells the AI to follow the `workflows/project-initialization.md` workflow, which:
+
+1. Reads `projects/my-project/.detected-stack.md` (the auto-detected tech info)
+2. Fills `projects/my-project/project-context.md` with real project data (architecture, commands, models)
+3. Customizes `.kiro-draft/steering/` files for the project
+4. Outputs a **workspace validation handshake** confirming readiness
+
+Expected output when ingestion completes:
 
 ```
 ✅ Workspace Validation — my-project
@@ -100,7 +146,12 @@ Layer 3 (Toolkit):    agentic-toolkit/ — methodology & workflows
 Ready for: investigation, bug-fix, spec-driven development, PR creation
 ```
 
-When you see this, setup is complete. Delete `.detected-stack.md` and start working.
+When you see this handshake, setup is complete. Delete `.detected-stack.md` and start working.
+
+**Troubleshooting:** If the AI gives a generic overview instead of following the ingestion workflow, ensure:
+- The toolkit's `.kiro/steering/toolkit-usage.md` is auto-loading (check it's in the workspace)
+- All three folders are open in the same workspace
+- Try being more explicit: "Read `projects/my-project/.detected-stack.md` and follow the project-initialization workflow to fill `project-context.md`"
 
 ## Usage
 

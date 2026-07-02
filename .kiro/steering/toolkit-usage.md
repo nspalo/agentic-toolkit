@@ -6,6 +6,27 @@ inclusion: auto
 
 This repo is a portable AI development methodology toolkit. It provides rules, workflows, templates, and knowledge for AI-assisted software development.
 
+## Critical Triggers
+
+When the user says **"Ingest {project}"** or **"Boot up {project}"**, you MUST:
+
+1. Read `[dev-context]/projects/{project}/.detected-stack.md` (if it exists)
+2. Read `[dev-context]/projects/{project}/project-context.md`
+3. Follow `workflows/project-initialization.md` to fill project-context.md with real data
+4. Customize `.kiro-draft/steering/` based on what you discover
+5. Output a workspace validation confirming readiness:
+   ```
+   ✅ Workspace Validation — {project}
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Layer 1 (Project):    /path/to/repo — [framework, language]
+   Layer 2 (Context):    dev-context/projects/{project}/ — artifacts & knowledge
+   Layer 3 (Toolkit):    agentic-toolkit/ — methodology & workflows
+   
+   Ready for: investigation, bug-fix, spec-driven development, PR creation
+   ```
+
+Do NOT just summarize the project. ACTUALLY edit and fill `project-context.md` with discovered information.
+
 ## When to Consult This Toolkit
 
 ### Workflows (step-by-step processes)

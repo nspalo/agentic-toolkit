@@ -203,7 +203,7 @@ ${MAKEFILE_TARGETS:-| — | No Makefile targets detected |}
 3. See \`agentic-toolkit/knowledge/getting-started.md\` for "During Work" guidance
 EOF
 
-echo "✅ Detection complete. Written to: $DETECTION_FILE"
+echo "✅ Detection complete."
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  Next: Ingest the project"
