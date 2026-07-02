@@ -46,12 +46,15 @@ make new-workspace name=company-dev-context context="Company projects"
 
 This creates a new workspace repo alongside the toolkit with all scaffolding ready.
 
-### 3. Set git identity
+### 3. Open IDE workspace
 
-```bash
-cd ~/ai-workflow/company-dev-context
-git config user.name "Your Name"
-git config user.email "your-email@example.com"
+Add all three folders to one multi-root workspace:
+
+```
+IDE Workspace:
+├── ~/projects/my-project/              # Code
+├── ~/ai-workflow/company-dev-context/  # Artifacts
+└── ~/ai-workflow/agentic-toolkit/      # Methodology
 ```
 
 ### 4. Bootstrap and link your project
@@ -62,22 +65,14 @@ make new-project name=project-code
 make link-project name=project-code repo=~/projects/my-project
 ```
 
-### 5. Open IDE workspace
-
-Add all three folders to one multi-root workspace:
-
-```
-IDE Workspace:
-├── ~/projects/my-project/         # Code
-├── ~/ai-workflow/company-dev-context/  # Artifacts
-└── ~/ai-workflow/agentic-toolkit/      # Methodology
-```
-
-### 6. Start first session
+### 5. Start first session
 
 Tell the AI: "Read `projects/project-code/.detected-stack.md` and help me fill in `project-context.md`"
 
-Setup is complete when `project-context.md` has real content. Then you can commit.
+Setup is complete when `project-context.md` has real content. Then you can:
+- Delete `.detected-stack.md`
+- Set git identity (only needed before first commit): `git config user.name/email`
+- Start working with toolkit workflows
 
 ## Starting a New Project
 

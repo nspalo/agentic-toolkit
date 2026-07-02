@@ -50,15 +50,15 @@ make new-workspace name=my-dev-context context="My projects"
 
 This creates `~/ai-workflow/my-dev-context/` with all scaffolding. The `context=` parameter is optional — auto-generates from the name if omitted.
 
-### 4. Set git identity in the new workspace
+### 4. Open your IDE workspace
 
-```bash
-cd ~/ai-workflow/my-dev-context
-git config user.name "Your Name"
-git config user.email "your-email@example.com"
-```
+Add all three folders to one multi-root workspace:
 
-If you use `includeIf` in `~/.gitconfig`, this is automatic per directory. See `knowledge/tooling-setup.md`.
+- `~/projects/my-project/` — your code
+- `~/ai-workflow/my-dev-context/` — project knowledge and artifacts
+- `~/ai-workflow/agentic-toolkit/` — methodology (this repo)
+
+In VS Code/Kiro: File → Add Folder to Workspace for each folder.
 
 ### 5. Bootstrap your project
 
@@ -75,31 +75,47 @@ This creates `projects/my-project/` with empty templates (project-context.md, .k
 make link-project name=my-project repo=~/projects/my-project
 ```
 
-This scans the repo, auto-detects the tech stack, and writes `projects/my-project/.detected-stack.md`. The AI uses this to help you fill in project context.
+This scans the repo, auto-detects the tech stack (language, framework, database, build tool, testing), and writes `projects/my-project/.detected-stack.md`.
 
-### 7. Open your IDE workspace
+### 7. Fill project context (AI-assisted)
 
-Add all three folders to one multi-root workspace:
-
-- `~/projects/my-project/` — your code
-- `~/ai-workflow/my-dev-context/` — project knowledge and artifacts
-- `~/ai-workflow/agentic-toolkit/` — methodology (this repo)
-
-In VS Code/Kiro: File → Add Folder to Workspace for each folder.
-
-### 8. Start your first AI session
-
-Tell the AI:
+In a Kiro session, say:
 
 > "Read `projects/my-project/.detected-stack.md` and help me fill in `project-context.md`"
 
-The AI will read the detected stack info and guide you through filling in the project context file with architecture, key commands, models, and conventions.
+The AI reads the detected stack info and guides you through filling in the project context file with architecture, key commands, models, and conventions.
 
 ### Done
 
-Setup is complete when `project-context.md` has real content (not placeholders). At that point you can make your initial commit to the dev-context repo.
+Setup is complete when `project-context.md` has real content (not placeholders). At that point:
+- Delete `.detected-stack.md` (it served its purpose)
+- Set git identity if you plan to commit: `git config user.name/email` in the dev-context
+- You're ready to work
 
-Do NOT commit during setup steps 3-8 — the workspace isn't ready until project-context is filled.
+Do NOT commit during setup steps 3-7 — the workspace isn't ready until project-context is filled.
+
+## What Now? (After Setup)
+
+Once setup is complete, here's what you can do:
+
+| You want to... | Say this (or reference) |
+|---|---|
+| Investigate a bug | "Investigate this issue" → toolkit loads `workflows/investigation.md` |
+| Fix a bug | "Fix this bug" → toolkit loads `workflows/bug-fix.md` |
+| Build a new feature | "Start a new feature" → toolkit loads `workflows/spec-driven-development.md` |
+| Create a PR | "Create a PR" → toolkit loads `workflows/pr-creation.md` |
+| Run/validate tests | "Run tests" → toolkit loads `workflows/tiered-testing.md` |
+| Write a ticket | "Write a bug ticket" → toolkit loads `templates/jira/bug-ticket.md` |
+
+The toolkit's steering auto-loads every session and provides:
+- **Git safety** — AI won't commit without your approval
+- **File boundaries** — AI won't write outside your workspace
+- **Development rules** — AI reads before writing, explains reasoning
+- **Naming conventions** — consistent file naming across artifacts
+
+For the full routing table (what triggers what), see `.kiro/steering/toolkit-usage.md`.
+
+For the project lifecycle and how things evolve over time, see `knowledge/getting-started.md`.
 
 ## How It Works
 
