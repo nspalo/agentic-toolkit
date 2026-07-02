@@ -8,24 +8,32 @@ This repo is a portable AI development methodology toolkit. It provides rules, w
 
 ## Critical Triggers
 
-When the user says **"Ingest {project}"** or **"Boot up {project}"**, you MUST:
+### "Enrich {project}" / "Deep scan {project}"
 
-1. Read `[dev-context]/projects/{project}/.detected-stack.md` (if it exists)
-2. Read `[dev-context]/projects/{project}/project-context.md`
-3. Follow `workflows/project-initialization.md` to fill project-context.md with real data
-4. Customize `.kiro-draft/steering/` based on what you discover
-5. Output a workspace validation confirming readiness:
-   ```
-   ✅ Workspace Validation — {project}
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Layer 1 (Project):    /path/to/repo — [framework, language]
-   Layer 2 (Context):    dev-context/projects/{project}/ — artifacts & knowledge
-   Layer 3 (Toolkit):    agentic-toolkit/ — methodology & workflows
-   
-   Ready for: investigation, bug-fix, spec-driven development, PR creation
-   ```
+This trigger is for **refining** an already-linked project. The `make link-project` command fills `project-context.md` with auto-detected data. If the user wants richer context (models, routes, architecture details), they say "Enrich {project}" and you should:
 
-Do NOT just summarize the project. ACTUALLY edit and fill `project-context.md` with discovered information.
+**Step 1: Read existing context**
+- Read `[dev-context]/projects/{project}/project-context.md` (already has basic data from link-project)
+- Read `[dev-context]/projects/{project}/.detected-stack.md` (if it exists)
+
+**Step 2: Read the project's code repo for deeper detail**
+- Read the project repo's `README.md`
+- Read `composer.json` or `package.json` (check `src/` if not at root)
+- Read `Makefile` (check for make targets)
+- Scan `app/Models/` or equivalent for key models
+- Check `routes/` or equivalent for key endpoints/commands
+
+**Step 3: EDIT project-context.md**
+- **Use the file editing tool** to update `project-context.md` with richer data
+- Fill in any remaining TBA sections with real discovered information
+- Add models, routes, architecture patterns you discovered
+
+**Step 4: Output confirmation**
+```
+✅ Project context enriched — {project}
+```
+
+**CRITICAL:** You must USE THE FILE EDITING TOOL to write content into `project-context.md`. Do NOT just summarize. EDIT THE FILE.
 
 ## When to Consult This Toolkit
 
@@ -33,7 +41,7 @@ Do NOT just summarize the project. ACTUALLY edit and fill `project-context.md` w
 
 | Trigger | What to load | What it does |
 |---|---|---|
-| "Ingest {project}" / "Boot up {project}" | `workflows/project-initialization.md` | Read detected stack → fill project-context → customize steering → validate workspace |
+| "Enrich {project}" / "Deep scan {project}" | `workflows/project-initialization.md` | Enrich an already-linked project — read deeper into code, fill remaining TBA sections in project-context.md |
 | "Validate workspace for {project}" | `knowledge/getting-started.md` § Workspace Validation | Output three-layer handshake confirming readiness |
 | "Investigate this issue" / "Look into this bug" | `workflows/investigation.md` | Guides the full investigation process: gather facts → trace code → form hypothesis → verify → write report |
 | "Fix this bug" | `workflows/bug-fix.md` | Understand → identify scope → implement → verify flow with N-location checklist |

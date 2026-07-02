@@ -44,7 +44,7 @@ Toolkit provides methodology → dev-context routes artifacts → project `.kiro
 
 ## Getting Started
 
-Follow in order. Do not commit until ingestion completes.
+Follow in order. Do not commit until setup is complete.
 
 ### 1. Clone or locate your project repo
 
@@ -96,62 +96,50 @@ make new-project name=my-project
 make link-project name=my-project repo=~/projects/my-project
 ```
 
-`make new-project` scaffolds the project directory structure (context file, empty folders for artifacts).
+`make new-project` scaffolds the project directory structure (empty folders for artifacts).
 
-`make link-project` scans the repo, auto-detects the tech stack, and writes a `.detected-stack.md` summary. Expected output:
+`make link-project` scans the repo, auto-detects the tech stack, and **fills `project-context.md` directly**. Expected output:
 
 ```
 Scanning project repo: /home/user/projects/my-project
 ...
 === Detected ===
 Language: PHP
-Framework: Laravel 12.x
+Framework: Laravel 8.x
 Database: MySQL
 ...
 
-✅ Detection complete.
+✅ project-context.md filled with detected data.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Next: Ingest the project
+  ✅ Setup complete — my-project
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  In your Kiro session, say:
+  project-context.md: filled with detected stack info
+  .detected-stack.md: supplementary reference (can delete)
 
-    Ingest my-project
+  You're ready to work. In a Kiro session, load context:
+    Read projects/my-project/project-context.md
+
+  Then use any toolkit workflow:
+    - Investigate a bug
+    - Fix a bug
+    - Start a new feature (spec-driven)
+    - Create a PR
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### 6. Ingest the project
+### Done
 
-In a Kiro session (with the multi-root workspace open), say:
+That's it. `project-context.md` already has useful content — tech stack, key commands, file placement conventions. You can refine it further as you learn the project, but it's immediately usable.
 
-> "Ingest my-project"
+To start working, load the context in a Kiro session:
 
-"Ingest" is a trigger phrase defined in the toolkit's steering. It tells the AI to follow the `workflows/project-initialization.md` workflow, which:
+> "Read `projects/my-project/project-context.md`"
 
-1. Reads `projects/my-project/.detected-stack.md` (the auto-detected tech info)
-2. Fills `projects/my-project/project-context.md` with real project data (architecture, commands, models)
-3. Customizes `.kiro-draft/steering/` files for the project
-4. Outputs a **workspace validation handshake** confirming readiness
+Then use any workflow (see Usage below).
 
-Expected output when ingestion completes:
-
-```
-✅ Workspace Validation — my-project
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Layer 1 (Project):    /path/to/my-project — [framework, language]
-Layer 2 (Context):    dev-context/projects/my-project/ — artifacts & knowledge
-Layer 3 (Toolkit):    agentic-toolkit/ — methodology & workflows
-
-Ready for: investigation, bug-fix, spec-driven development, PR creation
-```
-
-When you see this handshake, setup is complete. Delete `.detected-stack.md` and start working.
-
-**Troubleshooting:** If the AI gives a generic overview instead of following the ingestion workflow, ensure:
-- The toolkit's `.kiro/steering/toolkit-usage.md` is auto-loading (check it's in the workspace)
-- All three folders are open in the same workspace
-- Try being more explicit: "Read `projects/my-project/.detected-stack.md` and follow the project-initialization workflow to fill `project-context.md`"
+**Optional cleanup:** Delete `.detected-stack.md` (supplementary reference only). Set git identity before first commit: `git config user.name/email` in the dev-context.
 
 ## Usage
 
@@ -159,8 +147,6 @@ When you see this handshake, setup is complete. Delete `.detected-stack.md` and 
 
 | Say this | What happens |
 |---|---|
-| "Ingest {project}" | First-time project setup (context + steering + validation) |
-| "Validate workspace for {project}" | Re-confirm three-layer setup is understood |
 | "Investigate this issue" | Full investigation process → report |
 | "Fix this bug" | Understand → scope → implement → verify |
 | "Start a new feature" | Spec-driven: requirements → design → tasks → execute |
@@ -179,7 +165,7 @@ When you see this handshake, setup is complete. Delete `.detected-stack.md` and 
 
 ### Steering Lifecycle
 
-Ingestion creates Day 1 steering files in `.kiro-draft/steering/`. As you work:
+`make link-project` creates Day 1 steering files in `.kiro-draft/steering/`. As you work:
 
 1. **Day 1** — system-overview, tech-stack, coding-standards filled automatically
 2. **Week 1+** — add more steering as complexity is discovered ("Add database steering")
