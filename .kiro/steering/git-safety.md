@@ -35,6 +35,10 @@ After code review is complete:
 
 Code changes are the AI's job. Git operations are the user's domain. The user decides when work is committed to history.
 
+## During Setup (Do NOT Commit)
+
+When bootstrapping a workspace or project (`make new-workspace`, `make new-project`, `make link-project`), do NOT offer to commit. Setup is not complete until the user explicitly says they're ready to start working. The bootstrap output guides the user — follow it, don't interrupt with git prompts.
+
 ## Incident Context
 
 This rule exists because of a real incident where an AI assistant committed code without code review, bypassing the developer's review gate. The commit was pushed to remote before the developer could verify correctness.

@@ -15,6 +15,15 @@ ifndef name
 endif
 	@./scripts/bootstrap-project.sh $(name)
 
+link-project: ## Scan a repo and pre-fill project context (name= repo= required)
+ifndef name
+	$(error Usage: make link-project name=project-code repo=/path/to/repo)
+endif
+ifndef repo
+	$(error Usage: make link-project name=project-code repo=/path/to/repo)
+endif
+	@./scripts/link-project.sh $(name) $(repo)
+
 list-projects: ## List all project directories
 	@echo "Projects:"
 	@find ./projects -maxdepth 1 -type d ! -name 'projects' 2>/dev/null | sed 's|./projects/||' | sort | while read dir; do \

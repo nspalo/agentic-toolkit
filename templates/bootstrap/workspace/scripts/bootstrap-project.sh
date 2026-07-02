@@ -65,19 +65,19 @@ sed -i "s/{{PROJECT_NAME}}/${PROJECT_NAME}/g" "$PROJECT_DIR/README.md"
 sed -i "s/{{PROJECT_NAME}}/${PROJECT_NAME}/g" "$PROJECT_DIR/.kiro-draft/steering/conventions.md"
 sed -i "s/{{PROJECT_NAME}}/${PROJECT_NAME}/g" "$PROJECT_DIR/.kiro-draft/steering/repository-map.md"
 
-# Update routing table in workspace steering
+# Update routing table in workspace steering (avoid duplicates)
 ROUTING_FILE="${ROOT_DIR}/.kiro/steering/workspace-identity.md"
 if [ -f "$ROUTING_FILE" ]; then
-    echo "| \`${PROJECT_NAME}\` | TBA | \`projects/${PROJECT_NAME}/\` | Active |" >> "$ROUTING_FILE"
+    if ! grep -q "| \`${PROJECT_NAME}\`" "$ROUTING_FILE"; then
+        echo "| \`${PROJECT_NAME}\` | TBA | \`projects/${PROJECT_NAME}/\` | Active |" >> "$ROUTING_FILE"
+    fi
 fi
 
 echo "✅ Project '$PROJECT_NAME' scaffolded successfully"
 echo ""
-echo "Next steps:"
-echo "  1. Read workflows/project-initialization.md from agentic-toolkit"
-echo "  2. Edit projects/$PROJECT_NAME/project-context.md with project details"
-echo "  3. Edit projects/$PROJECT_NAME/.kiro-draft/steering/ based on project type"
-echo "  4. Verify .kiro/steering/workspace-identity.md was updated"
+echo "Next step:"
+echo "  Link to your code repo:"
+echo "    make link-project name=$PROJECT_NAME repo=/path/to/code"
 echo ""
-echo "To load in a session:"
-echo "  Read projects/$PROJECT_NAME/project-context.md"
+echo "  Then start a session and say:"
+echo "    Read projects/$PROJECT_NAME/.detected-stack.md and help me fill project-context.md"

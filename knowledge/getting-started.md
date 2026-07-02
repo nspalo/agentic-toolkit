@@ -41,12 +41,12 @@ git clone <your-toolkit-repo> agentic-toolkit
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=company-dev-context
+make new-workspace name=company-dev-context context="Company projects"
 ```
 
-This creates a new workspace repo alongside the toolkit with all the scaffolding ready.
+This creates a new workspace repo alongside the toolkit with all scaffolding ready.
 
-### 3. Configure git identity
+### 3. Set git identity
 
 ```bash
 cd ~/ai-workflow/company-dev-context
@@ -54,16 +54,30 @@ git config user.name "Your Name"
 git config user.email "your-email@example.com"
 ```
 
-### 4. Add to IDE
+### 4. Bootstrap and link your project
 
-Add both repos + your project code repos to one multi-root workspace:
+```bash
+cd ~/ai-workflow/company-dev-context
+make new-project name=project-code
+make link-project name=project-code repo=~/projects/my-project
+```
+
+### 5. Open IDE workspace
+
+Add all three folders to one multi-root workspace:
 
 ```
 IDE Workspace:
-├── project-repo/                  # Code
-├── company-dev-context/           # Artifacts
-└── agentic-toolkit/               # Methodology
+├── ~/projects/my-project/         # Code
+├── ~/ai-workflow/company-dev-context/  # Artifacts
+└── ~/ai-workflow/agentic-toolkit/      # Methodology
 ```
+
+### 6. Start first session
+
+Tell the AI: "Read `projects/project-code/.detected-stack.md` and help me fill in `project-context.md`"
+
+Setup is complete when `project-context.md` has real content. Then you can commit.
 
 ## Starting a New Project
 
@@ -72,18 +86,21 @@ From inside your dev-context repo:
 ```bash
 cd ~/ai-workflow/company-dev-context
 make new-project name=project-code
+make link-project name=project-code repo=/path/to/code
 ```
 
 This scaffolds:
 - `projects/{name}/project-context.md` — fill with project details
+- `projects/{name}/.detected-stack.md` — auto-detected tech info from the linked repo
 - `projects/{name}/.kiro-draft/` — suggested steering files to customize
 - Empty directories for knowledge-base, testcases, etc.
 
-Then follow `workflows/project-initialization.md` to:
-1. Discover what the project is (read code, configs, docs)
-2. Fill in `project-context.md`
-3. Determine which steering files are needed based on project type
-4. Customize `.kiro-draft/steering/`
+Then start a session and say: "Read `projects/{name}/.detected-stack.md` and help me fill in `project-context.md`"
+
+For deeper customization of steering files, see `workflows/project-initialization.md` which guides:
+1. Which steering files the project needs based on its type
+2. How to set inclusion types (auto vs manual vs fileMatch)
+3. When to promote `.kiro-draft/` to the actual project `.kiro/`
 
 ## Starting a Session
 

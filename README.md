@@ -4,7 +4,7 @@ A portable AI development framework. Provides rules, workflows, templates, and k
 
 ## What This Is
 
-This repo defines **how to work** with AI development tools as a system — not ad-hoc prompts, but structured methodology with safety guardrails, quality gates, and consistent process. 
+This repo defines **how to work** with AI development tools as a system — not ad-hoc prompts, but structured methodology with safety guardrails, quality gates, and consistent process.
 
 It's the portable layer of the Agentic AI Development Framework.
 
@@ -20,6 +20,154 @@ It's the portable layer of the Agentic AI Development Framework.
 - Not project-specific (that lives in your dev-context workspace)
 - Not company-specific (no internal systems, URLs, credentials)
 - Not a code library (no runtime dependencies)
+
+## Getting Started
+
+Follow these steps in order. Do not skip ahead or commit until step 7 says you're done.
+
+### 1. Have your project repo ready
+
+Skip if already cloned.
+
+```bash
+git clone <project-repo> ~/projects/my-project
+```
+
+### 2. Clone this toolkit
+
+```bash
+git clone <your-toolkit-repo> ~/ai-workflow/agentic-toolkit
+```
+
+The toolkit and dev-context must be siblings (same parent directory) because bootstrap scripts use `../agentic-toolkit` to locate templates. Your project code repo can live anywhere.
+
+### 3. Create a dev-context workspace
+
+```bash
+cd ~/ai-workflow/agentic-toolkit
+make new-workspace name=my-dev-context context="My projects"
+```
+
+This creates `~/ai-workflow/my-dev-context/` with all scaffolding. The `context=` parameter is optional — auto-generates from the name if omitted.
+
+### 4. Set git identity in the new workspace
+
+```bash
+cd ~/ai-workflow/my-dev-context
+git config user.name "Your Name"
+git config user.email "your-email@example.com"
+```
+
+If you use `includeIf` in `~/.gitconfig`, this is automatic per directory. See `knowledge/tooling-setup.md`.
+
+### 5. Bootstrap your project
+
+```bash
+cd ~/ai-workflow/my-dev-context
+make new-project name=my-project
+```
+
+This creates `projects/my-project/` with empty templates (project-context.md, .kiro-draft/, artifact directories).
+
+### 6. Link the project repo
+
+```bash
+make link-project name=my-project repo=~/projects/my-project
+```
+
+This scans the repo, auto-detects the tech stack, and writes `projects/my-project/.detected-stack.md`. The AI uses this to help you fill in project context.
+
+### 7. Open your IDE workspace
+
+Add all three folders to one multi-root workspace:
+
+- `~/projects/my-project/` — your code
+- `~/ai-workflow/my-dev-context/` — project knowledge and artifacts
+- `~/ai-workflow/agentic-toolkit/` — methodology (this repo)
+
+In VS Code/Kiro: File → Add Folder to Workspace for each folder.
+
+### 8. Start your first AI session
+
+Tell the AI:
+
+> "Read `projects/my-project/.detected-stack.md` and help me fill in `project-context.md`"
+
+The AI will read the detected stack info and guide you through filling in the project context file with architecture, key commands, models, and conventions.
+
+### Done
+
+Setup is complete when `project-context.md` has real content (not placeholders). At that point you can make your initial commit to the dev-context repo.
+
+Do NOT commit during setup steps 3-8 — the workspace isn't ready until project-context is filled.
+
+## How It Works
+
+### The Three Layers
+
+```
+┌────────────────────────────────────────────────────────────┐
+│  [project]/.kiro/steering/       WHAT you're working with   │
+│  (in the project repo)           Codebase conventions,      │
+│                                  architecture, tech stack    │
+├────────────────────────────────────────────────────────────┤
+│  [dev-context]/.kiro/steering/   WHERE artifacts live        │
+│  (per-context repo)              Project routing, file       │
+│                                  placement, workspace rules  │
+├────────────────────────────────────────────────────────────┤
+│  agentic-toolkit/.kiro/steering/ HOW to work                 │
+│  (personal, portable)            Rules, workflows,           │
+│                                  templates, methodology      │
+└────────────────────────────────────────────────────────────┘
+```
+
+| Layer | Auto-loaded? | Who owns it |
+|---|---|---|
+| `agentic-toolkit/.kiro/steering/` | Yes — every session | You (personal, portable) |
+| `[dev-context]/.kiro/steering/` | Yes — every session | You (per-company/context) |
+| `[project]/.kiro/steering/` | Yes — Kiro default | Team (in the project repo) |
+
+**Flow:** Toolkit provides methodology → dev-context routes artifacts → project `.kiro/` knows the codebase.
+
+### During a Session
+
+1. Open the IDE workspace (all three folders)
+2. Load project context: "Read `projects/{name}/project-context.md`"
+3. Work normally — toolkit steering auto-enforces safety rules, workflows load on demand
+4. Artifacts (reports, tickets, test cases) land in the dev-context project directory
+5. Code changes go in the project repo
+
+### Where Artifacts Go
+
+| You produce... | It goes to... |
+|---|---|
+| Code changes | `[project repo]` (the actual codebase) |
+| Investigation report | `[dev-context]/projects/{name}/technical-notes/investigation/` |
+| JIRA ticket (bug, story, task) | `[dev-context]/projects/{name}/technical-notes/jira/tickets/` |
+| Knowledge base article | `[dev-context]/projects/{name}/knowledge-base/` |
+| Test case (if feature active) | `[dev-context]/projects/{name}/testcases/` |
+| Generic methodology improvement | `agentic-toolkit/` (via extract-to-toolkit workflow) |
+
+### The Bootstrap Flow (Visual)
+
+```
+agentic-toolkit/                          (you have this)
+    │
+    │  make new-workspace name=xxx
+    ▼
+xxx-dev-context/                          (created as sibling)
+    │
+    │  make new-project name=yyy
+    ▼
+xxx-dev-context/projects/yyy/             (scaffolded — empty templates)
+    │
+    │  make link-project name=yyy repo=/path/to/code
+    ▼
+xxx-dev-context/projects/yyy/
+    ├── .detected-stack.md                (auto-detected tech info)
+    ├── project-context.md                (AI fills with your help)
+    └── .kiro-draft/steering/             (customize per project type)
+```
 
 ## Structure
 
@@ -49,7 +197,7 @@ agentic-toolkit/
 │   ├── bootstrap/
 │   │   ├── workspace/                # Template for new dev-context repos
 │   │   └── project/                  # Template for new projects
-│   ├── steering/                     # Generic steering file skeletons (13)
+│   ├── steering/                     # Generic steering file skeletons
 │   ├── skills/                       # AI role definition template
 │   ├── hooks/                        # Hook templates
 │   ├── prompts/                      # Structured AI prompts
@@ -67,152 +215,36 @@ agentic-toolkit/
 └── README.md
 ```
 
-## How to Use
-
-### First Time Setup
-
-1. Clone this repo into `~/ai-workflow/agentic-toolkit/`
-2. Create your first dev-context workspace:
-
-```bash
-cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=company-dev-context
-```
-
-3. Set git identity in the new workspace:
-
-```bash
-cd ~/ai-workflow/company-dev-context
-git config user.name "Your Name"
-git config user.email "your-email@example.com"
-```
-
-4. Add all three to your IDE as a multi-root workspace:
-   - Your project code repo(s)
-   - The new dev-context workspace
-   - This toolkit (`agentic-toolkit/`)
-
-### Adding a New Project
-
-From inside your dev-context repo:
-
-```bash
-cd ~/ai-workflow/company-dev-context
-make new-project name=project-code
-```
-
-Then follow `workflows/project-initialization.md` (in the toolkit) to discover the project and customize its steering files.
-
-### The Bootstrapping Flow
-
-```
-agentic-toolkit/                          (you have this — always)
-    │
-    │  make new-workspace name=xxx
-    ▼
-xxx-dev-context/                          (created — one per company/context)
-    │
-    │  make new-project name=yyy
-    ▼
-xxx-dev-context/projects/yyy/             (created — one per project)
-    ├── project-context.md                (fill in project details)
-    └── .kiro-draft/steering/             (customize per project type)
-```
-
-### During a Session
-
-1. Open IDE workspace with: project repo(s) + dev-context + toolkit
-2. Load project context: "Read `projects/{name}/project-context.md`"
-3. Work normally — toolkit rules auto-enforce, workflows load on demand
-4. Artifacts (reports, tickets, test cases) land in the dev-context project directory
-
-## Relationship to Other Repos
-
-```
-IDE Workspace:
-├── [project repos]              # Code (company or personal)
-├── [dev-context]/               # Project knowledge + artifacts
-│   ├── .kiro/steering/              # Workspace identity (auto-loaded)
-│   └── projects/
-│       ├── project-a/
-│       │   ├── project-context.md   # Loaded at session start
-│       │   ├── knowledge-base/
-│       │   ├── testcases/           # (if document-based testing is active)
-│       │   ├── technical-notes/
-│       │   │   ├── jira/{tickets,epics,proposals}
-│       │   │   └── investigation/
-│       │   └── .kiro-draft/         # Steering for the project's .kiro/
-│       └── project-b/
-└── agentic-toolkit/             # This repo (portable, personal)
-    ├── .kiro/steering/              # Auto-loaded rules
-    └── ...
-```
-
-### How the Three Layers Work Together
-
-| Layer | What it provides | Auto-loaded? | Who owns it |
-|---|---|---|---|
-| `agentic-toolkit/.kiro/steering/` | Universal rules (git safety, naming, development rules) | Yes — every session | You (personal, portable) |
-| `[dev-context]/.kiro/steering/` | Project routing (which project is active, file placement) | Yes — every session | You (per-company/context) |
-| `[project]/.kiro/steering/` | Codebase conventions (architecture, tech stack, patterns) | Yes — Kiro default | Team (in the project repo) |
-
-**Flow:** Toolkit provides methodology → dev-context knows which project → project `.kiro/` knows the codebase.
-
-### Where Artifacts Go
-
-| You produce... | It goes to... |
-|---|---|
-| Investigation report | `[dev-context]/projects/{name}/technical-notes/investigation/` |
-| JIRA ticket (bug, story, task) | `[dev-context]/projects/{name}/technical-notes/jira/tickets/` |
-| Knowledge base article | `[dev-context]/projects/{name}/knowledge-base/` |
-| Test case (if feature active) | `[dev-context]/projects/{name}/testcases/` |
-| Code changes | `[project repo]` (the actual codebase) |
-| Generic methodology improvement | `agentic-toolkit/` (via extract-to-toolkit workflow) |
-
 ## Features (Opt-In Modules)
 
-Features are self-contained capabilities that can be activated per-project. They are **NOT active by default** — a human must explicitly choose to install them.
-
-### Available Features
+Features are self-contained capabilities activated per-project. They are NOT active by default — a human must explicitly choose to install them.
 
 | Feature | What it does | Activate when... |
 |---|---|---|
 | **Document-Based Testing** | Markdown test cases (TCNNN.md) + AI-assisted simulation | Verification is file-based (CSV, reports), not standard test frameworks |
 | **AI Contribution Tracking** | Track AI vs human contributions via git attribution + metrics | Team wants visibility or audit trail for AI-generated code |
 
-### How Features Work
+To activate a feature, tell the AI: "Set up [feature name]" — it will load the feature's README and guide you through installation for that project only.
+
+Features never auto-load, never affect other projects, and the toolkit works fully without any features activated.
+
+## Multiple Workspaces
+
+You can have as many dev-context repos as needed:
 
 ```
-1. User decides a feature is needed
-       │
-       ▼
-2. User says: "Set up [feature name]" or "How do I use [feature]?"
-       │
-       ▼
-3. AI loads: templates/features/[feature-name]/README.md
-       │
-       ▼
-4. README provides activation steps:
-   - What files to copy into the project
-   - What to configure
-   - What changes in behavior once active
-       │
-       ▼
-5. Feature is active for that project only
-   (other projects unaffected)
+~/ai-workflow/
+├── agentic-toolkit/               # Always — methodology (one copy)
+├── company-dev-context/           # Company projects
+├── personal-dev-context/          # Personal projects
+└── freelance-dev-context/         # Freelance work
 ```
 
-### Feature Isolation Rules
-
-- Features never auto-load — they require explicit human activation
-- Each feature is one directory under `templates/features/`
-- Activating a feature for one project doesn't affect other projects
-- Features enhance existing workflows — they don't replace them
-- The toolkit works fully without any features activated
+Each follows the same internal structure. The toolkit serves all of them. One toolkit, many workspaces, many projects.
 
 ## Further Reading
 
+- `knowledge/getting-started.md` — full workflow explanation with lifecycle and evolution over time
+- `workflows/project-initialization.md` — how to determine which steering files a project needs
+- `workflows/workspace-setup.md` — alternative manual workspace creation (without `make new-workspace`)
 - `reading/agentic-ai-dev-framework-poc.md` — full POC report with testing evidence and value proposition
-- `knowledge/getting-started.md` — full workflow explanation with lifecycle
-- `workflows/project-initialization.md` — how to set up steering for any project type
-- `workflows/workspace-setup.md` — how to create a new dev-context workspace

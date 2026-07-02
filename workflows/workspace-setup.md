@@ -2,85 +2,129 @@
 
 ## Purpose
 
-Create a new workspace repository for AI-assisted development. A workspace holds project-specific artifacts (investigations, test cases, tickets, knowledge) organized by project. Each company or personal context gets its own workspace.
+Create a new dev-context workspace repository for AI-assisted development. A workspace holds project-specific artifacts (investigations, test cases, tickets, knowledge) organized by project.
 
 ## When to Use
 
-- Starting at a new company
+- Starting at a new company or context
 - Starting a personal development workspace
 - Separating contexts that shouldn't share a git repo
+
+Most users should use the automated command:
+
+```bash
+cd ~/ai-workflow/agentic-toolkit
+make new-workspace name=my-dev-context context="My projects"
+```
+
+This workflow documents what happens behind the scenes and provides a manual alternative.
 
 ## What a Workspace Is
 
 A workspace repo is a **container** for project knowledge. It:
 - Holds one or more project directories
 - Has its own `.kiro/steering/` that routes artifacts to the correct project
-- Has a bootstrap script for adding new projects
+- Has bootstrap scripts for adding/linking projects
 - Is independent of the toolkit (toolkit provides methodology, workspace stores output)
 
-## Setup Steps
-
-### Step 1: Create the repo
+## Automated Setup (Recommended)
 
 ```bash
-mkdir ~/ai-workflow/your-workspace-name
-cd ~/ai-workflow/your-workspace-name
+cd ~/ai-workflow/agentic-toolkit
+make new-workspace name=my-dev-context context="My projects"
+```
+
+What the script does:
+1. Creates the workspace directory as a sibling to the toolkit
+2. Copies the workspace template (Makefile, README, .gitignore, steering, scripts)
+3. Initializes a git repository
+4. Prints next steps
+
+After running, follow the "Getting Started" steps in the main README (step 4 onward).
+
+## Manual Setup (Alternative)
+
+Use this if you need to place the workspace somewhere other than alongside the toolkit, or if the automated script isn't suitable.
+
+### Create the directory structure
+
+```bash
+mkdir -p ~/ai-workflow/my-dev-context
+cd ~/ai-workflow/my-dev-context
+```
+
+### Copy from template
+
+```bash
+TOOLKIT=~/ai-workflow/agentic-toolkit
+
+cp "$TOOLKIT/templates/bootstrap/workspace/Makefile" ./Makefile
+cp "$TOOLKIT/templates/bootstrap/workspace/README.md" ./README.md
+cp "$TOOLKIT/templates/bootstrap/workspace/.gitignore" ./.gitignore
+
+mkdir -p .kiro/steering
+cp "$TOOLKIT/templates/bootstrap/workspace/.kiro/steering/workspace-identity.md" ./.kiro/steering/
+
+mkdir -p scripts
+cp "$TOOLKIT/templates/bootstrap/workspace/scripts/bootstrap-project.sh" ./scripts/
+cp "$TOOLKIT/templates/bootstrap/workspace/scripts/link-project.sh" ./scripts/
+chmod +x ./scripts/*.sh
+
+mkdir -p projects
+```
+
+### Customize templates
+
+1. Edit `README.md` — replace `{{WORKSPACE_NAME}}` with your workspace name
+2. Edit `.kiro/steering/workspace-identity.md` — replace placeholders with workspace name and context description
+
+### Initialize git
+
+```bash
 git init
 git config user.name "Your Name"
-git config user.email "appropriate-email@example.com"
+git config user.email "your-email@example.com"
 ```
 
-### Step 2: Copy the workspace template
-
-```bash
-# From the toolkit
-cp -r path/to/agentic-toolkit/templates/bootstrap/workspace/* .
-cp -r path/to/agentic-toolkit/templates/bootstrap/workspace/.kiro .
-cp path/to/agentic-toolkit/templates/bootstrap/workspace/.gitignore .
-```
-
-### Step 3: Customize
-
-1. Edit `README.md` — describe what this workspace is for
-2. Edit `.kiro/steering/workspace-identity.md` — set the workspace context
-3. Set up git remote on appropriate account (company or personal)
-
-### Step 4: Add to IDE workspace
-
-Add the new repo folder to your multi-root workspace alongside:
-- The project code repo(s)
-- The agentic-toolkit
-
-### Step 5: Bootstrap first project
+### Continue with project setup
 
 ```bash
 make new-project name=project-code
+make link-project name=project-code repo=/path/to/code
 ```
 
-Then follow `workflows/project-initialization.md` to set up the project's steering.
+Then open IDE and start a session (see main README steps 7-8).
 
-## Workspace Naming Suggestions
+## Workspace Naming
 
 Name it based on context:
 
 | Context | Possible names |
 |---|---|
-| Company work | `biz-agentic`, `company-dev-notes`, `work-workspace` |
-| Personal projects | `personal-dev`, `dev-lab`, `side-projects` |
-| Freelance client | `client-workspace`, `freelance-notes` |
+| Company work | `company-dev-context`, `work-workspace` |
+| Personal projects | `personal-dev-context`, `dev-lab` |
+| Freelance client | `client-dev-context`, `freelance-workspace` |
 
-The name doesn't matter to the toolkit — the `.kiro/steering/workspace-identity.md` inside tells the AI what this workspace is.
+The name doesn't affect functionality — `.kiro/steering/workspace-identity.md` tells the AI what this workspace is.
 
 ## Multiple Workspaces
 
-You can have as many workspace repos as you need:
+You can have as many workspace repos as needed:
 
 ```
 ~/ai-workflow/
-├── agentic-toolkit/           # Always — methodology
-├── company-workspace/         # Company projects
-├── personal-workspace/        # Personal projects
-└── freelance-workspace/       # Freelance work
+├── agentic-toolkit/               # Always — methodology
+├── company-dev-context/           # Company projects
+├── personal-dev-context/          # Personal projects
+└── freelance-dev-context/         # Freelance work
 ```
 
 Each follows the same internal structure. The toolkit serves all of them.
+
+## Path Requirement
+
+The toolkit and dev-context must be siblings (same parent directory) because:
+- `make new-project` calls `bootstrap-project.sh` which resolves the toolkit at `../agentic-toolkit`
+- Templates are copied from the toolkit during project scaffolding
+
+If you must place them elsewhere, update the `TOOLKIT_PATH` variable in the workspace's Makefile.
