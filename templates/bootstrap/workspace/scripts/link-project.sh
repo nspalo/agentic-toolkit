@@ -198,17 +198,23 @@ ${MAKEFILE_TARGETS:-| — | No Makefile targets detected |}
 
 ## Next Steps
 
-1. In a Kiro session, say: "Read \`projects/${PROJECT_NAME}/.detected-stack.md\` and help me fill in \`project-context.md\`"
-2. Once project-context.md is filled, delete this file (\`.detected-stack.md\`)
+1. In a Kiro session, say: "Ingest ${PROJECT_NAME}"
+2. Once ingestion completes (validation handshake output), delete this file (\`.detected-stack.md\`)
 3. See \`agentic-toolkit/knowledge/getting-started.md\` for "During Work" guidance
 EOF
 
 echo "✅ Detection complete. Written to: $DETECTION_FILE"
 echo ""
-echo "Next: In a Kiro session, say:"
-echo "  Read projects/${PROJECT_NAME}/.detected-stack.md and help me fill in project-context.md"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  Next: Ingest the project"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
-echo "After project-context.md is filled:"
-echo "  - Delete .detected-stack.md (it served its purpose)"
-echo "  - Start working: use toolkit workflows (investigation, bug-fix, spec-driven, PR creation)"
-echo "  - See agentic-toolkit/knowledge/getting-started.md → 'During Work' for what's available"
+echo "  In your Kiro session, say:"
+echo ""
+echo "    Ingest ${PROJECT_NAME}"
+echo ""
+echo "  This will read the detected stack, fill project-context.md,"
+echo "  customize steering files, and validate the workspace is ready."
+echo ""
+echo "  After ingestion: you're ready for spec-driven development."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

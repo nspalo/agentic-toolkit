@@ -77,35 +77,92 @@ make link-project name=my-project repo=~/projects/my-project
 
 This scans the repo, auto-detects the tech stack (language, framework, database, build tool, testing), and writes `projects/my-project/.detected-stack.md`.
 
-### 7. Fill project context (AI-assisted)
+### 7. Ingest the project (AI-assisted)
 
 In a Kiro session, say:
 
-> "Read `projects/my-project/.detected-stack.md` and help me fill in `project-context.md`"
+> "Ingest my-project"
 
-The AI reads the detected stack info and guides you through filling in the project context file with architecture, key commands, models, and conventions.
+Behind the scenes, this:
+1. Reads the auto-detected stack from `.detected-stack.md`
+2. Fills `project-context.md` with real architecture, commands, models, and conventions
+3. Customizes `.kiro-draft/steering/` templates (tech-stack, coding-standards, system-overview)
+4. Outputs a **workspace validation** confirming the three-layer setup is understood
+
+You don't need to know which files are involved — just say "Ingest" and the project name.
 
 ### Done
 
-Setup is complete when `project-context.md` has real content (not placeholders). At that point:
-- Delete `.detected-stack.md` (it served its purpose)
-- Set git identity if you plan to commit: `git config user.name/email` in the dev-context
+Ingestion is complete when the AI outputs a validation handshake like:
+
+```
+✅ Workspace Validation — my-project
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Layer 1 (Project):    /path/to/my-project — [framework, language]
+Layer 2 (Context):    dev-context/projects/my-project/ — artifacts & knowledge
+Layer 3 (Toolkit):    agentic-toolkit/ — methodology & workflows
+
+Ready for: investigation, bug-fix, spec-driven development, PR creation
+```
+
+At that point:
+- `.detected-stack.md` can be deleted (served its purpose)
+- `project-context.md` has real content
+- `.kiro-draft/steering/` files are customized (at least tech-stack, coding-standards, system-overview)
 - You're ready to work
 
-Do NOT commit during setup steps 3-7 — the workspace isn't ready until project-context is filled.
+Do NOT commit during setup steps 3-7 — the workspace isn't ready until ingestion validates.
 
-## What Now? (After Setup)
+## What Now? (After Ingestion)
 
-Once setup is complete, here's what you can do:
+### Steering Setup
 
-| You want to... | Say this (or reference) |
+During ingestion, the AI fills `.kiro-draft/steering/` with project-specific content. These files live in the dev-context as drafts until you're confident they work well, then they get promoted to the project repo's `.kiro/steering/`.
+
+**What gets filled during ingestion (Day 1):**
+
+| File | What it contains |
 |---|---|
-| Investigate a bug | "Investigate this issue" → toolkit loads `workflows/investigation.md` |
-| Fix a bug | "Fix this bug" → toolkit loads `workflows/bug-fix.md` |
-| Build a new feature | "Start a new feature" → toolkit loads `workflows/spec-driven-development.md` |
-| Create a PR | "Create a PR" → toolkit loads `workflows/pr-creation.md` |
-| Run/validate tests | "Run tests" → toolkit loads `workflows/tiered-testing.md` |
-| Write a ticket | "Write a bug ticket" → toolkit loads `templates/jira/bug-ticket.md` |
+| `system-overview.md` | What the system does, key commands, environment |
+| `tech-stack.md` | Framework, language, DB, tools, constraints |
+| `coding-standards.md` | Code style, patterns, anti-patterns |
+| `conventions.md` | Naming, file placement (pre-filled from template) |
+| `repository-map.md` | Repo boundaries (pre-filled from template) |
+
+**What gets added as you work (Week 1+):**
+
+As you encounter complexity, tell the AI to add more steering files. See `workflows/project-initialization.md` for the full decision matrix of when each file type is needed.
+
+**Promoting drafts to the project repo:**
+
+Once a steering file is refined and proven useful (usually after 1-2 weeks of real work):
+1. Copy from `.kiro-draft/steering/` to `[project-repo]/.kiro/steering/`
+2. Verify it auto-loads correctly in sessions
+3. Commit to the project repo — now it travels with the codebase
+
+### Validation
+
+After ingestion, the AI outputs a validation confirming it understands the workspace. If you ever need to re-validate (new session, new project), say:
+
+> "Validate workspace for my-project"
+
+The AI checks:
+- ✅ Can locate and read `project-context.md`
+- ✅ Knows the three layers (project repo → dev-context → toolkit)
+- ✅ Knows where code changes go vs where artifacts land
+- ✅ Can identify available workflows (investigation, bug-fix, spec-driven, PR)
+
+### Working with the Project
+
+| You want to... | Say this |
+|---|---|
+| Investigate a bug | "Investigate this issue" |
+| Fix a bug | "Fix this bug" |
+| Build a new feature | "Start a new feature" (loads spec-driven workflow) |
+| Create a PR | "Create a PR" |
+| Run/validate tests | "Run tests" |
+| Write a ticket | "Write a bug ticket" |
+| Add a steering file | "Add [type] steering for this project" |
 
 The toolkit's steering auto-loads every session and provides:
 - **Git safety** — AI won't commit without your approval
@@ -148,7 +205,7 @@ For the project lifecycle and how things evolve over time, see `knowledge/gettin
 ### During a Session
 
 1. Open the IDE workspace (all three folders)
-2. Load project context: "Read `projects/{name}/project-context.md`"
+2. Load project context: "Read `projects/{name}/project-context.md`" (or just start working)
 3. Work normally — toolkit steering auto-enforces safety rules, workflows load on demand
 4. Artifacts (reports, tickets, test cases) land in the dev-context project directory
 5. Code changes go in the project repo
@@ -181,8 +238,15 @@ xxx-dev-context/projects/yyy/             (scaffolded — empty templates)
     ▼
 xxx-dev-context/projects/yyy/
     ├── .detected-stack.md                (auto-detected tech info)
-    ├── project-context.md                (AI fills with your help)
-    └── .kiro-draft/steering/             (customize per project type)
+    ├── project-context.md                (empty — ready for ingestion)
+    └── .kiro-draft/steering/             (templates — ready for ingestion)
+    │
+    │  In Kiro: "Ingest yyy"
+    ▼
+xxx-dev-context/projects/yyy/
+    ├── project-context.md                (✅ filled with real data)
+    ├── .kiro-draft/steering/             (✅ customized for this project)
+    └── [validation handshake output]     (✅ three-layer workspace confirmed)
 ```
 
 ## Structure
@@ -260,7 +324,7 @@ Each follows the same internal structure. The toolkit serves all of them. One to
 
 ## Further Reading
 
-- `knowledge/getting-started.md` — full workflow explanation with lifecycle and evolution over time
+- `knowledge/getting-started.md` — full workflow explanation with lifecycle, steering setup, and validation
 - `workflows/project-initialization.md` — how to determine which steering files a project needs
 - `workflows/workspace-setup.md` — alternative manual workspace creation (without `make new-workspace`)
 - `reading/agentic-ai-dev-framework-poc.md` — full POC report with testing evidence and value proposition

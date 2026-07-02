@@ -12,6 +12,8 @@ This repo is a portable AI development methodology toolkit. It provides rules, w
 
 | Trigger | What to load | What it does |
 |---|---|---|
+| "Ingest {project}" / "Boot up {project}" | `workflows/project-initialization.md` | Read detected stack → fill project-context → customize steering → validate workspace |
+| "Validate workspace for {project}" | `knowledge/getting-started.md` § Workspace Validation | Output three-layer handshake confirming readiness |
 | "Investigate this issue" / "Look into this bug" | `workflows/investigation.md` | Guides the full investigation process: gather facts → trace code → form hypothesis → verify → write report |
 | "Fix this bug" | `workflows/bug-fix.md` | Understand → identify scope → implement → verify flow with N-location checklist |
 | "Create a PR" | `workflows/pr-creation.md` | Branch → code → review → commit → push → PR with commit conventions |
@@ -20,6 +22,7 @@ This repo is a portable AI development methodology toolkit. It provides rules, w
 | "Bootstrap new project" / "Set up project" | `workflows/project-initialization.md` | Discover project → fill context → determine which steering files to create |
 | "Create a new workspace" | `workflows/workspace-setup.md` | Create a new dev-context repo from template |
 | "Extract learnings" / "Update the toolkit" | `workflows/extract-to-toolkit.md` | Pull generic patterns from project knowledge back into toolkit |
+| "Add {type} steering" | `workflows/project-initialization.md` § Phase 3 | Determine which steering file to add based on project characteristics |
 
 ### Standards (format and quality rules — load alongside workflows)
 

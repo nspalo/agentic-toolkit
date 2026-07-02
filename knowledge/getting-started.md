@@ -65,11 +65,17 @@ make new-project name=project-code
 make link-project name=project-code repo=~/projects/my-project
 ```
 
-### 5. Start first session
+### 5. Ingest the project
 
-Tell the AI: "Read `projects/project-code/.detected-stack.md` and help me fill in `project-context.md`"
+Tell the AI: "Ingest project-code"
 
-Setup is complete when `project-context.md` has real content. Then you can:
+This single command triggers:
+1. Reading `.detected-stack.md` (auto-detected tech info)
+2. Filling `project-context.md` with real architecture, commands, models
+3. Customizing `.kiro-draft/steering/` files (tech-stack, coding-standards, system-overview)
+4. Outputting a **workspace validation** confirming the three-layer setup is understood
+
+Setup is complete when the AI outputs the validation handshake. Then you can:
 - Delete `.detected-stack.md`
 - Set git identity (only needed before first commit): `git config user.name/email`
 - Start working with toolkit workflows
@@ -90,7 +96,7 @@ This scaffolds:
 - `projects/{name}/.kiro-draft/` — suggested steering files to customize
 - Empty directories for knowledge-base, testcases, etc.
 
-Then start a session and say: "Read `projects/{name}/.detected-stack.md` and help me fill in `project-context.md`"
+Then start a session and say: "Ingest {name}"
 
 For deeper customization of steering files, see `workflows/project-initialization.md` which guides:
 1. Which steering files the project needs based on its type
@@ -100,11 +106,81 @@ For deeper customization of steering files, see `workflows/project-initializatio
 ## Starting a Session
 
 1. Open workspace
-2. Say: "Read `projects/{name}/project-context.md`"
+2. Say: "Read `projects/{name}/project-context.md`" (or just start working — steering auto-loads)
 3. Kiro auto-loads:
    - `agentic-toolkit/.kiro/steering/` (behavioral rules, naming conventions)
    - Dev-context `.kiro/steering/workspace-identity.md` (knows which project is active)
 4. Work normally — artifacts land in the correct project directory
+
+## Workspace Validation
+
+After ingestion (or at any time), you can verify the AI correctly understands the workspace by saying:
+
+> "Validate workspace for {name}"
+
+The AI outputs a handshake confirming:
+
+```
+✅ Workspace Validation — {name}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Layer 1 (Project):    /path/to/project — [tech stack summary]
+Layer 2 (Context):    dev-context/projects/{name}/ — artifacts & knowledge
+Layer 3 (Toolkit):    agentic-toolkit/ — methodology & workflows
+
+Steering:  N files in .kiro-draft/ (M auto, K manual)
+Ready for: investigation, bug-fix, spec-driven development, PR creation
+```
+
+This validates:
+- The AI can locate and parse `project-context.md`
+- It knows where code changes go (project repo) vs where artifacts land (dev-context)
+- It understands which workflows are available
+- Steering files are correctly configured (auto-load vs manual reference)
+
+Use this after:
+- First-time ingestion (automatic)
+- Starting a new session on a project after a long break
+- Adding new steering files or changing workspace structure
+
+## Steering Setup (Post-Ingestion)
+
+After ingestion fills the Day 1 steering files, here's how the steering evolves:
+
+### What ingestion creates
+
+| File | Status after ingestion |
+|---|---|
+| `system-overview.md` | Filled — system description, key commands, environment |
+| `tech-stack.md` | Filled — framework, language, DB, tools, constraints |
+| `coding-standards.md` | Filled — code style, patterns, anti-patterns |
+| `conventions.md` | Pre-filled — naming, file placement (from template) |
+| `repository-map.md` | Pre-filled — repo boundaries (from template) |
+
+### How to add more steering
+
+As you work and discover complexity, tell the AI:
+
+> "Add [type] steering for this project"
+
+The AI reads the relevant codebase patterns and generates the file in `.kiro-draft/steering/`.
+
+### Promoting to the project repo
+
+Once steering files are proven (usually 1-2 weeks):
+
+```
+.kiro-draft/steering/tech-stack.md     →    [project]/.kiro/steering/tech-stack.md
+.kiro-draft/steering/coding-standards.md →  [project]/.kiro/steering/coding-standards.md
+```
+
+The `.kiro-draft/` in dev-context remains as a backup/reference. The project `.kiro/` becomes the source of truth that travels with the codebase.
+
+### When NOT to promote
+
+Keep files in dev-context (don't promote) when:
+- The content is personal workflow preferences (not team conventions)
+- The project repo is shared and the team hasn't agreed on AI steering
+- The file references dev-context paths or artifact locations
 
 ## During Work
 
@@ -145,11 +221,13 @@ Implementation (bug-fix or spec workflow)
 ## The Lifecycle
 
 ```
-Day 1:     make new-workspace → make new-project → empty skeleton
-Week 1:    First investigation, first test cases, project-context filling up
+Day 0:     make new-workspace → make new-project → make link-project → "Ingest project"
+Day 1:     Ingestion fills project-context + Day 1 steering files. Validation confirms readiness.
+Week 1:    First investigation, first test cases, project-context evolving
+Week 2:    Additional steering files added as complexity is discovered
 Month 1:   Knowledge base growing, .kiro-draft refined for this project
-Month 3:   .kiro-draft → promoted to project's actual .kiro/
-Month 6:   Extract generic patterns back into toolkit (extract-to-toolkit workflow)
+Month 2:   .kiro-draft → promoted to project's actual .kiro/ (proven files only)
+Month 3+:  Extract generic patterns back into toolkit (extract-to-toolkit workflow)
 ```
 
 ## How the Toolkit Adapts to New Projects
@@ -184,6 +262,8 @@ Each follows the same structure. The toolkit serves all of them.
 1. **Toolkit = portable.** Works at any company, any project. Never put company/project info here.
 2. **Dev-context = per-scope.** One per company or context. All real artifacts, data, and project knowledge stay here.
 3. **Project .kiro/ = codebase.** Conventions that travel with the code itself.
-4. **Validate before escalating.** Investigation must be factual before becoming a report. Report must be verified before becoming a ticket.
-5. **Extract regularly.** After big learnings, pull the generic pattern into the toolkit.
-6. **Bootstrap fast.** A new workspace + project should be operational in minutes, not days.
+4. **Ingest before working.** Every new project goes through ingestion to fill context + steering + validate readiness.
+5. **Validate before escalating.** Investigation must be factual before becoming a report. Report must be verified before becoming a ticket.
+6. **Steering evolves incrementally.** Day 1 gets 5 files. More are added as complexity is discovered. Don't front-load.
+7. **Extract regularly.** After big learnings, pull the generic pattern into the toolkit.
+8. **Bootstrap fast.** A new workspace + project should be operational in minutes, not days.
