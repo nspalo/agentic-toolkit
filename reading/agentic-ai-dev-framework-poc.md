@@ -1,34 +1,24 @@
-# Agentic AI Development Framework — Proof of Concept Report
+# Agentic AI Development Framework — Overview
 
 ## Summary
 
-This document presents a portable, three-layer AI Developer Experience (AI DX) framework for structured AI-assisted software development. The system separates methodology (how to work) from project knowledge (what you're working on) and codebase conventions (what the project is). It enables a developer to onboard onto any project in minutes, produce structured artifacts, and execute full spec-driven development with AI — all with safety guardrails, quality gates, and consistent process.
-
-The proof of concept validates the system through automated testing (bootstrapping, integration, placeholder replacement) and a simulated end-to-end user journey (13 scenarios from zero setup to feature delivery).
+A portable, three-layer framework for structured AI-assisted software development. Separates methodology (how to work) from project knowledge (what you're working on) and codebase conventions (what the project is). Enables a developer to onboard onto any project in minutes with safety guardrails, consistent process, and knowledge retention across sessions.
 
 ---
 
 ## The Problem
 
-AI coding assistants are powerful but stateless. Each session starts from scratch — the AI doesn't know your conventions, your project's architecture, your team's process, or where artifacts should go. This leads to:
+AI coding assistants are stateless. Each session starts from scratch — the AI doesn't know your conventions, architecture, process, or where artifacts should go. This leads to:
 
 - Inconsistent output quality across sessions
-- Repeated context setup ("here's how the project works...")
-- No systematic knowledge capture (learnings are lost between sessions)
+- Repeated context setup every time
+- No systematic knowledge capture between sessions
 - No safety guardrails (AI commits without review, writes outside boundaries)
-- No reusability across projects (each project reinvents its AI setup)
-
-Existing solutions (like shared `.kiro/` configs) are project-specific. They don't travel with you. Starting a new project means starting from zero.
+- No reusability across projects
 
 ---
 
-## The Concept
-
-### What This Is
-
-This is an **AI Developer Experience (AI DX) framework** — a developer infrastructure system that defines how a human and AI collaborate on software development. It sits in the same category as CI/CD pipeline configurations and internal developer platforms — but for AI-assisted workflows.
-
-### Three-Layer Architecture
+## Three-Layer Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -47,7 +37,7 @@ This is an **AI Developer Experience (AI DX) framework** — a developer infrast
 ```
 
 **Layer 1: Agentic Toolkit** (portable — travels with developer)
-- Behavioral steering auto-loaded every session
+- 5 behavioral steering files auto-loaded every session
 - Workflows for investigation, bug fix, PR, spec-driven development, testing
 - Templates for workspaces, projects, steering files, documentation, tickets
 - Opt-in features (document-based testing, AI contribution tracking)
@@ -68,234 +58,122 @@ This is an **AI Developer Experience (AI DX) framework** — a developer infrast
 
 ## How It Works
 
-### Setup Flow
+### Setup (5 steps, all CLI)
 
-```
-Developer has agentic-toolkit (personal, always)
-    │
-    │  make new-workspace name=company-dev-context
-    ▼
-company-dev-context/ created (one-time per company)
-    │
-    │  make new-project name=project-a
-    ▼
-projects/project-a/ scaffolded with templates
-    │
-    │  Follow project-initialization workflow
-    ▼
-Project context filled, steering customized, ready to work
+```bash
+# 1. Have project repo cloned
+# 2. Clone toolkit
+git clone <toolkit-repo> ~/ai-workflow/agentic-toolkit
+
+# 3. Create dev-context workspace
+cd ~/ai-workflow/agentic-toolkit
+make new-workspace name=my-dev-context context="My projects"
+
+# 4. Open IDE with all 3 folders (project + dev-context + toolkit)
+
+# 5. Bootstrap and link project
+cd ~/ai-workflow/my-dev-context
+make new-project name=my-project
+make link-project name=my-project repo=~/projects/my-project
 ```
 
-Total time from zero to productive: **minutes, not days**.
+`make link-project` scans the repo, auto-detects the tech stack (language, framework, database, build tool, testing), and fills `project-context.md` directly. No AI step required for setup.
+
+Setup is complete when the script finishes. Start working immediately.
 
 ### Session Flow
 
-1. Open IDE with: project repo + dev-context + toolkit
+1. Open IDE (all three folders in multi-root workspace)
 2. Load project context: "Read `projects/{name}/project-context.md`"
-3. Auto-loaded steering enforces rules silently
+3. Toolkit steering auto-loads and enforces rules
 4. Work using workflows on demand
-5. Artifacts land in correct project directory automatically
+5. Artifacts land in correct project directory
 
-### Development Flow (Spec-Driven)
+### Safety Guardrails (Auto-Enforced)
 
-```
-Requirements (define WHAT) → Review Gate
-    ▼
-Design (define HOW) → Review Gate
-    ▼
-Tasks (break into atoms) → Review Gate
-    ▼
-Execute (implement per task):
-    Code → Review Gate → Commit → Next task
-    ▼
-PR Creation → Final Review → Merge
-```
-
-### Safety Guardrails
-
-| Rule | Enforcement |
+| Rule | Mechanism |
 |---|---|
-| Never commit without review | `git-safety.md` (auto-loaded) + `git-commit-guard.json` (hook) |
-| Never write outside workspace | `filesystem-boundaries.md` (auto-loaded) |
-| Read before writing code | `development-rules.md` (auto-loaded) |
-| State confidence explicitly | `development-rules.md` + `report-standards.md` |
-| Validate before escalating | Investigation workflow (Gate 1: factual? Gate 2: ready for ticket?) |
+| Never commit without review | `git-safety.md` (steering) + `git-commit-guard.json` (hook) |
+| Never write outside workspace | `filesystem-boundaries.md` (steering) |
+| Read before writing code | `development-rules.md` (steering) |
+| State confidence explicitly | `development-rules.md` (steering) |
+| No commits during setup | `git-safety.md` "During Setup" section |
 
-### Capabilities
+### Available Workflows
 
-| Capability | How |
+| Trigger | What it does |
 |---|---|
-| Bootstrap workspace in one command | `make new-workspace name=xxx` |
-| Bootstrap project in one command | `make new-project name=yyy` |
-| Enforce rules every session | Auto-loaded steering (5 files) |
-| Guide structured investigations | Workflow with validation gates |
-| Produce consistent documentation | Templates + documentation-standards |
-| Groom JIRA tickets | Templates for epics, stories, tasks, bugs |
-| Execute spec-driven development | Requirements → design → tasks → execute |
-| Track project knowledge | Knowledge base in dev-context |
-| Activate features per project | Opt-in modules without affecting other projects |
-| Extract and evolve methodology | Extract-to-toolkit workflow |
+| "Investigate this issue" | Full investigation → report with confidence markers |
+| "Fix this bug" | Understand → scope → implement → verify |
+| "Start a new feature" | Spec-driven: requirements → design → tasks → execute |
+| "Create a PR" | Branch → commit → push → PR with conventions |
+| "Run tests" | Tiered testing (smoke → unit → functional → acceptance) |
+| "Write a bug ticket" | JIRA template → structured ticket |
+| "Enrich {project}" | Deep scan code repo → fill remaining TBA sections in project-context |
 
-### Features (Opt-In)
+### Opt-In Features
 
-| Feature | Purpose | Activation |
-|---|---|---|
-| Document-Based Testing | Markdown test cases + AI simulation | Copy templates, define verification |
-| AI Contribution Tracking | Track AI vs human via git attribution | Copy Makefile targets + GitHub workflow |
+| Feature | Purpose |
+|---|---|
+| Document-Based Testing | Markdown test cases + AI simulation for file-based verification |
+| AI Contribution Tracking | Track AI vs human contributions via git attribution + metrics |
+
+Features are never active by default. Activate per-project only when needed.
 
 ---
 
-## Validation Methodology
+## What Was Validated
 
-The system was validated at three levels:
+### Pilot Project: Biz Todo App (Laravel 8, Vue 3, Docker)
 
-### Level 1: Unit Tests
+| Area | Result |
+|---|---|
+| Setup (workspace + project + link) | ✅ Works — full scaffold in seconds |
+| Auto-detection (src/ layout, PHP, Laravel, Vue, MySQL, Docker) | ✅ Detects correctly |
+| project-context.md auto-fill | ✅ Filled with real data by script |
+| Steering auto-load (5 toolkit files) | ✅ Active every session |
+| Git safety enforcement | ✅ AI asks before every commit/push |
+| Filesystem boundaries | ✅ AI asks before writing outside workspace |
+| Toolkit + project steering coexistence | ✅ No conflicts |
+| Spec-driven workflow (requirements) | ✅ Generated requirements with ACs |
+| Multi-root workspace (3+ folders) | ✅ All layers visible |
 
-Individual components verified in isolation — each file exists, has correct format, contains no project-specific content, references valid paths.
+### Issues Found and Fixed During Pilot
 
-### Level 2: Integration Tests
-
-Components verified working together — bootstrap scripts execute successfully, copy correct files, replace placeholders, update routing tables, resolve toolkit paths across directories.
-
-### Level 3: Functional Tests (End-to-End)
-
-Full user journey simulated from zero setup to productive development, covering workspace creation, project scaffolding, steering enforcement, workflow execution, template usage, and feature activation.
-
-**What constitutes "pass":**
-- Scripts execute without errors
-- All referenced files exist
-- Placeholders are correctly replaced
-- Routing tables are auto-updated
-- No project-specific content leaks into the toolkit
-- Full user journey has no gaps where the user would be stuck
+| Issue | Root Cause | Fix |
+|---|---|---|
+| `link-project.sh` not copied to new workspaces | `bootstrap-workspace.sh` only copied one script | Added copy + chmod for both scripts |
+| Detection missed PHP/Laravel for `src/` layout projects | Script only checked repo root for `composer.json` | Added `src/` subdirectory detection |
+| "Ingest" trigger word unreliable | AI interpreted as "describe" not "execute" | Eliminated — `link-project` fills context directly |
+| `bootstrap-project.sh` output contradicted README | Pointed to wrong next step | Aligned all outputs |
+| Git identity prompted too early | First item in "Next steps" | Moved to optional, after setup |
+| No "what now?" after setup | User stuck with no guidance | Added post-setup guidance to CLI output and README |
+| README step numbering contradicted itself | Multiple sections with different numbers | Single linear flow, no duplicates |
 
 ---
 
-## Results
+## Design Principles
 
-### Unit Test Results (Toolkit)
-
-| Test | Result |
-|---|---|
-| All 7 steering files have correct `inclusion` frontmatter | ✅ PASS |
-| Zero project-specific terms in any toolkit file | ✅ PASS |
-| All 9 source files referenced by bootstrap scripts exist | ✅ PASS |
-| Both features have all expected files | ✅ PASS |
-| All 41 file references in toolkit-usage routing table exist | ✅ PASS |
-
-### Unit Test Results (Dev-Context)
-
-| Test | Result |
-|---|---|
-| Workspace structure (steering, Makefile, scripts, projects/) | ✅ PASS |
-| Project routing has `inclusion: auto` | ✅ PASS |
-| Bootstrap script is executable | ✅ PASS |
-| Toolkit path resolves from dev-context | ✅ PASS |
-| No legacy naming references in root files | ✅ PASS |
-| ASCM project content migrated (22 KB + 38 TCs + 10 docs + 17 steering) | ✅ PASS |
-
-### Integration Test Results (Workspace Bootstrap)
-
-| Test | Result |
-|---|---|
-| `make new-workspace` creates directory at sibling path | ✅ PASS |
-| All 5 template files copied | ✅ PASS |
-| `{{WORKSPACE_NAME}}` replaced in README + identity | ✅ PASS |
-| `{{CONTEXT}}` replaced with custom or auto-generated value | ✅ PASS |
-| Script has executable permission | ✅ PASS |
-| git init runs automatically | ✅ PASS |
-| `projects/` directory ready | ✅ PASS |
-
-### Integration Test Results (Project Bootstrap)
-
-| Test | Result |
-|---|---|
-| `make new-project` creates full scaffold (18 files, 8 dirs) | ✅ PASS |
-| Works from both existing and freshly bootstrapped workspaces | ✅ PASS |
-| `{{PROJECT_NAME}}` replaced in 4 files | ✅ PASS |
-| Routing table auto-updated | ✅ PASS |
-| `make list-projects` shows all projects | ✅ PASS |
-
-### Functional Test Results (User Journey)
-
-| Step | Action | Result |
-|---|---|---|
-| 1 | Clone toolkit, read README | ✅ Understands full system |
-| 2 | `make new-workspace` | ✅ Workspace created |
-| 3 | Set git identity | ✅ One command |
-| 4 | Add to IDE | ✅ Auto-loaded steering active |
-| 5 | `make new-project` | ✅ Full scaffold |
-| 6 | Follow project-initialization | ✅ Context filled, steering customized |
-| 7 | Investigate an issue | ✅ Report placed correctly |
-| 8 | Write a bug ticket | ✅ Template used, cross-referenced |
-| 9 | Fix a bug | ✅ Workflow + review gate |
-| 10 | Spec-driven feature | ✅ Requirements → Design → Tasks → Execute |
-| 11 | Create PR | ✅ Commit conventions, human approval |
-| 12 | Activate document-based testing | ✅ Feature installed |
-| 13 | Activate AI contribution tracking | ✅ Feature installed |
-
-### Bugs Found and Fixed During Testing
-
-| Bug | Impact | Fix |
-|---|---|---|
-| Project-specific terms in toolkit files | Portability violation | Anonymized all examples |
-| `repository-map.md` not in sed replacement | Unreplaced placeholder | Added to both scripts |
-| Makefile help text had old name | Confusing label | Updated |
-| `list-projects` errors on empty dir | Script failure | Added error suppression |
-| README had redundant sections | Duplicated content | Removed |
-
-All bugs fixed immediately. No outstanding issues.
-
----
-
-## Why It Works (Analysis)
-
-### Design Principles Applied
-
-| Principle | How it's applied |
+| Principle | Application |
 |---|---|
 | Separation of concerns | Three layers with clear boundaries |
-| Convention over configuration | Templates scaffold correct structure automatically |
+| Convention over configuration | Templates scaffold correct structure |
 | Progressive disclosure | Auto-loaded rules are minimal; workflows load on demand |
-| Fail-safe defaults | Guardrails are on by default; features are off by default |
-| Single source of truth | Templates live in toolkit; instances are derived from them |
-
-### What It Demonstrates
-
-| Skill | Evidence |
-|---|---|
-| Systems thinking | Three-layer architecture with boundaries and responsibilities |
-| AI prompt engineering at systems level | Steering files that shape AI behavior across sessions |
-| Developer experience design | One-command setup, self-documenting structure |
-| Process engineering | Workflows with gates, validation rules, escalation paths |
-| Knowledge management | Structured capture, per-project accumulation, cross-project extraction |
-| Safety engineering | Guardrails that enforce without relying on AI compliance |
-| Production-grounded design | Every rule traces to a real incident |
-
-### What It's Not
-
-- Not a SaaS product (no runtime, no business model)
-- Not an open-source framework (too opinionated for broad contribution)
-- Not a research paper (no novel algorithm, no benchmarks)
-
-It's a **developer infrastructure system** — personal engineering craft at the methodology level.
+| Fail-safe defaults | Guardrails on by default; features off by default |
+| Scripts over AI triggers | Setup relies on bash scripts, not AI interpreting keywords |
+| Incremental adoption | Start with 5 steering files, add more as patterns emerge |
 
 ---
 
 ## Strengths
 
-| Strength | Impact |
-|---|---|
-| One-command bootstrapping | Zero-to-productive in minutes |
-| Portable across employers | Toolkit travels, workspaces are instances |
-| Self-sufficient layers | Each layer adds value independently |
-| Safety by default | AI cannot bypass guardrails |
-| Knowledge compounds | Every session adds to project knowledge |
-| Consistent process | Same format regardless of project |
-| Feature modularity | Activate only what's needed |
-| Template-driven | 13 steering templates cover any project type |
-| Grounded in reality | Every rule traces to an incident |
-| Evolves over time | Extract-to-toolkit keeps it current |
+- **One-command bootstrapping** — zero-to-productive in minutes
+- **Portable** — toolkit travels across employers and projects
+- **Safety by default** — AI cannot bypass guardrails
+- **Knowledge compounds** — every session adds to project knowledge
+- **No AI trigger dependency for setup** — scripts handle detection and context fill
+- **Template-driven** — 13 steering templates cover any project type
+- **Grounded in reality** — every rule traces to an actual incident
 
 ---
 
@@ -303,111 +181,31 @@ It's a **developer infrastructure system** — personal engineering craft at the
 
 | Limitation | Mitigation |
 |---|---|
-| Relies on AI understanding steering | Written in plain language, tested with Kiro |
-| Assumes sibling directory layout | Scripts use `../agentic-toolkit` — adjustable |
-| No CI/CD for the toolkit itself | Methodology, not code — validation is manual |
-| Context window pressure | 6 auto-loaded files — kept concise |
+| Relies on AI reading steering for workflows | Written in plain language, routing table explicit |
+| Assumes sibling directory layout | Scripts use `../agentic-toolkit` — documented |
+| Detection is heuristic (regex on config files) | Covers common patterns; user can refine context manually |
 | Single developer tested | Not yet validated with teams |
+| Context window pressure with many steering files | Auto-loaded kept to 5-6 concise files |
 | No template versioning | Re-scaffolding is manual |
-| Manual feature activation | By design — human decides |
 
 ---
 
-## Possible Improvements
+## Origin
 
-| Improvement | Value | Effort |
-|---|---|---|
-| Template versioning/drift detection | Know when scaffolded files are outdated | Medium |
-| `make update-project` command | Re-sync from toolkit templates | Medium |
-| More opt-in features | Code review, deployment checklist, incident response | Ongoing |
-| Guided project-initialization | Interactive script asks questions, selects steering | Medium |
-| Team shared dev-context | Per-developer branches for parallel work | Low |
-| CI for dev-context | Auto-validate report format, TC structure | Medium |
-| Cross-project knowledge search | Query KB across projects | High |
-
----
-
-## Value Proposition
-
-### For Individual Developers
-
-- Reduced ramp-up time (minutes, not days)
-- Consistent output quality across sessions
-- Knowledge retention (nothing lost between sessions)
-- Safety net (git guardrails prevent mistakes)
-- Portable career asset (travels with you)
-
-### For Teams
-
-- Standardized AI usage (same process for everyone)
-- Onboarding acceleration (README → one command → productive)
-- Audit trail (investigation reports with confidence markers)
-- Reduced tribal knowledge (documented, not in someone's head)
-- Optional AI metrics (contribution tracking when activated)
-
-### For Organizations
-
-- Scalable AI adoption (one toolkit, unlimited projects)
-- Risk reduction (guardrails prevent unauthorized changes)
-- Process compliance (gates ensure quality before tickets)
-- Knowledge compounding (cross-project learnings accumulate)
-- Measurable impact (data for ROI analysis when tracking is activated)
-
----
-
-## Conclusion
-
-The proof of concept validates that:
-
-1. **The architecture works** — three layers bootstrap and interact correctly (verified by real script execution)
-2. **Bootstrapping is fast and error-free** — one command creates a full workspace or project
-3. **Safety guardrails enforce without exception** — auto-loaded, no opt-out
-4. **Features activate cleanly** — isolated, no side effects on other projects
-5. **A new developer can go from zero to productive** — following documentation alone, no tribal knowledge required
-
-The system addresses the gap between "AI can write code" and "AI can reliably participate in a development process." It makes AI assistance consistent, safe, accumulative, portable, and evolvable.
-
-Ready for live validation on a real feature delivery.
-
----
-
-## Appendix: Industry Context
-
-The approach aligns with how major technology companies govern AI-assisted development:
-
-| Company | What they built | Relationship |
-|---|---|---|
-| Google | Internal AI coding guidelines + review workflows | Same concept — governance for AI output |
-| Spotify | "Fleetshift" — agents run in background, humans review at gates | Same gated model |
-| Augment Code | Published "Agentic SDLC" framework (theoretical) | This system implements their theory |
-| Amazon | CodeWhisperer governance rules + review flows | Same safety guardrail pattern |
-| Shopify | "Sidekick" developer guidelines + contribution tracking | Same tracking concept |
-
-The difference: those companies build this for their platform, with teams, integrated into proprietary tools. This system is **portable, personal, and open** — equivalent capability without platform lock-in.
-
----
-
-## Appendix: Origin
-
-This system was not designed theoretically. It emerged from a real production project (batch accounting system, 40+ JIRA tickets, 20 documented engineering problems, 38 test cases) where:
+This system emerged from real production work (batch accounting system, todo app, GraphQL API) where:
 
 - A commit-without-review incident drove the git safety rules
 - A write-outside-workspace incident drove the filesystem boundaries
-- A half-baked investigation report drove the confidence markers requirement
-- A repeated N-location bug fix pattern drove the checklist workflow
-- The inability to unit-test complex SQL drove the document-based testing feature
-- The need to measure AI impact drove the contribution tracking feature
+- Unreliable AI trigger words drove the "scripts over keywords" principle
+- Repeated context loss between sessions drove the three-layer separation
+- The need to onboard quickly across projects drove the bootstrap automation
 
-Every rule, workflow, and template exists because something went wrong without it.
+Every rule and design decision exists because something went wrong without it.
 
 ---
 
 ## References
 
-- POC Report Format — Industry standard (IEEE white paper structure, Monday.com POC criteria)
-- Golden File / Snapshot Testing — [testthat](https://testthat.r-lib.org/articles/snapshotting.html), [Go testdata](https://pkg.go.dev/testing)
 - Spec-Driven Development — [Augment Code](https://www.augmentcode.com/guides/what-is-spec-driven-development)
-- Agentic SDLC — [Augment Code](https://www.augmentcode.com/guides/agentic-sdlc), DORA 2025
-- Three-Point Verification — see `knowledge/three-point-verification.md`
+- Agentic SDLC — [Augment Code](https://www.augmentcode.com/guides/agentic-sdlc)
 - Progressive Disclosure — [Nielsen Norman Group](https://www.nngroup.com)
-- Inverted Pyramid — [Veeam Style Guide](https://helpcenter.veeam.com/docs/styleguide/tw/inverted_pyramid.html)
