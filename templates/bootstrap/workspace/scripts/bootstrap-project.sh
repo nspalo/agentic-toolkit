@@ -31,7 +31,7 @@ echo "  Target: $PROJECT_DIR"
 echo ""
 
 # Create directory structure
-mkdir -p "$PROJECT_DIR"/{knowledge-base,testcases,technical-notes/jira/{tickets,epics,proposals},technical-notes/investigation,system-diagrams,documentation,generated-files,.kiro-draft/{steering,hooks,skills}}
+mkdir -p "$PROJECT_DIR"/{knowledge-base,testcases,technical-notes/jira/{tickets,epics,proposals},technical-notes/investigation,documentation/diagrams,generated-files,.kiro-draft/{steering,hooks,skills}}
 
 # Copy base templates from toolkit (always included)
 cp "$TOOLKIT_PATH/templates/bootstrap/project/project-context.md" "$PROJECT_DIR/project-context.md"
@@ -49,7 +49,7 @@ cp "$TOOLKIT_PATH/templates/steering/coding-standards.md" "$PROJECT_DIR/.kiro-dr
 cp "$TOOLKIT_PATH/templates/skills/developer-role.md" "$PROJECT_DIR/.kiro-draft/skills/developer-role.md"
 
 # Add .gitkeep to empty directories
-for dir in knowledge-base testcases technical-notes/jira/tickets technical-notes/jira/epics technical-notes/jira/proposals technical-notes/investigation system-diagrams documentation; do
+for dir in knowledge-base testcases technical-notes/jira/tickets technical-notes/jira/epics technical-notes/jira/proposals technical-notes/investigation documentation documentation/diagrams; do
     touch "$PROJECT_DIR/$dir/.gitkeep"
 done
 

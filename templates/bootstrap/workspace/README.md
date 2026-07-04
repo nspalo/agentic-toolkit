@@ -9,6 +9,7 @@ AI-assisted development workspace. Contains project-specific knowledge, artifact
 ├── .kiro/
 │   └── steering/
 │       └── workspace-identity.md   # What this workspace is, project routing
+├── domain-knowledge/               # Shared knowledge across all projects
 ├── projects/
 │   ├── project-a/                  # First project
 │   └── project-b/                  # Next project

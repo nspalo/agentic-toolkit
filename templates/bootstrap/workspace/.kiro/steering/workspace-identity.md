@@ -8,7 +8,7 @@ inclusion: auto
 
 This is an AI-assisted development workspace for {{CONTEXT}}.
 
-It contains project-specific knowledge, test cases, investigation reports, JIRA tickets, and documentation produced during development.
+It contains project-specific knowledge, test cases, investigation reports, JIRA tickets, and documentation produced during development — organized by project.
 
 ## Active Projects
 
@@ -37,12 +37,19 @@ Every project directory follows this structure:
 | Design proposals | `technical-notes/jira/proposals/` |
 | Investigation reports | `technical-notes/investigation/YYYYMMDD-name/` |
 | Test cases | `testcases/` |
-| System diagrams | `system-diagrams/` |
-| Knowledge base | `knowledge-base/` |
-| Documentation | `documentation/` |
+| Project-specific docs & diagrams | `documentation/` (diagrams in `documentation/diagrams/`) |
+| Knowledge base (project lessons) | `knowledge-base/` |
 | Generated output | `generated-files/` (gitignored) |
 | Draft steering | `.kiro-draft/steering/` |
 | Draft hooks | `.kiro-draft/hooks/` |
+
+### Shared Knowledge (cross-project)
+
+| Content type | Path |
+|---|---|
+| Domain knowledge (applicable to ALL projects) | `domain-knowledge/` (at repo root) |
+
+Place information here when it applies regardless of which project you're working on (e.g., entity definitions, system-wide integrations, cross-cutting concepts).
 
 ## Naming Conventions
 
@@ -50,10 +57,11 @@ Every project directory follows this structure:
 - Exceptions: JIRA project codes stay uppercase (e.g., `PROJ-001-fix-name.md`)
 - Exceptions: Test cases use `TCNNN.md` / `TCNNN-A.md` format
 - Exceptions: `README.md`
-- Numbered prefixes: `00-`, `01-`, `02-` (for ordered sequences)
+- Numbered prefixes: `NN-` for ordered sequences (e.g., `01-system-overview.md`)
 
 ## What Does NOT Go Here
 
 - Source code (goes in project repos)
 - Generic methodology (goes in the toolkit repo)
+- Personal notes unrelated to a project
 - Credentials or secrets
