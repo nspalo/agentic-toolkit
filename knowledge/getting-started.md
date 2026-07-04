@@ -65,20 +65,11 @@ make new-project name=project-code
 make link-project name=project-code repo=~/projects/my-project
 ```
 
-### 5. Ingest the project
+### 5. Start a session
 
-Tell the AI: "Ingest project-code"
+Tell the AI: "Read projects/project-code/project-context.md"
 
-This single command triggers:
-1. Reading `.detected-stack.md` (auto-detected tech info)
-2. Filling `project-context.md` with real architecture, commands, models
-3. Customizing `.kiro-draft/steering/` files (tech-stack, coding-standards, system-overview)
-4. Outputting a **workspace validation** confirming the three-layer setup is understood
-
-Setup is complete when the AI outputs the validation handshake. Then you can:
-- Delete `.detected-stack.md`
-- Set git identity (only needed before first commit): `git config user.name/email`
-- Start working with toolkit workflows
+Or simply start working — the workspace-identity steering auto-loads and routes you to the right project.
 
 ## Starting a New Project
 
@@ -96,7 +87,7 @@ This scaffolds:
 - `projects/{name}/.kiro-draft/` — suggested steering files to customize
 - Empty directories for knowledge-base, testcases, etc.
 
-Then start a session and say: "Ingest {name}"
+Then start a session and say: "Read projects/{name}/project-context.md"
 
 For deeper customization of steering files, see `workflows/project-initialization.md` which guides:
 1. Which steering files the project needs based on its type
@@ -114,7 +105,7 @@ For deeper customization of steering files, see `workflows/project-initializatio
 
 ## Workspace Validation
 
-After ingestion (or at any time), you can verify the AI correctly understands the workspace by saying:
+After setup (or at any time), you can verify the AI correctly understands the workspace by saying:
 
 > "Validate workspace for {name}"
 
@@ -138,17 +129,17 @@ This validates:
 - Steering files are correctly configured (auto-load vs manual reference)
 
 Use this after:
-- First-time ingestion (automatic)
+- First-time project setup
 - Starting a new session on a project after a long break
 - Adding new steering files or changing workspace structure
 
-## Steering Setup (Post-Ingestion)
+## Steering Setup (Post-Setup)
 
-After ingestion fills the Day 1 steering files, here's how the steering evolves:
+After linking a project and filling the steering files, here's how the steering evolves:
 
-### What ingestion creates
+### What link-project creates
 
-| File | Status after ingestion |
+| File | Status after setup |
 |---|---|
 | `system-overview.md` | Filled — system description, key commands, environment |
 | `tech-stack.md` | Filled — framework, language, DB, tools, constraints |
@@ -221,8 +212,8 @@ Implementation (bug-fix or spec workflow)
 ## The Lifecycle
 
 ```
-Day 0:     make new-workspace → make new-project → make link-project → "Ingest project"
-Day 1:     Ingestion fills project-context + Day 1 steering files. Validation confirms readiness.
+Day 0:     make new-workspace → make new-project → make link-project → "Read project-context.md"
+Day 1:     Fill project-context + customize steering files. Validation confirms readiness.
 Week 1:    First investigation, first test cases, project-context evolving
 Week 2:    Additional steering files added as complexity is discovered
 Month 1:   Knowledge base growing, .kiro-draft refined for this project
@@ -262,7 +253,7 @@ Each follows the same structure. The toolkit serves all of them.
 1. **Toolkit = portable.** Works at any company, any project. Never put company/project info here.
 2. **Dev-context = per-scope.** One per company or context. All real artifacts, data, and project knowledge stay here.
 3. **Project .kiro/ = codebase.** Conventions that travel with the code itself.
-4. **Ingest before working.** Every new project goes through ingestion to fill context + steering + validate readiness.
+4. **Load context before working.** Every new session starts by loading the project context. Steering auto-loads via workspace-identity.
 5. **Validate before escalating.** Investigation must be factual before becoming a report. Report must be verified before becoming a ticket.
 6. **Steering evolves incrementally.** Day 1 gets 5 files. More are added as complexity is discovered. Don't front-load.
 7. **Extract regularly.** After big learnings, pull the generic pattern into the toolkit.
