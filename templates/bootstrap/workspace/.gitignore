@@ -5,5 +5,10 @@ Thumbs.db
 
 # Editor
 .vscode/
+.idea/
 *.swp
 *.swo
+
+# Generated files — CSVs in investigation directories (never commit raw query data)
+projects/*/technical-notes/investigation/*/*.csv
+projects/*/technical-notes/investigation/*/generated-files/*.csv
