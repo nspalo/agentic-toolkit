@@ -41,6 +41,11 @@
 - [ ] Use on a real project (not just demo)
 - [ ] Onboard another person using the toolkit
 - [ ] Document: what changed in process, what worked, what didn't
+- [ ] Add `.env` support for local paths (shared workspace portability)
+  - `.env` (gitignored) holds per-dev paths: `BETA_REPO_PATH=/home/user/...`
+  - Scripts read from `.env` instead of hardcoded `.repo-path`
+  - `project-context.md` references env vars or relative paths
+  - Enables shared dev-context (domain-knowledge, test cases) without path conflicts
 
 ## Phase 6: Publish
 - [ ] Genericize fully (audit for any remaining specific traces)
@@ -63,3 +68,7 @@
 | 2026-06-30 | Original plan archived | Implementation superseded it |
 | 2026-07-02 | No company names/references in toolkit | Toolkit must be fully generic and portable |
 | 2026-07-02 | Metrics are optional, not mandatory in roadmap | Time-to-deliver is hard to compute; contribution tracking needs author/co-author discipline only |
+| 2026-07-05 | Steering scaffold is opt-in, not auto-created | BETA pilot showed auto-scaffolded templates went unused — user writes steering from understanding, not from filling blanks |
+| 2026-07-05 | Command naming: resource-action pattern | `project-new`, `project-link`, `steering-generate` — groups logically in help output |
+| 2026-07-05 | `repo=` not needed for steering commands | `.repo-path` stores the linked repo path; downstream commands read it automatically |
+| 2026-07-05 | Local paths in `.repo-path` are fine for now | Dev-context is personal; `.env` support deferred to Phase 5 when sharing/onboarding happens |

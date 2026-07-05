@@ -2,24 +2,38 @@
 set -e
 
 PROJECT_NAME="$1"
-REPO_PATH="$2"
-MODE="$3"  # generate | select | all
+MODE="$2"  # generate | select
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 TOOLKIT_PATH="${ROOT_DIR}/../agentic-toolkit"
 PROJECT_DIR="${ROOT_DIR}/projects/${PROJECT_NAME}"
 STEERING_DIR="${PROJECT_DIR}/.kiro-draft/steering"
+REPO_PATH_FILE="${PROJECT_DIR}/.repo-path"
 
-if [ -z "$PROJECT_NAME" ]; then
-    echo "Usage: $0 <project-name> <repo-path> <mode>"
-    echo "Modes: generate | select | all"
+if [ -z "$PROJECT_NAME" ] || [ -z "$MODE" ]; then
+    echo "Usage: $0 <project-name> <mode>"
+    echo "Modes: generate | select"
     exit 1
 fi
 
 if [ ! -d "$PROJECT_DIR" ]; then
     echo "Error: Project '$PROJECT_NAME' not found at $PROJECT_DIR"
     echo "Run 'make project-new name=$PROJECT_NAME' first."
+    exit 1
+fi
+
+if [ ! -f "$REPO_PATH_FILE" ]; then
+    echo "Error: No linked repo found for '$PROJECT_NAME'."
+    echo "Run 'make project-link name=$PROJECT_NAME repo=/path/to/repo' first."
+    exit 1
+fi
+
+REPO_PATH=$(cat "$REPO_PATH_FILE")
+
+if [ ! -d "$REPO_PATH" ]; then
+    echo "Error: Linked repo path '$REPO_PATH' no longer exists."
+    echo "Re-run 'make project-link name=$PROJECT_NAME repo=/path/to/repo' to update."
     exit 1
 fi
 
@@ -56,12 +70,6 @@ BOOTSTRAP_TEMPLATES=(
 
 case "$MODE" in
     generate)
-        if [ -z "$REPO_PATH" ] || [ ! -d "$REPO_PATH" ]; then
-            echo "Error: Valid repo path required for generate mode."
-            echo "Usage: make steering-generate project=$PROJECT_NAME repo=/path/to/repo"
-            exit 1
-        fi
-
         echo "Steering Generation — AI-Assisted Mode"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
@@ -97,14 +105,11 @@ case "$MODE" in
         ;;
 
     select)
-        if [ -z "$REPO_PATH" ] || [ ! -d "$REPO_PATH" ]; then
-            echo "Error: Valid repo path required for select mode."
-            echo "Usage: make steering-select project=$PROJECT_NAME repo=/path/to/repo"
-            exit 1
-        fi
-
         echo "Steering Selection — Choose Templates"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo ""
+        echo "  Project:  $PROJECT_NAME"
+        echo "  Repo:     $REPO_PATH"
         echo ""
         echo "Available steering templates:"
         echo ""
@@ -147,40 +152,13 @@ case "$MODE" in
         echo "Next step — in a Kiro session, say:"
         echo ""
         echo "   \"Fill the steering templates in projects/$PROJECT_NAME/.kiro-draft/steering/"
-        echo "    based on the codebase at $REPO_PATH.\""
-        ;;
-
-    all)
-        echo "Steering — Copy All Templates"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo ""
-
-        # Copy bootstrap templates
-        for template in "${BOOTSTRAP_TEMPLATES[@]}"; do
-            if [ -f "$TOOLKIT_PATH/templates/bootstrap/project/$template" ]; then
-                cp "$TOOLKIT_PATH/templates/bootstrap/project/$template" "$STEERING_DIR/$template"
-                sed -i "s/{{PROJECT_NAME}}/${PROJECT_NAME}/g" "$STEERING_DIR/$template"
-                echo "  ✓ $template"
-            fi
-        done
-
-        # Copy all steering templates
-        for template in "${TEMPLATES[@]}"; do
-            cp "$TOOLKIT_PATH/templates/steering/$template" "$STEERING_DIR/$template"
-            echo "  ✓ $template"
-        done
-
-        echo ""
-        echo "✅ All steering templates (${#TEMPLATES[@]} + ${#BOOTSTRAP_TEMPLATES[@]}) copied to:"
-        echo "   $STEERING_DIR"
-        echo ""
-        echo "These are unfilled templates with {{placeholders}}."
-        echo "Fill them manually or ask the AI to fill based on your codebase."
+        echo "    based on the codebase at $REPO_PATH."
+        echo "    Scan the repo, detect the stack, and fill with real project content.\""
         ;;
 
     *)
         echo "Error: Unknown mode '$MODE'"
-        echo "Valid modes: generate | select | all"
+        echo "Valid modes: generate | select"
         exit 1
         ;;
 esac
