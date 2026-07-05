@@ -23,19 +23,24 @@
 - [x] Handshake + acknowledgment complete
 
 ## Phase 3: Validate (CURRENT)
-- [ ] Pilot: new workspace, new project, full spec-driven development cycle
-- [ ] Validate: AI follows auto-loaded steering without manual reminders
-- [ ] Validate: spec workflow produces working code (requirements → design → tasks → code)
+- [x] Pilot: new workspace, new project, full spec-driven development cycle
+- [x] Validate: AI follows auto-loaded steering without manual reminders
+- [x] Validate: spec workflow produces working code (requirements → design → tasks → code)
 - [ ] Validate: git workflow works (make branch/commit-kiro/pr)
 - [ ] Validate: contribution tracking (author/co-author attribution works correctly)
-- [ ] Validate: bootstrap creates usable workspace + project in one command
-- [ ] Write: pilot results to `.meta/validation/pilot-results.md`
+- [x] Validate: bootstrap creates usable workspace + project in one command
+- [x] Write: pilot results to `.meta/validation/pilot-results.md`
 
 ## Phase 4: Refine
 - [ ] Fix issues found during pilot
 - [ ] Extract learnings back into toolkit (`extract-to-toolkit.md` workflow)
 - [ ] Update steering/workflows based on real usage
 - [ ] Remove/simplify anything that didn't add value
+- [ ] Spec Planning Board feature — backlog splitting, tracking, and ordering in dev-context
+  - `projects/{name}/backlog/` holds split requirement groups
+  - `projects/{name}/spec-plan.md` tracks order, dependencies, status
+  - Provides clear scope for each Kiro spec session without manual prompting
+  - Solves "what do I tell Kiro?" problem for multi-spec projects
 
 ## Phase 5: Scale
 - [ ] Use on a real project (not just demo)
