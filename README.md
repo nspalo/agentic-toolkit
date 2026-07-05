@@ -165,9 +165,15 @@ Then use any workflow (see Usage below).
 
 ### Steering Lifecycle
 
-`make link-project` creates Day 1 steering files in `.kiro-draft/steering/`. As you work:
+Steering files are **opt-in**. After linking your project, generate them when ready:
 
-1. **Day 1** — system-overview, tech-stack, coding-standards filled automatically
+```bash
+make steering-generate project=my-project
+```
+
+Then in a Kiro session, the AI scans the codebase and fills the templates with real content.
+
+1. **Day 1** — `make project-link` fills project-context.md. Optionally run `make steering-generate`.
 2. **Week 1+** — add more steering as complexity is discovered ("Add database steering")
 3. **When proven** — promote drafts to `[project]/.kiro/steering/` so they travel with the code
 
@@ -190,7 +196,7 @@ agentic-toolkit/
 ├── scripts/               # Bootstrap automation
 ├── knowledge/             # Portable learnings and methodology
 ├── reading/               # External references
-└── Makefile               # `make new-workspace name=xxx`
+└── Makefile               # `make workspace-new name=xxx`
 ```
 
 ## Multiple Workspaces
