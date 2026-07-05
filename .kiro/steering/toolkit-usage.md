@@ -10,10 +10,10 @@ This repo is a portable AI development methodology toolkit. It provides rules, w
 
 ### "Enrich {project}" / "Deep scan {project}"
 
-This trigger is for **refining** an already-linked project. The `make link-project` command fills `project-context.md` with auto-detected data. If the user wants richer context (models, routes, architecture details), they say "Enrich {project}" and you should:
+This trigger is for **refining** an already-linked project. The `make project-link` command fills `project-context.md` with auto-detected data. If the user wants richer context (models, routes, architecture details), they say "Enrich {project}" and you should:
 
 **Step 1: Read existing context**
-- Read `[dev-context]/projects/{project}/project-context.md` (already has basic data from link-project)
+- Read `[dev-context]/projects/{project}/project-context.md` (already has basic data from project-link)
 - Read `[dev-context]/projects/{project}/.detected-stack.md` (if it exists)
 
 **Step 2: Read the project's code repo for deeper detail**

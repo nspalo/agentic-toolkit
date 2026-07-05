@@ -41,7 +41,7 @@ git clone <your-toolkit-repo> agentic-toolkit
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=company-dev-context context="Company projects"
+make workspace-new name=company-dev-context about="Company projects"
 ```
 
 This creates a new workspace repo alongside the toolkit with all scaffolding ready.
@@ -61,8 +61,8 @@ IDE Workspace:
 
 ```bash
 cd ~/ai-workflow/company-dev-context
-make new-project name=project-code
-make link-project name=project-code repo=~/projects/my-project
+make project-new name=project-code
+make project-link name=project-code repo=~/projects/my-project
 ```
 
 ### 5. Start a session
@@ -77,17 +77,22 @@ From inside your dev-context repo:
 
 ```bash
 cd ~/ai-workflow/company-dev-context
-make new-project name=project-code
-make link-project name=project-code repo=/path/to/code
+make project-new name=project-code
+make project-link name=project-code repo=/path/to/code
 ```
 
 This scaffolds:
 - `projects/{name}/project-context.md` — fill with project details
 - `projects/{name}/.detected-stack.md` — auto-detected tech info from the linked repo
-- `projects/{name}/.kiro-draft/` — suggested steering files to customize
 - Empty directories for knowledge-base, testcases, etc.
 
 Then start a session and say: "Read projects/{name}/project-context.md"
+
+Optionally, generate steering files:
+
+```bash
+make steering-generate project=project-code
+```
 
 For deeper customization of steering files, see `workflows/project-initialization.md` which guides:
 1. Which steering files the project needs based on its type
@@ -137,15 +142,25 @@ Use this after:
 
 After linking a project and filling the steering files, here's how the steering evolves:
 
-### What link-project creates
+### What steering-generate creates
 
-| File | Status after setup |
+When you run `make steering-generate project=name`, the script reads the linked repo path
+from `.repo-path` and copies all available
+templates into `.kiro-draft/steering/`. Then in a Kiro session, the AI scans the codebase,
+fills the relevant templates with real project content, and removes the ones that don't apply.
+
+| File | What it covers |
 |---|---|
-| `system-overview.md` | Filled — system description, key commands, environment |
-| `tech-stack.md` | Filled — framework, language, DB, tools, constraints |
-| `coding-standards.md` | Filled — code style, patterns, anti-patterns |
-| `conventions.md` | Pre-filled — naming, file placement (from template) |
-| `repository-map.md` | Pre-filled — repo boundaries (from template) |
+| `system-overview.md` | System description, key commands, environment |
+| `tech-stack.md` | Framework, language, DB, tools, constraints |
+| `coding-standards.md` | Code style, patterns, anti-patterns |
+| `conventions.md` | Naming, file placement |
+| `repository-map.md` | Repo boundaries |
+| `backend-patterns.md` | Backend architecture patterns |
+| `frontend-standards.md` | Frontend conventions |
+| `database-standards.md` | Migration and schema patterns |
+| `api-standards.md` | API design conventions |
+| + more | Based on detection (multi-tenancy, batch processing, etc.) |
 
 ### How to add more steering
 
@@ -212,8 +227,8 @@ Implementation (bug-fix or spec workflow)
 ## The Lifecycle
 
 ```
-Day 0:     make new-workspace → make new-project → make link-project → "Read project-context.md"
-Day 1:     Fill project-context + customize steering files. Validation confirms readiness.
+Day 0:     make workspace-new → make project-new → make project-link → "Read project-context.md"
+Day 1:     Fill project-context + optional steering-generate. Validation confirms readiness.
 Week 1:    First investigation, first test cases, project-context evolving
 Week 2:    Additional steering files added as complexity is discovered
 Month 1:   Knowledge base growing, .kiro-draft refined for this project

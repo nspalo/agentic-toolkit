@@ -69,7 +69,7 @@ The `~/ai-workflow/` directory is the parent folder for the toolkit and all dev-
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=my-dev-context context="My projects"
+make workspace-new name=my-dev-context about="My projects"
 ```
 
 A **dev-context** is a companion repo that stores all AI-generated artifacts for your projects — investigation reports, tickets, test cases, project knowledge, and draft steering files. It keeps your project repo clean while preserving everything the AI produces during work.
@@ -92,13 +92,13 @@ All three must be open together. The toolkit's steering files auto-load into Kir
 
 ```bash
 cd ~/ai-workflow/my-dev-context
-make new-project name=my-project
-make link-project name=my-project repo=~/projects/my-project
+make project-new name=my-project
+make project-link name=my-project repo=~/projects/my-project
 ```
 
-`make new-project` scaffolds the project directory structure (empty folders for artifacts).
+`make project-new` scaffolds the project directory structure (empty folders for artifacts).
 
-`make link-project` scans the repo, auto-detects the tech stack, and **fills `project-context.md` directly**. Expected output:
+`make project-link` scans the repo, auto-detects the tech stack, and **fills `project-context.md` directly**. Expected output:
 
 ```
 Scanning project repo: /home/user/projects/my-project

@@ -14,7 +14,7 @@ Most users should use the automated command:
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=my-dev-context context="My projects"
+make workspace-new name=my-dev-context about="My projects"
 ```
 
 This workflow documents what happens behind the scenes and provides a manual alternative.
@@ -31,7 +31,7 @@ A workspace repo is a **container** for project knowledge. It:
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=my-dev-context context="My projects"
+make workspace-new name=my-dev-context about="My projects"
 ```
 
 What the script does:
@@ -68,6 +68,7 @@ cp "$TOOLKIT/templates/bootstrap/workspace/.kiro/steering/workspace-identity.md"
 mkdir -p scripts
 cp "$TOOLKIT/templates/bootstrap/workspace/scripts/bootstrap-project.sh" ./scripts/
 cp "$TOOLKIT/templates/bootstrap/workspace/scripts/link-project.sh" ./scripts/
+cp "$TOOLKIT/templates/bootstrap/workspace/scripts/scaffold-steering.sh" ./scripts/
 chmod +x ./scripts/*.sh
 
 mkdir -p projects
@@ -89,8 +90,8 @@ git config user.email "your-email@example.com"
 ### Continue with project setup
 
 ```bash
-make new-project name=project-code
-make link-project name=project-code repo=/path/to/code
+make project-new name=project-code
+make project-link name=project-code repo=/path/to/code
 ```
 
 Then open IDE and start a session (see main README steps 7-8).
@@ -124,7 +125,7 @@ Each follows the same internal structure. The toolkit serves all of them.
 ## Path Requirement
 
 The toolkit and dev-context must be siblings (same parent directory) because:
-- `make new-project` calls `bootstrap-project.sh` which resolves the toolkit at `../agentic-toolkit`
+- `make project-new` calls `bootstrap-project.sh` which resolves the toolkit at `../agentic-toolkit`
 - Templates are copied from the toolkit during project scaffolding
 
 If you must place them elsewhere, update the `TOOLKIT_PATH` variable in the workspace's Makefile.

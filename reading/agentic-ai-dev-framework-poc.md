@@ -67,17 +67,17 @@ git clone <toolkit-repo> ~/ai-workflow/agentic-toolkit
 
 # 3. Create dev-context workspace
 cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=my-dev-context context="My projects"
+make workspace-new name=my-dev-context about="My projects"
 
 # 4. Open IDE with all 3 folders (project + dev-context + toolkit)
 
 # 5. Bootstrap and link project
 cd ~/ai-workflow/my-dev-context
-make new-project name=my-project
-make link-project name=my-project repo=~/projects/my-project
+make project-new name=my-project
+make project-link name=my-project repo=~/projects/my-project
 ```
 
-`make link-project` scans the repo, auto-detects the tech stack (language, framework, database, build tool, testing), and fills `project-context.md` directly. No AI step required for setup.
+`make project-link` scans the repo, auto-detects the tech stack (language, framework, database, build tool, testing), and fills `project-context.md` directly. No AI step required for setup.
 
 Setup is complete when the script finishes. Start working immediately.
 
