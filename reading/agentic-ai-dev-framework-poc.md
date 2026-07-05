@@ -46,7 +46,7 @@ AI coding assistants are stateless. Each session starts from scratch — the AI 
 **Layer 2: Dev-Context** (per-company — project knowledge)
 - Investigation reports, JIRA tickets, knowledge base articles
 - Test cases, system diagrams, project documentation
-- Draft steering files (staging before promotion to project .kiro/)
+- Draft steering files (opt-in, staging before promotion to project .kiro/)
 - Multiple projects per workspace, multiple workspaces per toolkit
 
 **Layer 3: Project `.kiro/`** (per-project — codebase conventions)
