@@ -35,13 +35,15 @@ PM (Business → Jira) — NO CHANGE
 
 ## The 3-Checkpoint Model
 
-Instead of ~8 human interruption points, consolidate to 3:
+Instead of ~8 human interruption points, consolidate to 3 major gates:
 
-| Checkpoint | Who | What |
-|-----------|-----|------|
-| 1. Review Priorities | PMs + Lead | Decide what to build |
-| 2. Review the Spec | Lead + Dev | Approve requirements + design before code execution |
-| 3. Final Review | Lead | PR review, approve merge |
+| Checkpoint | Who | What | SDD Phase |
+|-----------|-----|------|-----------|
+| 1. Review Priorities | PMs + Lead | Decide what to build | Before spec starts |
+| 2. Review the Spec | Lead + Dev | Approve requirements + design before code execution | After Specify + Design |
+| 3. Final Review | Lead | PR review, approve merge | After Implement |
+
+Note: Within checkpoint 2, there are actually two sub-reviews (requirements review, then design review) per industry SDD practice. Tasks review happens between checkpoints 2 and 3. The 3-checkpoint model simplifies this for team communication — the detailed gates are in `workflows/spec-driven-development.md`.
 
 Everything between checkpoints is autonomous agent execution.
 
@@ -74,8 +76,22 @@ New role: quality assurance + context provider + decision maker.
 | Jira Level | Agent Equivalent | Git Equivalent |
 |-----------|----------------|----------------|
 | Epic | Feature area (multiple specs) | — |
-| Story | 1 Spec (requirements → design → tasks) | 1 branch, 1 PR |
+| Story | 1 Spec (specify → design → tasks → implement) | 1 branch, 1 PR |
 | Subtask | 1 Task within the spec | 1 commit |
+
+**Critical rule: 1 Story = 1 Spec = 1 PR.** Never combine multiple stories into a single spec. If a story is too large (design exceeds 3 pages, tasks exceed 15), split it into multiple stories/specs.
+
+### The 4-Phase SDD Loop (Industry Standard)
+
+Each spec follows the same cycle:
+
+```
+Specify (WHAT) → Design (HOW) → Tasks (IN WHAT ORDER) → Implement (GO)
+     ↓               ↓               ↓                      ↓
+  Human review    Human review    Human review         Human review per task
+```
+
+This is the standard across GitHub Spec Kit, AWS Kiro, Claude Code, and the broader agentic engineering community (2025–2026). See `workflows/spec-driven-development.md` for the full process.
 
 ## The New Bottleneck
 
@@ -83,10 +99,11 @@ Traditional: Developer coding time
 Agentic: **Human review time** (PR reviews)
 
 Mitigation:
-- Keep specs small and focused
+- Keep specs small and focused (1 story = 1 spec = 1 PR, never bigger)
 - Trust design review (checkpoint 2) more, code review (checkpoint 3) lighter
 - Use AI code review as first pass
 - Batch reviews
+- Split large features into multiple small specs rather than one big one
 
 ## Maturity Stages
 
