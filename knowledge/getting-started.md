@@ -12,7 +12,7 @@ This document explains the full agentic AI-assisted development workflow — how
 │  (in the project repo)         Codebase conventions,     │
 │                                architecture, tech stack   │
 ├─────────────────────────────────────────────────────────┤
-│  [dev-context]/projects/{name}  WHERE work lives          │
+│  [workspace]/projects/{name}    WHERE work lives          │
 │  (per-context repo)             Test cases, reports,      │
 │                                 tickets, knowledge base   │
 ├─────────────────────────────────────────────────────────┤
@@ -25,7 +25,7 @@ This document explains the full agentic AI-assisted development workflow — how
 **Information flows:**
 - Toolkit teaches the AI how to behave and what formats to use
 - Project `.kiro/` teaches the AI about this specific codebase
-- Dev-context receives the artifacts produced during work
+- Workspace receives the artifacts produced during work
 
 ## First Time Setup
 
@@ -37,11 +37,11 @@ cd ~/ai-workflow
 git clone <your-toolkit-repo> agentic-toolkit
 ```
 
-### 2. Create your first dev-context workspace
+### 2. Create your first workspace
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
-make workspace-new name=company-dev-context about="Company projects"
+make workspace-new name=company-workspace about="Company projects"
 ```
 
 This creates a new workspace repo alongside the toolkit with all scaffolding ready.
@@ -53,14 +53,14 @@ Add all three folders to one multi-root workspace:
 ```
 IDE Workspace:
 ├── ~/projects/my-project/              # Code
-├── ~/ai-workflow/company-dev-context/  # Artifacts
+├── ~/ai-workflow/company-workspace/    # Artifacts
 └── ~/ai-workflow/agentic-toolkit/      # Methodology
 ```
 
 ### 4. Bootstrap and link your project
 
 ```bash
-cd ~/ai-workflow/company-dev-context
+cd ~/ai-workflow/company-workspace
 make project-new name=project-code
 make project-link name=project-code repo=~/projects/my-project
 ```
@@ -73,10 +73,10 @@ Or simply start working — the workspace-identity steering auto-loads and route
 
 ## Starting a New Project
 
-From inside your dev-context repo:
+From inside your workspace repo:
 
 ```bash
-cd ~/ai-workflow/company-dev-context
+cd ~/ai-workflow/company-workspace
 make project-new name=project-code
 make project-link name=project-code repo=/path/to/code
 ```
@@ -105,7 +105,7 @@ For deeper customization of steering files, see `workflows/project-initializatio
 2. Say: "Read `projects/{name}/project-context.md`" (or just start working — steering auto-loads)
 3. Kiro auto-loads:
    - `agentic-toolkit/.kiro/steering/` (behavioral rules, naming conventions)
-   - Dev-context `.kiro/steering/workspace-identity.md` (knows which project is active)
+   - Workspace `.kiro/steering/workspace-identity.md` (knows which project is active)
 4. Work normally — artifacts land in the correct project directory
 
 ## Workspace Validation
@@ -120,16 +120,16 @@ The AI outputs a handshake confirming:
 ✅ Workspace Validation — {name}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Layer 1 (Project):    /path/to/project — [tech stack summary]
-Layer 2 (Context):    dev-context/projects/{name}/ — artifacts & knowledge
+Layer 2 (Workspace):  workspace/projects/{name}/ — artifacts & knowledge
 Layer 3 (Toolkit):    agentic-toolkit/ — methodology & workflows
 
-Steering:  N files in .kiro-draft/ (M auto, K manual)
+Steering:  N files in [project]/.kiro/steering/ (M auto, K manual, J fileMatch)
 Ready for: investigation, bug-fix, spec-driven development, PR creation
 ```
 
 This validates:
 - The AI can locate and parse `project-context.md`
-- It knows where code changes go (project repo) vs where artifacts land (dev-context)
+- It knows where code changes go (project repo) vs where artifacts land (workspace)
 - It understands which workflows are available
 - Steering files are correctly configured (auto-load vs manual reference)
 
@@ -179,14 +179,14 @@ Once steering files are proven (usually 1-2 weeks):
 .kiro-draft/steering/coding-standards.md →  [project]/.kiro/steering/coding-standards.md
 ```
 
-The `.kiro-draft/` in dev-context remains as a backup/reference. The project `.kiro/` becomes the source of truth that travels with the codebase.
+The `.kiro-draft/` in the workspace remains as a backup/reference. The project `.kiro/` becomes the source of truth that travels with the codebase.
 
 ### When NOT to promote
 
-Keep files in dev-context (don't promote) when:
+Keep files in the workspace (don't promote) when:
 - The content is personal workflow preferences (not team conventions)
 - The project repo is shared and the team hasn't agreed on AI steering
-- The file references dev-context paths or artifact locations
+- The file references workspace paths or artifact locations
 
 ## During Work
 
@@ -247,18 +247,18 @@ The toolkit provides **generic scaffolding**. When a new project starts:
    - The .kiro-draft/steering with project-specific conventions
    - Test case format based on how verification works for this project type
 
-The toolkit doesn't need to know about Laravel vs React vs Python. It provides the **process** (investigate → validate → fix → verify → document). The project-specific details live in the dev-context and the project's `.kiro/`.
+The toolkit doesn't need to know about Laravel vs React vs Python. It provides the **process** (investigate → validate → fix → verify → document). The project-specific details live in the workspace and the project's `.kiro/`.
 
 ## Multiple Workspaces
 
-You can have as many dev-context repos as needed:
+You can have as many workspace repos as needed:
 
 ```
 ~/ai-workflow/
 ├── agentic-toolkit/               # Always — methodology (one)
-├── company-dev-context/           # Company projects
-├── personal-dev-context/          # Personal projects
-└── freelance-dev-context/         # Freelance work
+├── company-workspace/             # Company projects
+├── personal-workspace/            # Personal projects
+└── freelance-workspace/           # Freelance work
 ```
 
 Each follows the same structure. The toolkit serves all of them.
@@ -266,10 +266,10 @@ Each follows the same structure. The toolkit serves all of them.
 ## Key Principles
 
 1. **Toolkit = portable.** Works at any company, any project. Never put company/project info here.
-2. **Dev-context = per-scope.** One per company or context. All real artifacts, data, and project knowledge stay here.
+2. **Workspace = per-scope.** One per company or context. All real artifacts, data, and project knowledge stay here.
 3. **Project .kiro/ = codebase.** Conventions that travel with the code itself.
 4. **Load context before working.** Every new session starts by loading the project context. Steering auto-loads via workspace-identity.
 5. **Validate before escalating.** Investigation must be factual before becoming a report. Report must be verified before becoming a ticket.
-6. **Steering evolves incrementally.** Day 1 gets 5 files. More are added as complexity is discovered. Don't front-load.
+6. **Steering evolves incrementally.** Start with project-context.md. Add steering files as complexity is discovered — don't front-load.
 7. **Extract regularly.** After big learnings, pull the generic pattern into the toolkit.
 8. **Bootstrap fast.** A new workspace + project should be operational in minutes, not days.

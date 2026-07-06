@@ -11,15 +11,15 @@ TEMPLATE_DIR="${TOOLKIT_DIR}/templates/bootstrap/workspace"
 
 # Default context if not provided
 if [ -z "$WORKSPACE_CONTEXT" ]; then
-    CLEAN_NAME=$(echo "$WORKSPACE_NAME" | sed 's/-dev-context$//')
+    CLEAN_NAME=$(echo "$WORKSPACE_NAME" | sed 's/-workspace$//' | sed 's/-dev-context$//')
     WORKSPACE_CONTEXT="${CLEAN_NAME} projects"
 fi
 
 if [ -z "$WORKSPACE_NAME" ]; then
     echo "Usage: $0 <workspace-name>"
-    echo "Example: $0 personal-dev-context"
+    echo "Example: $0 personal-workspace"
     echo ""
-    echo "This creates a new dev-context repo alongside the toolkit:"
+    echo "This creates a new workspace repo alongside the toolkit:"
     echo "  ~/ai-workflow/${WORKSPACE_NAME}/"
     exit 1
 fi

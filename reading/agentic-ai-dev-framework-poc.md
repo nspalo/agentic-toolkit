@@ -26,8 +26,8 @@ AI coding assistants are stateless. Each session starts from scratch — the AI 
 │  (in the code repo)            Codebase conventions,     │
 │                                architecture, tech stack   │
 ├─────────────────────────────────────────────────────────┤
-│  [dev-context]/projects/{name}  WHERE work lives          │
-│  (per-company/context repo)     Artifacts, knowledge,     │
+│  [workspace]/projects/{name}    WHERE work lives          │
+│  (per-context repo)             Artifacts, knowledge,     │
 │                                 test cases, tickets       │
 ├─────────────────────────────────────────────────────────┤
 │  agentic-toolkit/               HOW to work               │
@@ -44,7 +44,7 @@ AI coding assistants are stateless. Each session starts from scratch — the AI 
 - One-command bootstrapping
 - Steering scaffold is opt-in (not auto-generated)
 
-**Layer 2: Dev-Context** (per-company — project knowledge)
+**Layer 2: Workspace** (per-company/context — project knowledge)
 - Investigation reports, JIRA tickets, knowledge base articles
 - Test cases, system diagrams, project documentation
 - Draft steering files (opt-in, staging before promotion to project .kiro/)
@@ -66,14 +66,14 @@ AI coding assistants are stateless. Each session starts from scratch — the AI 
 # 2. Clone toolkit
 git clone <toolkit-repo> ~/ai-workflow/agentic-toolkit
 
-# 3. Create dev-context workspace
+# 3. Create workspace
 cd ~/ai-workflow/agentic-toolkit
-make workspace-new name=my-dev-context about="My projects"
+make workspace-new name=my-workspace about="My projects"
 
-# 4. Open IDE with all 3 folders (project + dev-context + toolkit)
+# 4. Open IDE with all 3 folders (project + workspace + toolkit)
 
 # 5. Bootstrap and link project
-cd ~/ai-workflow/my-dev-context
+cd ~/ai-workflow/my-workspace
 make project-new name=my-project
 make project-link name=my-project repo=~/projects/my-project
 ```
