@@ -180,7 +180,7 @@ Features are never active by default. Activate per-project only when needed.
 | Progressive disclosure | Auto-loaded rules are minimal; workflows load on demand |
 | Fail-safe defaults | Guardrails on by default; features off by default |
 | Scripts over AI triggers | Setup relies on bash scripts, not AI interpreting keywords |
-| Incremental adoption | Start with 5 steering files, add more as patterns emerge |
+| Incremental adoption | Start with project-context.md, add steering as patterns emerge |
 
 ---
 
