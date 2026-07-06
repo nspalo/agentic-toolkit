@@ -37,11 +37,12 @@ AI coding assistants are stateless. Each session starts from scratch — the AI 
 ```
 
 **Layer 1: Agentic Toolkit** (portable — travels with developer)
-- 5 behavioral steering files auto-loaded every session
+- 6 behavioral steering files auto-loaded every session (including SDD rules)
 - Workflows for investigation, bug fix, PR, spec-driven development, testing
 - Templates for workspaces, projects, steering files, documentation, tickets
 - Opt-in features (document-based testing, AI contribution tracking)
 - One-command bootstrapping
+- Steering scaffold is opt-in (not auto-generated)
 
 **Layer 2: Dev-Context** (per-company — project knowledge)
 - Investigation reports, JIRA tickets, knowledge base articles
@@ -124,7 +125,7 @@ Features are never active by default. Activate per-project only when needed.
 
 ## What Was Validated
 
-### Pilot Project: Biz Todo App (Laravel 8, Vue 3, Docker)
+### Pilot 1: Biz Todo App (Laravel 8, Vue 3, Docker) — Setup Validation
 
 | Area | Result |
 |---|---|
@@ -138,17 +139,35 @@ Features are never active by default. Activate per-project only when needed.
 | Spec-driven workflow (requirements) | ✅ Generated requirements with ACs |
 | Multi-root workspace (3+ folders) | ✅ All layers visible |
 
-### Issues Found and Fixed During Pilot
+### Pilot 2: Budget & Expense Tracker (Laravel 12, PHP 8.4, MySQL 8, Docker) — Full SDD Validation
+
+| Area | Result |
+|---|---|
+| Bootstrap (workspace + project + link) | ✅ Complete in minutes |
+| Steering auto-load without reminders | ✅ 11 project + 6 toolkit steering files coexist |
+| Spec-driven: requirements → design → tasks → code | ✅ 3 complete cycles (foundation, auth, core entities) |
+| Working code from spec (85+ tests, endpoints confirmed via curl) | ✅ Register/login/logout/profile working |
+| Requirements-first AND design-first flows | ✅ Both validated |
+| One spec = one branch = one PR | ✅ BETA-004, 005, 006 each followed this |
+| Industry SDD standards (EARS notation, scoping rules, review gates) | ✅ Integrated into toolkit workflow + steering |
+| Project conventions followed without manual reminders | ✅ PSR-12, strict_types, enums, traits, commit format |
+| Trivial changes (rename, add enum value) handled in-flight | ✅ No formal spec revision needed |
+
+### Issues Found and Fixed During Pilots
 
 | Issue | Root Cause | Fix |
 |---|---|---|
 | `link-project.sh` not copied to new workspaces | `bootstrap-workspace.sh` only copied one script | Added copy + chmod for both scripts |
 | Detection missed PHP/Laravel for `src/` layout projects | Script only checked repo root for `composer.json` | Added `src/` subdirectory detection |
-| "Ingest" trigger word unreliable | AI interpreted as "describe" not "execute" | Eliminated — `link-project` fills context directly |
+| "Ingest" trigger word unreliable | AI interpreted as "describe" not "execute" | Eliminated — `project-link` fills context directly |
 | `bootstrap-project.sh` output contradicted README | Pointed to wrong next step | Aligned all outputs |
 | Git identity prompted too early | First item in "Next steps" | Moved to optional, after setup |
 | No "what now?" after setup | User stuck with no guidance | Added post-setup guidance to CLI output and README |
 | README step numbering contradicted itself | Multiple sections with different numbers | Single linear flow, no duplicates |
+| Auto-scaffolded steering templates went unused | User wrote steering directly from project knowledge | Made steering scaffold opt-in (`steering-generate`, `steering-select`) |
+| Command naming was inconsistent | `new-workspace`, `new-project`, `link-project` scattered in help | Renamed to resource-action: `workspace-new`, `project-new`, `project-link` |
+| Steering commands required redundant `repo=` parameter | Repo path already stored during `project-link` | Scripts read from `.repo-path` file automatically |
+| SDD workflow lacked scoping rules | 14 requirements treated as one spec | Added industry-standard scoping (1 spec = 1 feature = 1 PR) to workflow + steering |
 
 ---
 
@@ -174,6 +193,8 @@ Features are never active by default. Activate per-project only when needed.
 - **No AI trigger dependency for setup** — scripts handle detection and context fill
 - **Template-driven** — 13 steering templates cover any project type
 - **Grounded in reality** — every rule traces to an actual incident
+- **Industry-standard SDD** — Specify → Design → Tasks → Implement with review gates, validated across 3 spec cycles
+- **Proven on real project** — Budget & Expense Tracker: 85+ tests, working auth endpoints, 3 merged PRs from spec workflow
 
 ---
 
@@ -184,9 +205,12 @@ Features are never active by default. Activate per-project only when needed.
 | Relies on AI reading steering for workflows | Written in plain language, routing table explicit |
 | Assumes sibling directory layout | Scripts use `../agentic-toolkit` — documented |
 | Detection is heuristic (regex on config files) | Covers common patterns; user can refine context manually |
-| Single developer tested | Not yet validated with teams |
+| Single developer tested | Not yet validated with teams (Phase 5) |
 | Context window pressure with many steering files | Auto-loaded kept to 5-6 concise files |
 | No template versioning | Re-scaffolding is manual |
+| No multi-spec orchestration | Human decides order; tracking via implementation plan table in requirements |
+| Kiro spec system doesn't auto-split large requirements | Human splits manually; toolkit documents the pattern |
+| Local paths in dev-context aren't portable | `.env` support planned for Phase 5 (shared workspaces) |
 
 ---
 
@@ -208,4 +232,6 @@ Every rule and design decision exists because something went wrong without it.
 
 - Spec-Driven Development — [Augment Code](https://www.augmentcode.com/guides/what-is-spec-driven-development)
 - Agentic SDLC — [Augment Code](https://www.augmentcode.com/guides/agentic-sdlc)
+- SDD Definitive 2026 Guide — [BCMS](https://thebcms.com/blog/spec-driven-development)
 - Progressive Disclosure — [Nielsen Norman Group](https://www.nngroup.com)
+- GitHub Spec Kit — [github/spec-kit](https://github.com/github/spec-kit)
