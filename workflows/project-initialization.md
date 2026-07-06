@@ -7,13 +7,13 @@ When a new project starts or when first engaging with an existing codebase, this
 ## When to Use
 
 - After running `make project-new name=xxx` (scaffold is empty)
-- First session on an existing project that doesn't have a dev-context workspace yet
+- First session on an existing project that doesn't have a workspace yet
 - When adapting the workflow to a new tech stack or project type
 
 ## Prerequisites
 
 You should already have:
-- A dev-context workspace created (`make workspace-new`)
+- A workspace created (`make workspace-new`)
 - A project scaffolded within it (`make project-new name=xxx`)
 - The project linked to its code repo (`make project-link name=xxx repo=/path/to/code`)
 - The project code repo in your IDE workspace
