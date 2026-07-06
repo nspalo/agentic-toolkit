@@ -41,6 +41,12 @@
   - `projects/{name}/spec-plan.md` tracks order, dependencies, status
   - Provides clear scope for each Kiro spec session without manual prompting
   - Solves "what do I tell Kiro?" problem for multi-spec projects
+- [ ] Add `product.md` as default steering file in toolkit templates
+  - Always-included steering that gives AI persistent product awareness
+  - Contains: product description, key domains, implementation plan, what's done/next
+  - Filled by AI during `steering-generate` or `project-link` (reads README, existing specs, codebase structure)
+  - Replaces need to repeat product context in every spec prompt
+  - Template example based on MBTI Backend and BETA pilot patterns
 
 ## Phase 5: Scale
 - [ ] Use on a real project (not just demo)

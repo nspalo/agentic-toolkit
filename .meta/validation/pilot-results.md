@@ -147,9 +147,16 @@ Additionally fixed:
 
 **Toolkit-level UX issues are resolved.** The onboarding path (README → scripts → steering) is now a consistent, linear flow with no contradictions.
 
+**Spec-driven development validated end-to-end.** Three complete spec cycles executed successfully:
+- BETA-004 (Foundation): design-first → tasks → 85 tests passing → merged
+- BETA-005 (Auth): design-first → tasks → working endpoints (register/login/logout/profile confirmed via curl) → merged
+- BETA-006 (Core Entities): requirements-first → design → tasks → accounts, categories, category groups implemented → merged
+
+The core Phase 3 question — "does the spec workflow produce working code?" — is answered: **yes**. Both design-first and requirements-first flows validated.
+
 ### Remaining for Phase 4 (project-level, not toolkit bugs):
 
 1. **Integrate git targets into budget-expense-tracker** — copy from `templates/automation/makefile-git-targets.md`
-2. **Complete one full spec cycle** — requirements → design → tasks → code (session activity)
+2. ~~**Complete one full spec cycle** — requirements → design → tasks → code~~ ✅ DONE (BETA-004 + BETA-005)
 3. **Optionally activate contribution tracking** — follow `templates/features/ai-contribution-tracking/`
-4. **Fill `project-context.md` with real data** — run `make link-project` then AI-assisted fill
+4. ~~**Fill `project-context.md` with real data**~~ ✅ DONE
