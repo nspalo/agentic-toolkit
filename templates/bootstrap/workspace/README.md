@@ -15,7 +15,8 @@ AI-assisted development workspace. Contains project-specific knowledge, artifact
 │   └── project-b/                  # Next project
 ├── scripts/
 │   ├── bootstrap-project.sh        # Scaffold new projects
-│   └── link-project.sh             # Scan repo and generate .detected-stack.md
+│   ├── link-project.sh             # Scan repo and generate .detected-stack.md
+│   └── scaffold-steering.sh        # Generate/select steering templates
 ├── Makefile                         # Project management commands
 └── README.md
 ```
@@ -31,11 +32,19 @@ AI-assisted development workspace. Contains project-specific knowledge, artifact
 ### Add a new project
 
 ```bash
-make new-project name=project-code
-make link-project name=project-code repo=/path/to/code
+make project-new name=project-code
+make project-link name=project-code repo=/path/to/code
 ```
 
-Then in a session: "Read `projects/project-code/.detected-stack.md` and help me fill in `project-context.md`"
+Then in a session: "Read `projects/project-code/project-context.md`"
+
+### Generate steering files (optional)
+
+```bash
+make steering-generate project=project-code
+```
+
+Then in a Kiro session, the AI scans the codebase and fills the templates with real content.
 
 ## What Can I Do?
 
@@ -60,8 +69,10 @@ See `agentic-toolkit/knowledge/getting-started.md` for the full lifecycle.
 ## Commands
 
 ```bash
-make help           # Show available commands
-make new-project    # Scaffold a new project (name= required)
-make link-project   # Scan a repo and pre-fill context (name= repo= required)
-make list-projects  # List all project directories
+make help               # Show available commands
+make project-new        # Scaffold a new project (name= required)
+make project-link       # Scan a repo and pre-fill context (name= repo= required)
+make project-list       # List all project directories
+make steering-generate  # AI-detected steering files (project= required)
+make steering-select    # Pick from template list (project= required)
 ```

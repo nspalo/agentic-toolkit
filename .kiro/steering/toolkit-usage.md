@@ -10,11 +10,11 @@ This repo is a portable AI development methodology toolkit. It provides rules, w
 
 ### "Enrich {project}" / "Deep scan {project}"
 
-This trigger is for **refining** an already-linked project. The `make link-project` command fills `project-context.md` with auto-detected data. If the user wants richer context (models, routes, architecture details), they say "Enrich {project}" and you should:
+This trigger is for **refining** an already-linked project. The `make project-link` command fills `project-context.md` with auto-detected data. If the user wants richer context (models, routes, architecture details), they say "Enrich {project}" and you should:
 
 **Step 1: Read existing context**
-- Read `[dev-context]/projects/{project}/project-context.md` (already has basic data from link-project)
-- Read `[dev-context]/projects/{project}/.detected-stack.md` (if it exists)
+- Read `[workspace]/projects/{project}/project-context.md` (already has basic data from project-link)
+- Read `[workspace]/projects/{project}/.detected-stack.md` (if it exists)
 
 **Step 2: Read the project's code repo for deeper detail**
 - Read the project repo's `README.md`
@@ -49,7 +49,7 @@ This trigger is for **refining** an already-linked project. The `make link-proje
 | "Start a new feature" / "Use spec workflow" | `workflows/spec-driven-development.md` | Requirements → design → tasks → execute with review gates between each |
 | "Run tests" / "Validate changes" | `workflows/tiered-testing.md` | Smoke → Unit → Functional → Acceptance tiers with verification methods |
 | "Bootstrap new project" / "Set up project" | `workflows/project-initialization.md` | Discover project → fill context → determine which steering files to create |
-| "Create a new workspace" | `workflows/workspace-setup.md` | Create a new dev-context repo from template |
+| "Create a new workspace" | `workflows/workspace-setup.md` | Create a new workspace repo from template |
 | "Extract learnings" / "Update the toolkit" | `workflows/extract-to-toolkit.md` | Pull generic patterns from project knowledge back into toolkit |
 | "Add {type} steering" | `workflows/project-initialization.md` § Phase 3 | Determine which steering file to add based on project characteristics |
 

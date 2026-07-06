@@ -23,24 +23,40 @@
 - [x] Handshake + acknowledgment complete
 
 ## Phase 3: Validate (CURRENT)
-- [ ] Pilot: new workspace, new project, full spec-driven development cycle
-- [ ] Validate: AI follows auto-loaded steering without manual reminders
-- [ ] Validate: spec workflow produces working code (requirements → design → tasks → code)
+- [x] Pilot: new workspace, new project, full spec-driven development cycle
+- [x] Validate: AI follows auto-loaded steering without manual reminders
+- [x] Validate: spec workflow produces working code (requirements → design → tasks → code)
 - [ ] Validate: git workflow works (make branch/commit-kiro/pr)
 - [ ] Validate: contribution tracking (author/co-author attribution works correctly)
-- [ ] Validate: bootstrap creates usable workspace + project in one command
-- [ ] Write: pilot results to `.meta/validation/pilot-results.md`
+- [x] Validate: bootstrap creates usable workspace + project in one command
+- [x] Write: pilot results to `.meta/validation/pilot-results.md`
 
 ## Phase 4: Refine
 - [ ] Fix issues found during pilot
 - [ ] Extract learnings back into toolkit (`extract-to-toolkit.md` workflow)
 - [ ] Update steering/workflows based on real usage
 - [ ] Remove/simplify anything that didn't add value
+- [ ] Spec Planning Board feature — backlog splitting, tracking, and ordering in dev-context
+  - `projects/{name}/backlog/` holds split requirement groups
+  - `projects/{name}/spec-plan.md` tracks order, dependencies, status
+  - Provides clear scope for each Kiro spec session without manual prompting
+  - Solves "what do I tell Kiro?" problem for multi-spec projects
+- [ ] Add `product.md` as default steering file in toolkit templates
+  - Always-included steering that gives AI persistent product awareness
+  - Contains: product description, key domains, implementation plan, what's done/next
+  - Filled by AI during `steering-generate` or `project-link` (reads README, existing specs, codebase structure)
+  - Replaces need to repeat product context in every spec prompt
+  - Template example based on MBTI Backend and BETA pilot patterns
 
 ## Phase 5: Scale
 - [ ] Use on a real project (not just demo)
 - [ ] Onboard another person using the toolkit
 - [ ] Document: what changed in process, what worked, what didn't
+- [ ] Add `.env` support for local paths (shared workspace portability)
+  - `.env` (gitignored) holds per-dev paths: `BETA_REPO_PATH=/home/user/...`
+  - Scripts read from `.env` instead of hardcoded `.repo-path`
+  - `project-context.md` references env vars or relative paths
+  - Enables shared dev-context (domain-knowledge, test cases) without path conflicts
 
 ## Phase 6: Publish
 - [ ] Genericize fully (audit for any remaining specific traces)
@@ -63,3 +79,7 @@
 | 2026-06-30 | Original plan archived | Implementation superseded it |
 | 2026-07-02 | No company names/references in toolkit | Toolkit must be fully generic and portable |
 | 2026-07-02 | Metrics are optional, not mandatory in roadmap | Time-to-deliver is hard to compute; contribution tracking needs author/co-author discipline only |
+| 2026-07-05 | Steering scaffold is opt-in, not auto-created | BETA pilot showed auto-scaffolded templates went unused — user writes steering from understanding, not from filling blanks |
+| 2026-07-05 | Command naming: resource-action pattern | `project-new`, `project-link`, `steering-generate` — groups logically in help output |
+| 2026-07-05 | `repo=` not needed for steering commands | `.repo-path` stores the linked repo path; downstream commands read it automatically |
+| 2026-07-05 | Local paths in `.repo-path` are fine for now | Dev-context is personal; `.env` support deferred to Phase 5 when sharing/onboarding happens |

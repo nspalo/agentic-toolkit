@@ -37,7 +37,7 @@ Code changes are the AI's job. Git operations are the user's domain. The user de
 
 ## During Setup (Do NOT Commit)
 
-When bootstrapping a workspace or project (`make new-workspace`, `make new-project`, `make link-project`), do NOT offer to commit. Setup is not complete until the user explicitly says they're ready to start working. The bootstrap output guides the user — follow it, don't interrupt with git prompts.
+When bootstrapping a workspace or project (`make workspace-new`, `make project-new`, `make project-link`), do NOT offer to commit. Setup is not complete until the user explicitly says they're ready to start working. The bootstrap output guides the user — follow it, don't interrupt with git prompts.
 
 ## Incident Context
 

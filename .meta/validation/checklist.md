@@ -6,8 +6,8 @@
 
 - [ ] Fresh workspace created (no leftover context from previous sessions)
 - [ ] Toolkit added to workspace
-- [ ] Dev-context created via `make new-workspace` (or manually)
-- [ ] Project bootstrapped via `make new-project`
+- [ ] Dev-context created via `make workspace-new` (or manually)
+- [ ] Project bootstrapped via `make project-new`
 - [ ] AI reads auto-loaded steering on first message (git-safety, filesystem-boundaries, development-rules)
 
 ## Steering Behavior
@@ -47,9 +47,9 @@
 
 ## Bootstrap
 
-- [ ] `make new-workspace` creates a usable workspace repo structure
-- [ ] `make new-project` creates project dir with routing update
-- [ ] Generated steering skeletons are relevant to project type
+- [ ] `make workspace-new` creates a usable workspace repo structure
+- [ ] `make project-new` creates project dir with routing update
+- [ ] `make steering-generate` produces relevant steering (when opted in)
 - [ ] Project context file is created and AI references it
 
 ## Results

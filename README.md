@@ -24,7 +24,7 @@ Three repos work together in one IDE workspace:
 │  (in your code repo)            Codebase conventions,     │
 │                                 architecture, tech stack   │
 ├──────────────────────────────────────────────────────────┤
-│  [dev-context]/projects/{name}  WHERE artifacts live       │
+│  [workspace]/projects/{name}    WHERE artifacts live       │
 │  (per-context repo)             Reports, tickets, test    │
 │                                 cases, project knowledge   │
 ├──────────────────────────────────────────────────────────┤
@@ -37,10 +37,10 @@ Three repos work together in one IDE workspace:
 | Layer | Auto-loaded? | Who owns it |
 |---|---|---|
 | `agentic-toolkit/.kiro/steering/` | Yes — every session | You (personal, portable) |
-| `[dev-context]/.kiro/steering/` | Yes — every session | You (per-company/context) |
+| `[workspace]/.kiro/steering/` | Yes — every session | You (per-company/context) |
 | `[project]/.kiro/steering/` | Yes — Kiro default | Team (in the project repo) |
 
-Toolkit provides methodology → dev-context routes artifacts → project `.kiro/` knows the codebase.
+Toolkit provides methodology → workspace routes artifacts → project `.kiro/` knows the codebase.
 
 ## Getting Started
 
@@ -69,12 +69,12 @@ The `~/ai-workflow/` directory is the parent folder for the toolkit and all dev-
 
 ```bash
 cd ~/ai-workflow/agentic-toolkit
-make new-workspace name=my-dev-context context="My projects"
+make workspace-new name=my-workspace about="My projects"
 ```
 
-A **dev-context** is a companion repo that stores all AI-generated artifacts for your projects — investigation reports, tickets, test cases, project knowledge, and draft steering files. It keeps your project repo clean while preserving everything the AI produces during work.
+A **workspace** is a companion repo that stores all AI-generated artifacts for your projects — investigation reports, tickets, test cases, project knowledge, and draft steering files. It keeps your project repo clean while preserving everything the AI produces during work.
 
-Creates `~/ai-workflow/my-dev-context/` as a sibling directory (required — bootstrap scripts resolve the toolkit at `../agentic-toolkit`).
+Creates `~/ai-workflow/my-workspace/` as a sibling directory (required — bootstrap scripts resolve the toolkit at `../agentic-toolkit`).
 
 ### 4. Open IDE workspace
 
@@ -82,7 +82,7 @@ Open Kiro (or VS Code) and create a multi-root workspace with all three folders:
 
 1. File → Add Folder to Workspace (repeat for each):
    - `~/projects/my-project/` — your code
-   - `~/ai-workflow/my-dev-context/` — artifacts & knowledge
+   - `~/ai-workflow/my-workspace/` — artifacts & knowledge
    - `~/ai-workflow/agentic-toolkit/` — methodology (this repo)
 2. Save as a `.code-workspace` file for easy reopening
 
@@ -92,13 +92,13 @@ All three must be open together. The toolkit's steering files auto-load into Kir
 
 ```bash
 cd ~/ai-workflow/my-dev-context
-make new-project name=my-project
-make link-project name=my-project repo=~/projects/my-project
+make project-new name=my-project
+make project-link name=my-project repo=~/projects/my-project
 ```
 
-`make new-project` scaffolds the project directory structure (empty folders for artifacts).
+`make project-new` scaffolds the project directory structure (empty folders for artifacts).
 
-`make link-project` scans the repo, auto-detects the tech stack, and **fills `project-context.md` directly**. Expected output:
+`make project-link` scans the repo, auto-detects the tech stack, and **fills `project-context.md` directly**. Expected output:
 
 ```
 Scanning project repo: /home/user/projects/my-project
@@ -160,18 +160,22 @@ Then use any workflow (see Usage below).
 | Output | Destination |
 |---|---|
 | Code changes | Project repo |
-| Reports, tickets, test cases | `[dev-context]/projects/{name}/` |
+| Reports, tickets, test cases | `[workspace]/projects/{name}/` |
 | Methodology improvements | `agentic-toolkit/` (via extract-to-toolkit workflow) |
 
 ### Steering Lifecycle
 
-`make link-project` creates Day 1 steering files in `.kiro-draft/steering/`. As you work:
+Steering files are **opt-in**. After linking your project, generate them when ready:
 
-1. **Day 1** — system-overview, tech-stack, coding-standards filled automatically
+```bash
+make steering-generate project=my-project
+```
+
+Then in a Kiro session, the AI scans the codebase and fills the templates with real content.
+
+1. **Day 1** — `make project-link` fills project-context.md. Optionally run `make steering-generate`.
 2. **Week 1+** — add more steering as complexity is discovered ("Add database steering")
 3. **When proven** — promote drafts to `[project]/.kiro/steering/` so they travel with the code
-
-See `workflows/project-initialization.md` for which steering files to add and when.
 
 ## Repo Structure
 
@@ -190,7 +194,7 @@ agentic-toolkit/
 ├── scripts/               # Bootstrap automation
 ├── knowledge/             # Portable learnings and methodology
 ├── reading/               # External references
-└── Makefile               # `make new-workspace name=xxx`
+└── Makefile               # `make workspace-new name=xxx`
 ```
 
 ## Multiple Workspaces
@@ -198,9 +202,9 @@ agentic-toolkit/
 ```
 ~/ai-workflow/
 ├── agentic-toolkit/           # One copy — serves all workspaces
-├── company-dev-context/       # Company projects
-├── personal-dev-context/      # Personal projects
-└── freelance-dev-context/     # Freelance work
+├── company-workspace/         # Company projects
+├── personal-workspace/        # Personal projects
+└── freelance-workspace/       # Freelance work
 ```
 
 ## Further Reading

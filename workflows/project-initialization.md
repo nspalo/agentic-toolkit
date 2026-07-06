@@ -6,22 +6,24 @@ When a new project starts or when first engaging with an existing codebase, this
 
 ## When to Use
 
-- After running `make new-project name=xxx` (scaffold is empty)
+- After running `make project-new name=xxx` (scaffold is empty)
 - First session on an existing project that doesn't have a dev-context workspace yet
 - When adapting the workflow to a new tech stack or project type
 
 ## Prerequisites
 
 You should already have:
-- A dev-context workspace created (`make new-workspace`)
-- A project scaffolded within it (`make new-project name=xxx`)
-- The project linked to its code repo (`make link-project name=xxx repo=/path/to/code`)
+- A dev-context workspace created (`make workspace-new`)
+- A project scaffolded within it (`make project-new name=xxx`)
+- The project linked to its code repo (`make project-link name=xxx repo=/path/to/code`)
 - The project code repo in your IDE workspace
 
 After linking, you have:
 - `projects/{name}/.detected-stack.md` — auto-detected tech info (use as starting point)
-- `projects/{name}/project-context.md` — empty template to fill in
-- `projects/{name}/.kiro-draft/steering/` — starter steering files to customize
+- `projects/{name}/project-context.md` — filled with detected stack data
+
+Optionally, if you ran `make steering-generate`:
+- `projects/{name}/.kiro-draft/steering/` — steering files to review and customize
 
 This workflow guides you through filling the context and determining which additional steering files are needed.
 

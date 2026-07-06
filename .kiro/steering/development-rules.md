@@ -28,6 +28,15 @@ inclusion: auto
 - Verify table/model names from source (model property, migration file) — never pattern-match
 - Changes in one repo may affect another — flag cross-repo dependencies
 
+## Spec-Driven Development
+
+1. **One feature = one spec = one PR** — never combine multiple unrelated features in a single spec.
+2. **Keep specs focused** — if design.md exceeds 3 pages or tasks.md exceeds 15 tasks, the spec is too big. Split it.
+3. **Split by dependency** — shared infrastructure first, then features that depend on it, each as separate specs.
+4. **Follow industry-standard SDD** — Specify → Design → Tasks → Implement with human review at every gate. Reference `workflows/spec-driven-development.md` for the full process.
+5. **Deviate only with approval** — if a situation requires deviating from standard SDD practice (combining features, skipping phases), state the deviation, explain why, and get human confirmation before proceeding.
+6. **Acceptance criteria must be testable** — use EARS-style notation (WHEN/IF/WHILE/THE). No vague requirements like "should work well."
+
 ## Confidence Markers
 
 When making claims in reports or analysis, always state what is confirmed vs inferred:
