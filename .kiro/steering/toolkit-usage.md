@@ -73,6 +73,7 @@ This trigger is for **refining** an already-linked project. The `make project-li
 | "Write an engineering report" | `templates/documentation/engineering-report.md` | Problem → Proposals → Roadmap → Strengths/Limits |
 | "Record a decision" | `templates/documentation/architecture-decision-record.md` | Context → Decision → Consequences → Alternatives |
 | "Write a POC report" | `templates/documentation/poc-report.md` | Problem → Concept → How → Methodology → Results → Analysis |
+| "Write a team guide" / "Create a guide" | `templates/documentation/team-guide.md` | Audience → TL;DR → Context → How It Works → Reference |
 | "Review code" | `templates/prompts/code-review.md` | Checklist + structured output format |
 | "Analyze architecture" | `templates/prompts/architecture-analysis.md` | Map → Assess → Identify → Document |
 | "Process a JIRA ticket" | `templates/prompts/process-jira-ticket.md` | End-to-end ticket processing workflow |

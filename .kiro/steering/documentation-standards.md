@@ -44,7 +44,7 @@ What is it → How we do it → Does it work → Is it credible
 
 **Applies to:** methodology docs, process guides, design proposals, reference documentation, knowledge base articles
 
-**Does NOT apply to:** investigation reports (own format), test cases (own format), JIRA tickets (JIRA conventions), changelogs (chronological)
+**Does NOT apply to:** investigation reports (own format), test cases (own format), JIRA tickets (JIRA conventions), changelogs (chronological), team guides (own format — see `templates/documentation/team-guide.md`)
 
 ## Cross-References Within Documents
 
