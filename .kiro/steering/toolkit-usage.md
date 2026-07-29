@@ -71,6 +71,7 @@ This trigger is for **refining** an already-linked project. The `make project-li
 | "Write a story" | `templates/jira/story-ticket.md` | User story → ACs → Technical Notes |
 | "Write an epic" | `templates/jira/epic.md` | Goal → Scope → Stories → Success Criteria |
 | "Write an engineering report" | `templates/documentation/engineering-report.md` | Problem → Proposals → Roadmap → Strengths/Limits |
+| "Document an implementation" | `templates/documentation/implementation-report.md` | Summary → Decision → Changes → Detail → Verification → Impact |
 | "Record a decision" | `templates/documentation/architecture-decision-record.md` | Context → Decision → Consequences → Alternatives |
 | "Write a POC report" | `templates/documentation/poc-report.md` | Problem → Concept → How → Methodology → Results → Analysis |
 | "Write a team guide" / "Create a guide" | `templates/documentation/team-guide.md` | Audience → TL;DR → Context → How It Works → Reference |
