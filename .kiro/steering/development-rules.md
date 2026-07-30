@@ -28,6 +28,24 @@ inclusion: auto
 - Verify table/model names from source (model property, migration file) — never pattern-match
 - Changes in one repo may affect another — flag cross-repo dependencies
 
+## Source Document Preservation (CRITICAL)
+
+**When the user provides a document from an external source (Confluence, PM spec, meeting notes, Slack, or any stakeholder):**
+
+1. **SAVE THE FULL CONTENT.** Never summarize, never omit sections, never paraphrase when saving a reference document. The saved file must be a faithful representation of what the source says — every section, every table, every dependency, every acceptance scenario.
+
+2. **Summaries go IN ADDITION TO the full doc, not instead of it.** A comparison table or "quick summary" section at the top is fine, but the complete original content must follow below it.
+
+3. **Never generate estimates, designs, or specs from a summary you wrote.** Always reference the full source document. If the full doc isn't saved, save it FIRST, then generate work from it.
+
+4. **Why this matters:**
+   - Estimates based on incomplete specs undercount scope
+   - Sub-leads onboarding from summaries miss critical edge cases and constraints
+   - Lost details (acceptance scenarios, open dependencies, specific treatment requests) cause rework later
+   - The source document is the PM's intent — summaries are your interpretation, which may be wrong
+
+5. **Naming:** Source documents use the `REF-` prefix (e.g., `REF-ASCH-05-Requirements-Update-20260724.md`). The prefix signals "this is a reference — source of truth, not my analysis."
+
 ## Spec-Driven Development
 
 1. **One feature = one spec = one PR** — never combine multiple unrelated features in a single spec.
