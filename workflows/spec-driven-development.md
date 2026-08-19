@@ -80,6 +80,19 @@ Write acceptance criteria as testable statements using these patterns:
 
 Define HOW to build it. Architecture and approach.
 
+### Starting a Design Session
+
+Specs often span multiple sessions. When starting a new session to generate design.md:
+
+1. Open a new Kiro session
+2. Load project context (see workspace setup docs for the full prompt)
+3. Load supplementary design context (architecture docs, knowledge-base articles relevant to this spec)
+4. Open `requirements.md` in the editor → click **"Continue to Design"** in the spec panel
+
+**Important:** Do not ask Kiro in chat to "generate design.md" — use the spec UI button. Chat-based generation produces freeform responses, not the structured spec format that feeds into tasks.md.
+
+### Design Content
+
 - Architecture choices and rationale
 - Data model / schema changes
 - API contracts (inputs, outputs, error responses)
