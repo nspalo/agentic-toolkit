@@ -7,6 +7,7 @@
 | **Document type** | POC Report |
 | **Date** | {{YYYY-MM-DD}} (Created) |
 | **Author** | {{Name, Role}} |
+| **Assisted by** | {{Kiro / AI tool name, or omit if N/A}} |
 | **Status** | {{Draft / Active / Approved}} |
 | **Audience** | {{PM, SDM, Dev team}} |
 | **JIRA** | {{[PROJ-XXX](link) or N/A}} |

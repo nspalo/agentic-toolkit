@@ -7,6 +7,7 @@
 | **Document type** | Research Summary |
 | **Date** | {{YYYY-MM-DD}} (Created) |
 | **Author** | {{Name, Role}} |
+| **Assisted by** | {{Kiro / AI tool name, or omit if N/A}} |
 | **Status** | {{Active}} |
 | **Audience** | {{Lead developers, PMs, SDMs — anyone estimating AI-assisted projects}} |
 

@@ -5,10 +5,12 @@
 | | |
 |---|---|
 | **Document type** | Project Estimation |
-| **Date** | {{YYYY-MM-DD}} |
+| **Date** | {{YYYY-MM-DD}} (Created) |
 | **Author** | {{Name, Role}} |
-| **Audience** | {{PM, stakeholders, delivery manager}} |
+| **Assisted by** | {{Kiro / AI tool name, or omit if N/A}} |
 | **Status** | {{Draft / Final / Approved}} |
+| **Audience** | {{PM, stakeholders, delivery manager}} |
+| **JIRA** | {{[PROJ-XXX](link) or N/A}} |
 
 ---
 

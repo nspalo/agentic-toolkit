@@ -7,6 +7,7 @@
 | **Document type** | Engineering Report |
 | **Date** | {{YYYY-MM-DD}} (Created) |
 | **Author** | {{Name, Role}} |
+| **Assisted by** | {{Kiro / AI tool name, or omit if N/A}} |
 | **Status** | {{Draft / Active / Approved}} |
 | **Audience** | {{Who should read this}} |
 | **JIRA** | {{[PROJ-XXX](link) or N/A}} |

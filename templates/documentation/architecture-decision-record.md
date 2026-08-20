@@ -7,6 +7,7 @@
 | **Document type** | ADR (Architecture Decision Record) |
 | **Date** | {{YYYY-MM-DD}} (Created) |
 | **Author** | {{Name, Role}} |
+| **Assisted by** | {{Kiro / AI tool name, or omit if N/A}} |
 | **Status** | {{Proposed / Accepted / Deprecated / Superseded}} |
 | **Audience** | {{Deciders + Dev team}} |
 | **JIRA** | {{[PROJ-XXX](link) or N/A}} |

@@ -7,6 +7,7 @@
 | **Document type** | Implementation Report |
 | **Date** | {{YYYY-MM-DD}} (Implemented) |
 | **Author** | {{Name, Role}} |
+| **Assisted by** | {{Kiro / AI tool name, or omit if N/A}} |
 | **Status** | {{Draft / Active / Approved}} |
 | **Audience** | {{Dev team, QA, PM}} |
 | **JIRA** | {{[PROJ-XXX](link)}} |

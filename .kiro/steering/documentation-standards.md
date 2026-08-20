@@ -20,6 +20,7 @@ Every project document MUST begin with a **Document Info** table immediately aft
 | **Document type** | [Type — see list below] |
 | **Date** | YYYY-MM-DD (Created) · YYYY-MM-DD (Last updated) |
 | **Author** | [Name, Role] |
+| **Assisted by** | [AI tool name, e.g. Kiro — or omit row if N/A] |
 | **Status** | [Draft / Active / Approved / Superseded / Historical] |
 | **Audience** | [Who should read this] |
 | **JIRA** | [PROJ-XXX](link) or N/A |
@@ -32,9 +33,10 @@ Every project document MUST begin with a **Document Info** table immediately aft
 1. **Always present** — every new document gets this block. No exceptions for project docs.
 2. **Position** — immediately after the `# Title`, before any `---` divider or content section.
 3. **Required fields:** Document type, Date, Author, Status. Other fields are optional — include when relevant, omit when not.
-4. **Date format:** Always show creation date. Add "· YYYY-MM-DD (description)" for significant updates.
-5. **Status values:** `Draft` → `Active` → `Approved` → `Historical` or `Superseded`. Use `Historical` when content is retained for reference but no longer authoritative. Use `Superseded` when a newer document replaces it.
-6. **Supersedes / Superseded by:** Use relative paths. Only include when a document explicitly replaces another.
+4. **Assisted by** — include when AI meaningfully contributed to the document (code analysis, document generation, data verification, research synthesis). Omit for trivially human-written docs. The value should name the tool (e.g. "Kiro") and optionally describe the contribution scope (e.g. "Kiro (code analysis and document generation)").
+5. **Date format:** Always show creation date. Add "· YYYY-MM-DD (description)" for significant updates.
+6. **Status values:** `Draft` → `Active` → `Approved` → `Historical` or `Superseded`. Use `Historical` when content is retained for reference but no longer authoritative. Use `Superseded` when a newer document replaces it.
+7. **Supersedes / Superseded by:** Use relative paths. Only include when a document explicitly replaces another.
 
 ### Document Types
 

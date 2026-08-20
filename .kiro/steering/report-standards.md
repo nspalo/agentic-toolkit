@@ -18,6 +18,7 @@ All investigation reports MUST include a **Document Info** block (see `documenta
 | **Document type** | Investigation Report |
 | **Date** | YYYY-MM-DD (Reported) · YYYY-MM-DD (Investigated) |
 | **Author** | [Name, Role] |
+| **Assisted by** | [Kiro / AI tool name, or omit if N/A] |
 | **Status** | [Draft / Active / Approved] |
 | **Audience** | [PM, SDM, Dev team] |
 | **JIRA** | [PROJ-XXX](link) or TBA |

@@ -7,6 +7,7 @@
 | **Document type** | Knowledge Base Article |
 | **Date** | {{YYYY-MM-DD}} (Created) |
 | **Author** | {{Name, Role}} |
+| **Assisted by** | {{Kiro / AI tool name, or omit if N/A}} |
 | **Status** | {{Active}} |
 | **JIRA** | {{[PROJ-XXX](link) or N/A}} |
 
