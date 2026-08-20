@@ -1,5 +1,18 @@
 # [Title]
 
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | Engineering Report |
+| **Date** | {{YYYY-MM-DD}} (Created) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Draft / Active / Approved}} |
+| **Audience** | {{Who should read this}} |
+| **JIRA** | {{[PROJ-XXX](link) or N/A}} |
+
+---
+
 ## Summary
 
 [1-2 sentences: what this report examines and what it proposes]

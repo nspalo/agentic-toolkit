@@ -1,8 +1,16 @@
 # [TICKET-ID] — [Short Description] (YYYYMMDD)
 
-**Ticket:** [PROJ-XXX](https://your-jira.atlassian.net/browse/PROJ-XXX)
-**Implemented by:** [Name]
-**Date:** [Date implemented]
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | Implementation Report |
+| **Date** | {{YYYY-MM-DD}} (Implemented) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Draft / Active / Approved}} |
+| **Audience** | {{Dev team, QA, PM}} |
+| **JIRA** | {{[PROJ-XXX](link)}} |
+
 **Branch:** [Branch name]
 **Related:** [Links to investigation reports, design docs, or prior analysis]
 

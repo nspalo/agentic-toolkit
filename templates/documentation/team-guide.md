@@ -1,7 +1,14 @@
 # [Guide Title]
 
-**Audience:** [Who should read this — role or team]
-**Purpose:** [One sentence: what the reader will know or be able to do after reading]
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | Team Guide |
+| **Date** | {{YYYY-MM-DD}} (Created) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Draft / Active / Approved}} |
+| **Audience** | {{Who should read this — role or team}} |
 
 ---
 

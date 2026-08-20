@@ -1,8 +1,17 @@
 # ADR-NNN: {{TITLE}}
 
-**Status:** {{Proposed | Accepted | Deprecated | Superseded}}
-**Date:** {{YYYY-MM-DD}}
-**Deciders:** {{Names}}
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | ADR (Architecture Decision Record) |
+| **Date** | {{YYYY-MM-DD}} (Created) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Proposed / Accepted / Deprecated / Superseded}} |
+| **Audience** | {{Deciders + Dev team}} |
+| **JIRA** | {{[PROJ-XXX](link) or N/A}} |
+
+---
 
 ## Context
 

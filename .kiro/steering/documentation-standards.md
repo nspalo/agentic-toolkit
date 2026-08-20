@@ -1,8 +1,65 @@
 ---
-inclusion: manual
+inclusion: auto
 ---
 
 # Documentation Standards
+
+## Document Info Block (Required)
+
+Every project document MUST begin with a **Document Info** table immediately after the `# Title`. This is the standard metadata header for all documentation we produce.
+
+### Format
+
+```markdown
+# [Document Title]
+
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | [Type — see list below] |
+| **Date** | YYYY-MM-DD (Created) · YYYY-MM-DD (Last updated) |
+| **Author** | [Name, Role] |
+| **Status** | [Draft / Active / Approved / Superseded / Historical] |
+| **Audience** | [Who should read this] |
+| **JIRA** | [PROJ-XXX](link) or N/A |
+| **Supersedes** | [Document it replaces, if any] |
+| **Superseded by** | [Document that replaced this, if any] |
+```
+
+### Rules
+
+1. **Always present** — every new document gets this block. No exceptions for project docs.
+2. **Position** — immediately after the `# Title`, before any `---` divider or content section.
+3. **Required fields:** Document type, Date, Author, Status. Other fields are optional — include when relevant, omit when not.
+4. **Date format:** Always show creation date. Add "· YYYY-MM-DD (description)" for significant updates.
+5. **Status values:** `Draft` → `Active` → `Approved` → `Historical` or `Superseded`. Use `Historical` when content is retained for reference but no longer authoritative. Use `Superseded` when a newer document replaces it.
+6. **Supersedes / Superseded by:** Use relative paths. Only include when a document explicitly replaces another.
+
+### Document Types
+
+| Type | Use for |
+|---|---|
+| Technical Design | Architecture, system design, implementation plans |
+| Project Timeline | Schedules, Gantt charts, milestone tracking |
+| Project Estimation | Effort estimates, timeline projections |
+| ADR (Architecture Decision Record) | Individual architectural decisions |
+| Investigation Report | Bug analysis, root cause investigation |
+| Engineering Report | Technical analysis, proposals, recommendations |
+| Knowledge Base Article | Lessons learned, reusable patterns |
+| Team Guide | Onboarding, workflow documentation |
+| POC Report | Proof of concept results |
+| Research Summary | Upstream project analysis, external research |
+
+### What Does NOT Get a Document Info Block
+
+- **Spec-driven files** (`requirements.md`, `design.md`, `tasks.md`) — these have their own Kiro-managed structure
+- **README files** — repo/directory overviews follow their own convention
+- **Changelogs** — chronological format, no metadata table needed
+- **project-context.md** — session-loading files have their own format
+- **Steering files** (`.kiro/steering/*.md`) — these are rules, not documents
+
+---
 
 ## Information Flow
 
@@ -42,9 +99,9 @@ What is it → How we do it → Does it work → Is it credible
 
 ## Scope
 
-**Applies to:** methodology docs, process guides, design proposals, reference documentation, knowledge base articles
+**Applies to:** All project documentation — timelines, technical designs, estimations, ADRs, reports, proposals, reference documentation, knowledge base articles, team guides
 
-**Does NOT apply to:** investigation reports (own format), test cases (own format), JIRA tickets (JIRA conventions), changelogs (chronological), team guides (own format — see `templates/documentation/team-guide.md`)
+**Does NOT apply to:** spec-driven files (`requirements.md`, `design.md`, `tasks.md`), README files, changelogs, `project-context.md`, steering files, test cases, JIRA tickets
 
 ## Cross-References Within Documents
 

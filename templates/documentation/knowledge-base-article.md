@@ -1,5 +1,15 @@
 # NN — [Topic Title]
 
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | Knowledge Base Article |
+| **Date** | {{YYYY-MM-DD}} (Created) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Active}} |
+| **JIRA** | {{[PROJ-XXX](link) or N/A}} |
+
 > **TL;DR:** [One-sentence summary of the problem and fix/mitigation]
 
 ---

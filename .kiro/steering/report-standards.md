@@ -6,23 +6,32 @@ inclusion: manual
 
 ## Report Header (Required)
 
-All investigation reports MUST follow this header:
+All investigation reports MUST include a **Document Info** block (see `documentation-standards.md`) followed by investigation-specific fields:
 
 ```markdown
 # [Title] — [Short Description] (YYYYMMDD)
 
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | Investigation Report |
+| **Date** | YYYY-MM-DD (Reported) · YYYY-MM-DD (Investigated) |
+| **Author** | [Name, Role] |
+| **Status** | [Draft / Active / Approved] |
+| **Audience** | [PM, SDM, Dev team] |
+| **JIRA** | [PROJ-XXX](link) or TBA |
+
 **Reported by:** [Name]
-**JIRA Ticket:** [PROJ-XXX](https://your-jira.atlassian.net/browse/PROJ-XXX) or TBA
 **Investigated by:** [Name]
-**Date:** [Date issue was REPORTED — not when report was written]
 **Environment:** [Where data was pulled from]
 **Period analyzed:** [Optional — relevant time period if applicable]
 ```
 
 Rules:
 - `(YYYYMMDD)` in the title = date the report was CREATED
-- `**Date:**` field = date the issue was REPORTED/FILED
-- `**JIRA Ticket:**` must include clickable links. Use `TBA` if not yet assigned.
+- `**Date:**` in Document Info = date the issue was REPORTED + date investigated
+- JIRA link must be clickable. Use `TBA` if not yet assigned.
 
 ## Report Structure (Single Issue)
 

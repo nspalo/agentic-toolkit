@@ -1,9 +1,18 @@
 # [Title] — [Short Description] (YYYYMMDD)
 
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | Investigation Report |
+| **Date** | {{YYYY-MM-DD}} (Reported) · {{YYYY-MM-DD}} (Investigated) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Draft / Active / Approved}} |
+| **Audience** | {{PM, SDM, Dev team}} |
+| **JIRA** | {{[PROJ-XXX](link) or TBA}} |
+
 **Reported by:** [Name]
-**JIRA Ticket:** [PROJ-XXX](https://your-jira.atlassian.net/browse/PROJ-XXX) or TBA
 **Investigated by:** [Name]
-**Date:** [Date issue was REPORTED — not when report was written]
 **Environment:** [Where data was pulled from]
 **Period analyzed:** [Optional — relevant time period if applicable]
 

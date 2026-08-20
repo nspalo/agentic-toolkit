@@ -1,5 +1,18 @@
 # [Title] — Proof of Concept Report
 
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | POC Report |
+| **Date** | {{YYYY-MM-DD}} (Created) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Draft / Active / Approved}} |
+| **Audience** | {{PM, SDM, Dev team}} |
+| **JIRA** | {{[PROJ-XXX](link) or N/A}} |
+
+---
+
 ## Summary
 
 [1-3 sentences: what was built, what it proves, key result]

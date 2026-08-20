@@ -1,6 +1,14 @@
 # AI-Assisted Development — Estimation Reference Guide
 
-**Purpose:** Reference data for setting realistic expectations when estimating AI-assisted spec-driven projects.
+## Document Info
+
+| | |
+|---|---|
+| **Document type** | Research Summary |
+| **Date** | {{YYYY-MM-DD}} (Created) |
+| **Author** | {{Name, Role}} |
+| **Status** | {{Active}} |
+| **Audience** | {{Lead developers, PMs, SDMs — anyone estimating AI-assisted projects}} |
 
 ---
 
