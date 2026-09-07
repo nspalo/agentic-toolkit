@@ -42,6 +42,25 @@ Steering files provide additional context and instructions to Kiro sessions. The
 - If a steering file exceeds ~200 lines, split it into multiple focused files
 - Use file references (`#[[file:path]]`) to include external docs without duplicating content
 
+## Referencing Other Docs: `#[[file:]]` vs Plain Path
+
+Two different mechanisms — pick deliberately:
+
+| Mechanism | Behavior | Use when |
+|---|---|---|
+| `#[[file:path]]` | Kiro **injects the referenced file's full content** into context when the steering loads | The content must always be present. Costly for large docs — every session pays for it. |
+| Plain path in backticks (e.g. `` `projects/x/doc.md` ``) | Not auto-loaded — a pointer the AI reads **on demand** with a file tool | The doc is large / authoritative-elsewhere and only needed sometimes. Preferred for design/schema docs. |
+
+For big reference docs (technical designs, schemas), prefer the **plain-path pointer** — auto-injecting them bloats every session. Keep enough detail inline in the steering file that it stands alone; the pointer is for "go deeper when needed."
+
+### Cross-repo path resolution (draft → promote gotcha)
+
+Relative paths resolve from the **steering file's location**. A draft in `<workspace>/projects/{name}/.kiro-draft/steering/` that references `../../documentation/x.md` will **break** when promoted to `<project>/.kiro/steering/` — a different repo where that relative path doesn't exist, and where dev-context docs aren't reachable by relative path at all.
+
+Guidance:
+- In drafts, reference dev-context docs by a **stable workspace-relative path** (e.g. `` `projects/{name}/documentation/x.md` ``) matching how the project's other docs cross-reference each other — not fragile `../../`.
+- At promotion time, re-verify references resolve from the code repo. If the target lives only in dev-context, either inline the needed content or switch to an absolute URL — a relative path from the code repo won't reach it.
+
 ## Layering Across Repos
 
 When multiple workspace folders have `.kiro/steering/`:

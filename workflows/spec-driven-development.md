@@ -88,6 +88,16 @@ The Git mapping below places specs in `{project}/.kiro/specs/`. But when a spec 
 
 This mirrors the steering **draft → promote** lifecycle (`.kiro-draft/steering/` → `{project}/.kiro/steering/`). Use it whenever an artifact needs approval or must merge in a specific order before it belongs in the code repo. If a spec has no external gate, follow the default Git mapping and author it directly in `.kiro/specs/`.
 
+### Match the Repo's Existing Spec Convention
+
+Before creating a spec folder or writing requirements, **check how the target repo already does specs** — do not impose a generic format.
+
+- **Folder naming:** follow the repo's existing pattern under `.kiro/specs/`. If existing specs use a `{project-code}-{feature}` naming, match it — don't invent a different scheme. If the spec UI generates a config file (with a spec id), create the spec through the UI so it stays valid for the "Continue to Design" step rather than hand-fabricating folders.
+- **Requirements granularity varies by spec type.** A schema/migration spec in a DB repo may legitimately use a **more prescriptive** style than the generic "behavior only" rule — one requirement per table, each column as its own acceptance criterion (type, nullability, default, comment), plus engine/charset and index criteria. For a schema migration the column definitions *are* the requirement; there's no meaningful behavior layer above "this column exists with this type." Match the repo's precedent (an existing migration spec) rather than forcing behavior-only prose.
+- **Multi-repo features get one spec per repo.** When a feature spans repos (e.g. schema in a migrations repo + logic in an application repo), each repo owns its own spec in its own `.kiro/specs/`, cross-referencing the other, with the merge-order dependency stated. Don't put one repo's spec inside another.
+
+When in doubt, read an existing spec in the repo first and mirror its structure, headings, and acceptance-criteria style.
+
 ## Phase 2: Design (Plan)
 
 Define HOW to build it. Architecture and approach.

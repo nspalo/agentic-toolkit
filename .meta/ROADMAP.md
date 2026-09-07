@@ -33,14 +33,21 @@
 
 ## Phase 4: Refine
 - [ ] Fix issues found during pilot
-- [ ] Extract learnings back into toolkit (`extract-to-toolkit.md` workflow)
-- [ ] Update steering/workflows based on real usage
+- [x] Extract learnings back into toolkit (`extract-to-toolkit.md` workflow) — see extractions below
+  - Review-gate staging (draft spec in dev-context → promote to `.kiro/specs/` after external sign-off) → `workflows/spec-driven-development.md`
+  - Requirements-vs-design content split; correctness properties live in design.md → `workflows/spec-driven-development.md`
+  - Match the target repo's existing spec convention (folder naming, migration-spec granularity, one-spec-per-repo for multi-repo features) → `workflows/spec-driven-development.md`
+  - `#[[file:]]` vs plain-path references + cross-repo path-resolution (draft→promote) gotcha → `knowledge/kiro-steering-patterns.md`
+  - MCP server setup + the launcher-PATH ("Connection closed") gotcha + token security → `knowledge/tooling-setup.md`
+- [ ] Update steering/workflows based on real usage — ongoing
 - [ ] Remove/simplify anything that didn't add value
+  - **Candidate:** `.meta/handshakes/` ceremony appears unused in continuous single-session work. Evaluate whether it earns its complexity or should be simplified.
 - [ ] Spec Planning Board feature — backlog splitting, tracking, and ordering in dev-context
   - `projects/{name}/backlog/` holds split requirement groups
   - `projects/{name}/spec-plan.md` tracks order, dependencies, status
   - Provides clear scope for each Kiro spec session without manual prompting
   - Solves "what do I tell Kiro?" problem for multi-spec projects
+  - Should also express: per-repo specs for a multi-repo feature, cross-spec dependencies (merge order), and sign-off/gate status per spec
 - [ ] Add `product.md` as default steering file in toolkit templates
   - Always-included steering that gives AI persistent product awareness
   - Contains: product description, key domains, implementation plan, what's done/next
@@ -49,7 +56,7 @@
   - Template example based on MBTI Backend and BETA pilot patterns
 
 ## Phase 5: Scale
-- [ ] Use on a real project (not just demo)
+- [x] Use on a real project (not just demo) — the toolkit has been exercised end-to-end on a live multi-repo feature: project steering adapted, spec-driven requirements split across repos and taken through an external sign-off gate, code investigation, and MCP setup. Real usage ran ahead of the Phase 3/4 checklist; learnings extracted into the toolkit (see Phase 4).
 - [ ] Onboard another person using the toolkit
 - [ ] Document: what changed in process, what worked, what didn't
 - [ ] Add `.env` support for local paths (shared workspace portability)
@@ -83,3 +90,7 @@
 | 2026-07-05 | Command naming: resource-action pattern | `project-new`, `project-link`, `steering-generate` — groups logically in help output |
 | 2026-07-05 | `repo=` not needed for steering commands | `.repo-path` stores the linked repo path; downstream commands read it automatically |
 | 2026-07-05 | Local paths in `.repo-path` are fine for now | Dev-context is personal; `.env` support deferred to Phase 5 when sharing/onboarding happens |
+| 2026-09-04 | Toolkit validated on a real multi-repo feature | Real usage exercised the toolkit beyond the demo; learnings extracted while fresh |
+| 2026-09-04 | Specs follow the target repo's existing convention, not a generic one | Repos have their own spec-folder naming and (for migrations) per-column requirements granularity; imposing a generic format caused rework |
+| 2026-09-04 | Large reference docs are linked by plain path, not `#[[file:]]` | Auto-injecting big design/schema docs bloats every session; the AI can read them on demand |
+| 2026-09-04 | MCP `command` uses an absolute binary path | Kiro's launcher does not source the user shell profile; a bare command name fails to start. Documented in tooling-setup |
