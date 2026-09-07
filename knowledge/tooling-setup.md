@@ -120,7 +120,9 @@ If the MCP log shows `Error connecting to MCP server: ... Connection closed` imm
 which uvx        # e.g. /home/user/.local/bin/uvx
 ```
 ```json
-"command": "/home/user/.local/bin/uvx"
+{
+  "command": "/home/user/.local/bin/uvx"
+}
 ```
 
 Pre-download the package first so the first connect isn't slow/timing out:
