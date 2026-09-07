@@ -46,7 +46,7 @@
 | Human review gates (PM sign-off, PR review) | Organizational process, trust-building, accountability. Cannot be automated away. | Adds 1–2 days per gate × number of gates |
 | Integration with existing monolithic code | Must read, understand, and not break 1000+ line files. AI can help read but not guarantee safety. | Scales with codebase complexity |
 | External API integration | Rate limits, sandbox testing, payload debugging, error handling for real-world conditions | Fixed time regardless of AI |
-| Correctness verification (financial/accounting) | Must be provably correct to the yen. "Close enough" is not acceptable. Requires exhaustive testing. | Cannot be shortened for regulated systems |
+| Correctness verification (regulated domains — e.g. financial, accounting, healthcare) | Must be provably correct (e.g. exact to the currency unit for accounting). "Close enough" is not acceptable. Requires exhaustive testing. | Cannot be shortened for regulated systems |
 | External dependency wait time | Other teams' deliverables, environment access, business decisions | Blocked time = blocked time |
 | Cross-repo coordination | Multiple PRs, deployment sequencing, config alignment | Human coordination overhead |
 
@@ -92,11 +92,11 @@ In spec-driven development with a single Lead:
 |---|---|---|
 | Design review cycle | 2–4 weeks (multiple reviewers, revision rounds) | 1–2 days (one PM, one Lead) |
 | Code review | 1–3 days (often multi-reviewer) | 1 day (single Lead reviewer) |
-| Project timeline for similar scope | 2–3 quarters (18–30 weeks) | 9.5 weeks |
-| Buffer standard | 20–30% of estimate | ~10% (1 week of 9.5) |
-| Deployment process | Staged rollout over weeks | Single target (DEV04 → staging → prod) |
+| Project timeline for similar scope | 2–3 quarters (18–30 weeks) | {{your SDD estimate — e.g. ~9–12 weeks}} |
+| Buffer standard | 20–30% of estimate | {{your buffer — ~10% typical; 20% for regulated}} |
+| Deployment process | Staged rollout over weeks | Single dev target → staging → prod |
 
-**Our approach is more aggressive than big tech** — shorter review cycles, tighter buffer, compressed timeline. This is acceptable because:
+**A small-team SDD approach is more aggressive than big tech** — shorter review cycles, tighter buffer, compressed timeline. This is acceptable because:
 - Smaller team = faster communication
 - Single PM with decision authority = no committee delays
 - Spec-driven workflow = less ambiguity reaching the developer
