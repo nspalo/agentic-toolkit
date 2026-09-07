@@ -191,6 +191,10 @@ After each task, verify:
 | Spec → code with no human review | "Vibe coding wearing a Halloween costume" | Review at every phase boundary |
 | Specifying implementation details in requirements | Over-constrains the design phase | Requirements = behavior only |
 | Letting spec rot after implementation | Loses the canonical reference | Spec lives in repo, updated with changes |
+| **Analysis drift / not anchoring to the critical path** | Weeks pass producing docs, meeting questions, and re-explanations while the current phase's one artifact (e.g. requirements.md) never gets written. Feels productive; ships nothing. | At the start of every working turn, state the current SDD phase and its single next artifact. If a request doesn't advance that artifact, say so and offer to defer it. |
+| **Resurfacing already-decided items as open questions** | Re-litigating settled decisions (checking status from a stale note instead of the authoritative open-items table) wastes the team's time and erodes trust. | Before listing anything as "open" / "a question," verify its status against the authoritative source (open-items table, decision log). Never derive open questions from a secondary doc's framing. |
+| **Inventing external dependencies** | Framing our own work (e.g. verifying our own DB's data shape) as "a question for the upstream team" manufactures a blocker and stalls progress. | Distinguish *data source* from *code dependency*. If we can answer it by querying our own system, it is our task — not a blocker on another team. |
+| **Verbose answers to simple questions** | Multi-section essays bury the answer, tire the reader, and slow decisions. | Answer the question asked, at the length it deserves. Yes/no first. Detail only if asked. |
 
 ## Deviation Protocol
 
