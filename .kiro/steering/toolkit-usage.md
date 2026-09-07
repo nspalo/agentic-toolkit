@@ -46,6 +46,7 @@ This trigger is for **refining** an already-linked project. The `make project-li
 | "Investigate this issue" / "Look into this bug" | `workflows/investigation.md` | Guides the full investigation process: gather facts → trace code → form hypothesis → verify → write report |
 | "Fix this bug" | `workflows/bug-fix.md` | Understand → identify scope → implement → verify flow with N-location checklist |
 | "Create a PR" | `workflows/pr-creation.md` | Branch → code → review → commit → push → PR with commit conventions |
+| "Create a JIRA ticket" / "Create an epic/story in JIRA" / "Push tickets to JIRA" | `workflows/jira-ticket-creation.md` | Safe MCP write path: precheck connection → discover create-fields → create in dependency order (parent before child) → verify → record → re-secure read-only |
 | "Start a new feature" / "Use spec workflow" | `workflows/spec-driven-development.md` | Requirements → design → tasks → execute with review gates between each |
 | "Run tests" / "Validate changes" | `workflows/tiered-testing.md` | Smoke → Unit → Functional → Acceptance tiers with verification methods |
 | "Bootstrap new project" / "Set up project" | `workflows/project-initialization.md` | Discover project → fill context → determine which steering files to create |
