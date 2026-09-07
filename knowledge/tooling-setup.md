@@ -128,9 +128,68 @@ Pre-download the package first so the first connect isn't slow/timing out:
 /home/user/.local/bin/uvx mcp-atlassian --help   # downloads + caches on first run
 ```
 
+### Gotcha (Windows + WSL): Kiro can't launch a Linux binary directly → "Connection closed"
+
+If Kiro runs on **Windows** but the MCP server binary lives inside **WSL** (config path like `\\wsl.localhost\Ubuntu-20.04\...`, command like `/home/user/.local/bin/uvx`), pointing `command` straight at the Linux path fails with `MCP error -32000: Connection closed`. Windows can't execute a Linux binary, so the child process dies before the MCP handshake.
+
+**Fix:** launch through `wsl.exe`, which crosses into the Linux environment:
+```json
+{
+  "mcpServers": {
+    "atlassian": {
+      "command": "wsl.exe",
+      "args": [
+        "-d", "Ubuntu-20.04", "--",
+        "/home/user/.local/bin/uvx", "mcp-atlassian",
+        "--env-file", "/home/user/path/to/.kiro/settings/mcp-jira.env"
+      ],
+      "disabled": false,
+      "autoApprove": ["jira_get_issue", "jira_search", "jira_get_all_projects"]
+    }
+  }
+}
+```
+
+- The distro name after `-d` must match `wsl -l -q` **exactly** (e.g. `Ubuntu-20.04`), or the launch fails the same way.
+- Paths passed to the Linux command (binary, `--env-file`) must be **Linux paths**, not Windows `\\wsl.localhost\...` paths.
+- Verify the whole chain by hand before blaming Kiro: `curl -su "user:token" https://<site>.atlassian.net/rest/api/3/myself` (HTTP 200 = creds/network fine), then run the exact `uvx ... mcp-atlassian --env-file ...` command inside WSL and confirm it prints `Jira configuration loaded` / `Read-only mode: ...`.
+
+### Keeping secrets out of `mcp.json` with `--env-file`
+
+`mcp-atlassian` accepts `--env-file <path>`, so credentials can live in a separate env file instead of inline `env` in `mcp.json`. Cleaner, and scales when adding Confluence (same server — just add `CONFLUENCE_*` vars).
+
+`.kiro/settings/mcp-jira.env`:
+```
+JIRA_URL=https://your-site.atlassian.net
+JIRA_USERNAME=you@example.com
+JIRA_API_TOKEN=<token>
+# CONFLUENCE_URL=https://your-site.atlassian.net/wiki
+# CONFLUENCE_USERNAME=you@example.com
+# CONFLUENCE_API_TOKEN=<token>
+READ_ONLY_MODE=true
+FASTMCP_LOG_LEVEL=ERROR
+```
+
+- One env file per **server family**, not per service — Jira and Confluence are the **same** `mcp-atlassian` server, so they share one env file. There is no separate "confluence server" to configure.
+- Kiro reads only `mcp.json` (workspace or user). You **cannot** split config into `jira-mcp.json` / `confluence-mcp.json` — arbitrary filenames are ignored. Multiple servers go as sibling entries under `mcpServers` in the one `mcp.json`.
+- Gitignore the env file: add `*.env` and `.kiro/settings/*.env` to `.gitignore`.
+
+### Gotcha: `READ_ONLY_MODE` controls writes, `autoApprove` does not
+
+`READ_ONLY_MODE=true` disables all write tools (create/update/delete) **at the server level** — the server log prints `Read-only mode: ENABLED/DISABLED` on boot. `autoApprove` only controls which tools skip the confirmation prompt; it does **not** make anything read-only. Use `READ_ONLY_MODE=true` as the safe default and flip to `false` only when you actually need to create/update issues, then reconnect.
+
+- **Typo trap:** the value must be exactly `true`/`false`. A stray character (e.g. `falses`) is not a valid boolean and silently fails to enable writes. Confirm via the boot log line, not by assuming.
+
+### Gotcha: duplicate `atlassian` entry in user + workspace config
+
+If the same server key (e.g. `atlassian`) exists in **both** `~/.kiro/settings/mcp.json` (user) and `<workspace>/.kiro/settings/mcp.json` (workspace), configs merge by key and the workspace wins — but the duplicate causes ambiguous/stale connection state and reconnect confusion. Keep a project-scoped credentialed server in the **workspace** config only, and remove it from the user config (`{ "mcpServers": {} }` if it was the only one).
+
 ### Reconnect after editing the config
 
-Command Palette (`Ctrl+Shift+P`) → type "MCP" → reconnect; or use the MCP Servers section in the Kiro feature panel. Kiro reconnects on config change, but a manual reconnect is reliable after edits.
+Kiro reloads MCP config on save, but a manual reconnect is reliable after edits — **especially after editing the `--env-file`**, since env changes (like flipping `READ_ONLY_MODE`) only take effect on reconnect.
+
+- Command Palette (`Ctrl+Shift+P`) → `Kiro: Open workspace MCP config (JSON)` (note the `Kiro:` prefix — searching just "MCP" may not surface it), then `Ctrl+S` to re-trigger the connection.
+- Or use the **MCP Servers** section in the Kiro feature panel (left Activity Bar → Kiro icon) and reconnect the server row directly.
 
 ### Security
 
