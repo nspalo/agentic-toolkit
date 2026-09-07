@@ -62,6 +62,8 @@ Define WHAT to build. No implementation details.
 - Edge cases and boundary conditions
 - Out-of-scope notes (what this spec explicitly does NOT cover)
 
+**Keep in requirements (not design):** behavior, acceptance criteria, out-of-scope. **Defer to design.md:** architecture, naming/namespace conventions, and **correctness properties** (the formal invariants that back property-based tests) — requirements.md may point to them, but the property definitions live in design.md. Optional value-add sections for gate-reviewed specs: a "Confirmed Decisions" table (settled inputs the approver need not re-open) and an "Open Items" table (unresolved questions with an explicit ask for the approver).
+
 ### EARS Notation for Acceptance Criteria
 
 Write acceptance criteria as testable statements using these patterns:
@@ -75,6 +77,16 @@ Write acceptance criteria as testable statements using these patterns:
 | Optional | WHERE [feature] THE [system] SHALL [behavior] | WHERE MFA is enabled THE Auth SHALL require TOTP |
 
 **Gate:** Human reviews requirements before design begins.
+
+### Review-Gate Staging (when a spec needs external sign-off)
+
+The Git mapping below places specs in `{project}/.kiro/specs/`. But when a spec must clear an **external approval gate** before design starts — e.g. a PM, accounting, or client sign-off on requirements — do not commit the in-review artifact into the code repo prematurely. Instead:
+
+1. **Draft in the dev-context workspace:** `projects/{name}/specs/{feature}/requirements.md`. Keep it out of the code repo while it's under review.
+2. **Route it to the approver.** The reviewer reviews a document, not a repo commit — clean audit trail, nothing lands in the code repo unapproved.
+3. **On approval, promote** to `{project}/.kiro/specs/{feature}/requirements.md`. This is also what unlocks the Kiro spec UI's **"Continue to Design"** button (Phase 2 must be generated there, not in chat).
+
+This mirrors the steering **draft → promote** lifecycle (`.kiro-draft/steering/` → `{project}/.kiro/steering/`). Use it whenever an artifact needs approval or must merge in a specific order before it belongs in the code repo. If a spec has no external gate, follow the default Git mapping and author it directly in `.kiro/specs/`.
 
 ## Phase 2: Design (Plan)
 
