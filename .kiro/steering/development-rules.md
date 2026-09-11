@@ -4,6 +4,17 @@ inclusion: auto
 
 # Development Rules
 
+## No Code Changes Without an Explicit Instruction (CRITICAL)
+
+**Never modify the code repo unless the user has explicitly asked you to implement/code in this turn.** Grooming a ticket, writing a spec, investigating, or "helping the assignee" is NOT authorization to touch code.
+
+- Ticket grooming / spec / design / investigation = **documents only**. Code goes into the ticket/doc as a **reference snippet**, never applied to the repo.
+- "Add the unit test for X-san" during grooming means **put the test code in the ticket**, not edit the test file — the change is that person's assigned work.
+- If you believe code should change, **stop and ask**: "This requires editing `<file>` in the code repo. Do you want me to apply it, or put it in the ticket as reference?"
+- Applying code the user didn't ask for makes them revert and redo — it creates work, not saves it.
+
+**Incident (2026-09-08):** During ZPR ticket grooming (delegated to another dev, no code instruction, no spec started), the AI edited `ZipanMonthlyPlanEnum.php` and its test directly in the code repo. The user had to cancel and revert. Root cause: treated "add the test to help" as authorization to write code, and ignored that grooming is a documentation task. The code belonged in the grooming ticket as a snippet.
+
 ## General
 
 1. **Read before writing** — always read relevant existing code before proposing changes. Never assume structure.

@@ -6,7 +6,7 @@ inclusion: manual
 
 ## Report Header (Required)
 
-All investigation reports MUST include a **Document Info** block (see `documentation-standards.md`) followed by investigation-specific fields:
+All investigation reports MUST include a single **Document Info** block. The investigation-specific fields (Reported by, Investigated by, Environment, Period analyzed) are **rows inside the same table** — not loose bold lines below it:
 
 ```markdown
 # [Title] — [Short Description] (YYYYMMDD)
@@ -16,18 +16,20 @@ All investigation reports MUST include a **Document Info** block (see `documenta
 | | |
 |---|---|
 | **Document type** | Investigation Report |
-| **Date** | YYYY-MM-DD (Reported) · YYYY-MM-DD (Investigated) |
-| **Author** | [Name, Role] |
-| **Assisted by** | [Kiro / AI tool name, or omit if N/A] |
 | **Status** | [Draft / Active / Approved] |
+| **Date** | YYYY-MM-DD (Reported) · YYYY-MM-DD (Investigated) |
+| **Author / Reporter / Investigator** | [Name, Role] |
+| **Assisted by** | [Kiro / AI tool name, or omit if N/A] |
 | **Audience** | [PM, SDM, Dev team] |
+| **Environment** | [Where data was pulled from] |
+| **Period analyzed** | [Optional — relevant time period, or omit] |
 | **JIRA** | [PROJ-XXX](link) or TBA |
-
-**Reported by:** [Name]
-**Investigated by:** [Name]
-**Environment:** [Where data was pulled from]
-**Period analyzed:** [Optional — relevant time period if applicable]
 ```
+
+Rules:
+- **One box.** Do not append loose `**Field:**` lines after the table.
+- **Collapse identical roles.** When Author, Reporter, and Investigator are the same person, use a single `Author / Reporter / Investigator` row. Split into separate rows (`Reported by`, `Investigated by`) only when they differ.
+- **Don't repeat the AI-assist.** `Assisted by` already records Kiro's involvement — don't also tag "(Kiro-assisted)" on the author/investigator row.
 
 Rules:
 - `(YYYYMMDD)` in the title = date the report was CREATED
