@@ -7,6 +7,9 @@ Reusable Kiro hooks for safety guardrails. Copy these into any project's `.kiro/
 | Hook | Event | Purpose |
 |------|-------|---------|
 | `git-commit-guard.json` | `preToolUse` (shell) | Blocks git commit/push/merge without explicit permission |
+| `authorization-guard.json` | `preToolUse` (write) | Re-checks explicit per-turn authorization before any file/code/spec write; blocks acting on a stated plan |
+| `analysis-drift-guard.json` | `promptSubmit` | Anchors each turn to the current spec phase + next deliverable; flags drift/verbosity/manufactured blockers |
+| `response-style-guard.json` | `promptSubmit` | Enforces BLUF / scannable / code-first style; pulls the workflow-specific format when the task matches |
 
 ## How to Use
 
