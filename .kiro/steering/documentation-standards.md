@@ -63,6 +63,29 @@ Every project document MUST begin with a **Document Info** table immediately aft
 
 ---
 
+## Archiving Superseded Documents
+
+When a document is superseded and no longer belongs on the active reference surface, **archive it — do not delete it.** Deleting loses the trail; leaving it in place adds noise and invites someone to treat a stale doc as current.
+
+### Convention
+
+- Archive into a **single root `archive/` directory** in the workspace, **mirroring the file's original relative path**. The mirrored path is the provenance record — you can always see where a file lived.
+  - A file archived from `docs/foo.md` → `archive/docs/foo.md`
+  - A file archived from `some/nested/dir/bar.md` → `archive/some/nested/dir/bar.md`
+- **Preserve history when the workspace is version-controlled** — move with `git mv` rather than delete-and-recreate.
+- Add (or update) an **`archive/README.md`** that states the convention and keeps a tracing table: original path · date archived · what supersedes it.
+- To restore, move the file back to the same relative path minus the `archive/` prefix.
+
+### Reference hygiene when archiving
+
+- **Fix references in active documents** so links resolve to the new `archive/…` path (or drop the row if it was a directory listing). A quick workspace-wide search for the filename catches them.
+- **Leave references inside other historical/superseded documents as-is.** Rewriting a historical doc's internal links falsifies what it said at the time; those docs are themselves archival-grade. Scope reference fixes to *active* docs only.
+- On the archived doc itself, set the Document Info `Status` to `Superseded` (or `Historical`) and fill `Superseded by` if not already done.
+
+This mirrors the steering **draft → promote** lifecycle: just as unproven drafts live in `.kiro-draft/` until promoted, superseded docs live in `archive/` instead of cluttering the active tree — retrievable, but clearly out of the active set.
+
+---
+
 ## Information Flow
 
 When creating methodology, process, or reference documentation, follow this order:

@@ -45,3 +45,8 @@ Location: `technical-notes/jira/`
 ## Knowledge Base
 
 - `NN-topic-name.md` (e.g., `00-index.md`, `02-topic-name.md`)
+
+## Archived Documents
+
+- Superseded docs live under a single root `archive/` directory, **mirroring their original relative path** (`docs/foo.md` → `archive/docs/foo.md`).
+- Do not delete; keep an `archive/README.md` tracing table. Full convention in `documentation-standards.md` → "Archiving Superseded Documents".
