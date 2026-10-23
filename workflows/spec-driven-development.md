@@ -155,6 +155,43 @@ After each task, verify:
 - Do existing tests still pass?
 - Does it follow project steering (coding standards, naming, patterns)?
 
+## Change Requests to an Already-Completed Spec
+
+A spec that has been **implemented and merged** is a record of what was built. When a change arrives *after* that point — new requirement, reversal, scope cut — the completed spec is history, and history is not rewritten.
+
+This follows the same pattern across the industry's SDD tooling and architecture practice:
+
+- **GitHub Spec Kit** handles post-completion changes with a **Change Request**: a *separate* artifact that references the original spec by ID, states what is changing and why, and runs its own draft → review → approved cycle — it does not mutate the delivered spec. ([spec-kit discussion #900](https://github.com/github/spec-kit/discussions/900))
+- **Kiro's own guidance**: you cannot change a spec's workflow mid-stream — if you need a different approach, **create a new spec** and copy relevant content from the previous one. ([kiro.dev best-practices](https://kiro.dev/docs/specs/best-practices/))
+- **ADR practice**: a delivered decision record is **immutable** — a changed decision gets a *new* ADR that references the original, never an in-place edit. ([Practicalli ADR playbook](https://practical.li/engineering-playbook/software-design/architecture/adr/))
+- **Microsoft's spec-amendment framing**: an amendment is a **first-class event, recorded explicitly — not a deviation to hide** by silently rewriting the spec. ([devsquad-copilot](https://microsoft.github.io/devsquad-copilot/concepts/spec-amendment/))
+
+### The rule
+
+> **Supersede, don't edit.** A change to a completed spec is a new, separately-tracked artifact (a Change Request) that references the original. The original spec and its tasks stay as the record of what was built; mark the original **superseded-by** the CR.
+
+### Decide the CR's weight by proportionality
+
+The CR is a *new artifact*, but how heavy it is scales with the change — do **not** reflexively run a full requirements→design→tasks cycle for a small change.
+
+| Change size | CR form | Why |
+|---|---|---|
+| Small, self-contained (remove a few files, flip a config, a localized fix to merged code) | **Lightweight CR**: one CR doc (ticket + a dev-context source-of-record file) that references the original spec, states scope + affected files + done-criteria, grounded in a read of the *actual merged code*. Tracked as a subtask under the original spec's Coding story. | A deletion has no meaningful `design.md`. A full cycle is process theatre; it mirrors a decommission handled as tracked CR work. |
+| Large / architectural (the change reshapes the design, adds new concepts, spans new files) | **New Feature Spec** (its own requirements→design→tasks), copying relevant content from the original, referencing it. | The change is itself a feature; it earns the full loop. |
+
+### Procedure
+
+1. **Record the decision.** Write an ADR (or decision note) for *why* the change is happening; link the source (PM message, incident, etc.).
+2. **Create the CR artifact** referencing the original spec by ID. Lightweight or full per the table above.
+3. **Ground it in the real code.** Before listing affected files/lines, read the actual merged code on the branch the change will be made on — not memory, not a stale footprint. The CR's scope must be verifiable against the live repo.
+4. **Stamp the original spec `superseded-by <CR-id>`** — add a one-line note to the original spec folder. Do **not** edit its requirements/design/tasks; they remain the record of what was built.
+5. **Preserve the original work's tracking.** The completed spec's stories/time logs stay as "Done." The CR is *new* work with its *own* tracking — the original effort is never re-opened or marked "won't do."
+6. **For execution by another engineer's agent:** the CR (or a prompt derived from it) must point their agent at the exact source references and instruct it to **verify scope against the live code before changing it** — so their agent's context matches the author's.
+
+### Anti-pattern: editing the completed spec and re-running it
+
+Editing a delivered spec's requirements to mean the *opposite* of what was built (e.g. "build the CSV" → "remove the CSV") and re-running the flow **destroys the record of what shipped**, breaks time-log/KPI attribution of the original work, and is explicitly contrary to ADR immutability and spec-kit's separate-CR model. Supersede with a new CR instead.
+
 ## When to Use Spec-Driven
 
 | Scenario | Use Spec? |
@@ -164,6 +201,7 @@ After each task, verify:
 | Refactoring (behavior unchanged) | Maybe — use if scope is large |
 | Single-file change | ❌ No — just do it |
 | Investigation (root cause unknown) | ❌ No — use investigation workflow |
+| **Change to an already-completed/merged spec** | **CR, not an edit** — see "Change Requests to an Already-Completed Spec" (supersede; weight by proportionality) |
 
 ## Mapping to JIRA / Project Management
 
@@ -190,7 +228,8 @@ After each task, verify:
 | Tasks without done criteria | No way to verify task completion | Every task gets an acceptance check |
 | Spec → code with no human review | "Vibe coding wearing a Halloween costume" | Review at every phase boundary |
 | Specifying implementation details in requirements | Over-constrains the design phase | Requirements = behavior only |
-| Letting spec rot after implementation | Loses the canonical reference | Spec lives in repo, updated with changes |
+| Letting spec rot after implementation | Loses the canonical reference | Spec lives in the repo as the record of what was built. A later change is a **Change Request that supersedes** it (see "Change Requests to an Already-Completed Spec") — not an in-place edit of the delivered spec. |
+| **Editing a completed/merged spec to mean the opposite of what shipped** | Destroys the record of what was built; breaks time-log/KPI attribution; violates ADR immutability | Create a separate CR that references the original and stamp the original `superseded-by` |
 | **Analysis drift / not anchoring to the critical path** | Weeks pass producing docs, meeting questions, and re-explanations while the current phase's one artifact (e.g. requirements.md) never gets written. Feels productive; ships nothing. | At the start of every working turn, state the current SDD phase and its single next artifact. If a request doesn't advance that artifact, say so and offer to defer it. |
 | **Resurfacing already-decided items as open questions** | Re-litigating settled decisions (checking status from a stale note instead of the authoritative open-items table) wastes the team's time and erodes trust. | Before listing anything as "open" / "a question," verify its status against the authoritative source (open-items table, decision log). Never derive open questions from a secondary doc's framing. |
 | **Inventing external dependencies** | Framing our own work (e.g. verifying our own DB's data shape) as "a question for the upstream team" manufactures a blocker and stalls progress. | Distinguish *data source* from *code dependency*. If we can answer it by querying our own system, it is our task — not a blocker on another team. |
