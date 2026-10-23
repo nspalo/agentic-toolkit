@@ -41,3 +41,4 @@ Before writing a report/doc/ticket, ask: *"Have I loaded the standard for this a
 - `.kiro/steering/report-standards.md` — investigation report header + structure (manual)
 - `.kiro/steering/documentation-standards.md` — Document Info block (auto)
 - `knowledge/avoiding-analysis-drift.md` — sibling lesson on staying on the critical path
+- `knowledge/follow-the-procedure-you-were-told-to-check.md` — executable-procedure twin: follow a procedure you were told to check, don't improvise

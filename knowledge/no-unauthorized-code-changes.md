@@ -29,12 +29,19 @@ After being asked only to *check a project timeline*, the user added: "I plan to
 
 **Aggravating:** Incident B repeated Incident A's root pattern in the *same session* in which the AI had read and summarized Incident A ~1 hour earlier. Reading the guardrail created false confidence; it was not applied at the decision point.
 
+### Incident C — incomplete execution against a known, written set
+
+A design doc had surfaced **three** dependencies that all had to be ticketed before dependent work could start — all approved together, all listed explicitly in a project-context file the AI had itself just edited. Asked to raise them, the AI created tickets for **two** and silently dropped the third. The third was the odd one out by *location* (it touched a different repo than the other two), so it fell outside the AI's mental frame of the moment's phrasing ("the [repo] changes") even though the authoritative list grouped all three together. The gap was only caught turns later, by the user — leaving the dependent work still blocked by an untracked item.
+
+**Aggravating:** the complete list of three was in a file the AI had open and had edited in the same session. It had the source of truth in hand and still shipped a partial set.
+
 ## Root cause
 
 - Treated a stated plan or a "help X" phrasing as authorization to produce output.
 - Ignored that the work was delegated, or belonged to a later gated phase.
 - Conflated "be helpful" with "act without instruction" — action-bias overriding the authorization check.
 - Reading a rule ≠ applying it at the moment of the tool call.
+- **(Incident C)** Executed against the *phrasing of the moment* ("the X changes") instead of the *written set* in the source doc. Did not enumerate the full list and confirm the count before declaring the task done. An item that differed by one attribute (repo/location/type) silently fell out of scope.
 
 ## Guardrails
 
@@ -44,6 +51,7 @@ After being asked only to *check a project timeline*, the user added: "I plan to
 - **Intent ≠ instruction.** On "I plan to… / I'll start with… / next I want to…", STOP after any read-only step and wait for an explicit go.
 - **When in doubt, ask:** "This needs editing `<file>` / creating `<artifact>` — do it now, or hold?"
 - **Authorization is per-turn, per-artifact, and explicit.** A general goal is not permission.
+- **(Incident C) Execute against the written set, not the phrasing.** When creating items from a documented list (dependencies, tickets, tasks), first enumerate the full set from the source doc and state the count ("the doc lists N; I am creating N"). Confirm every item is covered before declaring done — especially one that differs by repo, location, or type and could fall outside a loosely-worded instruction.
 
 ## The one-line test
 
