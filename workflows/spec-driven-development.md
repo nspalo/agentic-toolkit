@@ -98,6 +98,28 @@ Before creating a spec folder or writing requirements, **check how the target re
 
 When in doubt, read an existing spec in the repo first and mirror its structure, headings, and acceptance-criteria style.
 
+### Kiro Spec-Format Validator Rules (promotion checklist)
+
+The Kiro spec UI **lints `requirements.md`** and blocks "Continue to Design" unless the file follows the required format. A dev-context / Confluence draft (authored for a PM or client to read) almost never matches it, so **convert on promotion — do not copy the draft verbatim**:
+
+| Rule | Requirement | Common draft mistake that fails it |
+|---|---|---|
+| Title (hard block) | H1 is **exactly** `# Requirements Document` | Descriptive H1 like `# {Project} Spec 01 — {Feature} — Requirements` |
+| Requirements section (hard block) | A top-level `## Requirements` section, each requirement as `### Requirement N: ...` with a `#### Acceptance Criteria` list | Requirements as top-level `## Requirement N` with no `## Requirements` wrapper |
+| Glossary (warning) | A top-level `## Glossary` section | Glossary nested as `### Glossary` under Introduction |
+
+Put the human-readable spec name in a **bold line directly under the H1** (and/or a Document Info table) — not in the H1 itself. Extra top-level `## ...` sections (Document Info, Dependencies, Out of scope, Correctness properties, References) are fine before or after the required ones.
+
+Use the skeleton at `templates/spec/requirements.md` as the canonical valid shape. Fastest verification before clicking "Continue to Design":
+
+```bash
+grep -nE '^#{1,4} ' {repo}/.kiro/specs/{feature}/requirements.md
+```
+
+Diff that heading tree against an existing valid spec in the same repo. Confirm `# Requirements Document` (line 1), a `## Requirements` section, and `## Glossary` all appear at the right levels.
+
+> A `.config.kiro` with a unique `specId` (and `workflowType` / `specType` matching the repo's other specs) must also exist in the spec folder — it is the other half of what unlocks "Continue to Design". Generate a fresh UUID per spec; never reuse another spec's id.
+
 ## Phase 2: Design (Plan)
 
 Define HOW to build it. Architecture and approach.
