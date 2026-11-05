@@ -155,6 +155,7 @@ Then use any workflow (see Usage below).
 | "Write a bug ticket" | JIRA-style ticket from template |
 | "Add {type} steering" | Generate a new steering file for the project |
 | "SOD: resume my day" / "EOD: wrap my day" | Daily sync: resume report from the tracker, then wrap-up updates to tracker/timeline |
+| "ST: status" / "LOG: <update>" | Daily sync: read-only tracker pulse; or record one scoped tracker update |
 | "PU: project update" | Stakeholder highlight/lowlight update from the tracker + timeline (read-only, paste-ready) |
 
 ### Where Things Go

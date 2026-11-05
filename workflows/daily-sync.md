@@ -6,6 +6,8 @@ Two manual commands that keep day-to-day tracking documents accurate without re-
 
 - **SOD:** at the start of a working day (or when resuming after time away), to recall where things stood and set today's priorities.
 - **EOD:** at the end of a working day, to record what got done and refresh the tracking docs.
+- **ST:** anytime, for a quick read-only "where are we" pulse (no priorities, no edits).
+- **LOG:** anytime, to record one specific update to the tracker without a full wrap.
 
 Not a replacement for a team standup — it is the per-developer discipline that *feeds* one. Think shift-change handover / SRE runbook: same checklist, run the same way each time.
 
@@ -69,6 +71,35 @@ The clock check and the staleness check are independent: a gap can occur with a 
    - **Today's priorities:** the top items from Remaining, ordered, with any deadline pressure called out.
 4. **Stop and ask** the user to confirm the unverified items (and, on a gap, the catch-up) before touching any doc.
 5. Do **not** modify docs in the SOD step. (The confirmed updates land in the next EOD, or immediately if the user asks.)
+
+## ST — Status (anytime, read-only)
+
+A lightweight "where are we" check. Unlike SOD, it has no priorities framing and no resume narrative — just the current tracker state. Read-only; never edits a doc.
+
+**Trigger (paste):** `ST: status` (optionally scope it: `— ASCA` or `— ASCI + ASCH`).
+
+**Steps:**
+1. Read the tracker's **Remaining** checklist (and the most recent daily-log entry for context).
+2. Report, grouped by project: open items (`- [ ]`), in-progress (`- [~]`), and anything **unverified** (done-but-unconfirmed, external-team, human checks).
+3. Keep it short. No date-resolution ceremony, no priority ordering, no doc edits.
+
+Use `ST` for a quick mid-day pulse; use `SOD` when you actually want the resume + priorities at the start of a session.
+
+## LOG — Record one update (anytime, scoped write)
+
+Writes a single update to the **tracker** without the full EOD sweep. For "I just finished X" or "status of Y changed" mid-day, when you don't want to run a whole wrap.
+
+**Trigger (paste):** `LOG: <the update>` (e.g. `LOG: ASCI-11 G3 done — reviewed and recorded`).
+
+**Steps:**
+1. **Resolve "today"** per the date rules (for the log line's date).
+2. **Verify-before-claiming:** only record what the user stated or what can be confirmed. Do not upgrade an item to "done" beyond what the update says.
+3. **Tracker — Remaining:** tick / reword the one item the update affects (add it if new).
+4. **Tracker — Daily log:** append or amend today's entry with the update (append-only across days; same-day amendments are fine).
+5. **Timeline — offer, don't force (Option A).** `LOG` writes the **tracker only**. If the update looks *material* (a gate cleared, a deploy verified, scope/ownership changed, a date moved), say so and **ask** whether to add a timeline snapshot now — only write the timeline on a yes. Otherwise leave the timeline to the next `EOD`.
+6. **Report** the one-line change made, and flag it if a timeline snapshot was offered/declined.
+
+`LOG` is scoped: it touches the tracker and, only on explicit confirmation, the timeline. The full banner + timeline + cross-doc sweep stays in `EOD`.
 
 ## EOD — End of Day (Wrap)
 
