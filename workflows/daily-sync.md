@@ -9,6 +9,8 @@ Two manual commands that keep day-to-day tracking documents accurate without re-
 
 Not a replacement for a team standup — it is the per-developer discipline that *feeds* one. Think shift-change handover / SRE runbook: same checklist, run the same way each time.
 
+For the **outward**, stakeholder-facing view (highlight / lowlight for a PM/SDM), see the companion `workflows/project-update.md` (`PU: project update`). It reads the same tracker + timeline but formats for an audience and never edits the docs.
+
 ## Tracking Documents (inputs)
 
 This workflow reads and writes a project's day-to-day tracking docs. A project using it must declare where those live. Two roles:
