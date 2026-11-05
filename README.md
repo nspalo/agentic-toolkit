@@ -154,6 +154,7 @@ Then use any workflow (see Usage below).
 | "Run tests" | Tiered testing (smoke → unit → functional → acceptance) |
 | "Write a bug ticket" | JIRA-style ticket from template |
 | "Add {type} steering" | Generate a new steering file for the project |
+| "SOD: resume my day" / "EOD: wrap my day" | Daily sync: resume report from the tracker, then wrap-up updates to tracker/timeline |
 
 ### Where Things Go
 
