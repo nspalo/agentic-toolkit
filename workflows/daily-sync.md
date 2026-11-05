@@ -115,7 +115,8 @@ Reconciles the **timeline and any other project tracking docs against the tracke
    - **Trivial tracker-internal consistency** (a stale "as of" date, a checklist marker that contradicts its own log line) → fix and report.
    - **Anything touching the timeline or another stakeholder-facing doc** (a new snapshot, a baseline-adjacent change, status wording a PM reads) → **show the proposed change and ask before writing.** The timeline is stakeholder-facing; it is not edited silently.
 5. **Verify-before-claiming:** never sync an unverified item into the timeline as done. If the tracker itself marks something unverified, carry that qualification across; don't upgrade it.
-6. **Report** what was reconciled (auto-applied) and what is awaiting confirmation (timeline-facing).
+6. **Timeline is for project deliverables only.** Internal process / tooling work (workflow or steering changes, doc-structure fixes, tracker tooling) stays in the tracker's daily log and does **not** go to the stakeholder timeline — the timeline carries the actual project requirements and delivery. Don't propose a timeline snapshot for process/tooling drift; reconcile it in the tracker only.
+7. **Report** what was reconciled (auto-applied) and what is awaiting confirmation (timeline-facing).
 
 `SYNC` does not invent status — it only propagates what the tracker already records. If the tracker is behind reality, `LOG` it first, then `SYNC`.
 
