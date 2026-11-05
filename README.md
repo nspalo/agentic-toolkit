@@ -156,6 +156,7 @@ Then use any workflow (see Usage below).
 | "Add {type} steering" | Generate a new steering file for the project |
 | "SOD: resume my day" / "EOD: wrap my day" | Daily sync: resume report from the tracker, then wrap-up updates to tracker/timeline |
 | "ST: status" / "LOG: <update>" | Daily sync: read-only tracker pulse; or record one scoped tracker update |
+| "SYNC: reconcile docs" | Daily sync: reconcile the timeline + other docs against the tracker (self-directed) |
 | "PU: project update" | Stakeholder highlight/lowlight update from the tracker + timeline (read-only, paste-ready) |
 
 ### Where Things Go

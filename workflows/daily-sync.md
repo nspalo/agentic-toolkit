@@ -8,6 +8,7 @@ Two manual commands that keep day-to-day tracking documents accurate without re-
 - **EOD:** at the end of a working day, to record what got done and refresh the tracking docs.
 - **ST:** anytime, for a quick read-only "where are we" pulse (no priorities, no edits).
 - **LOG:** anytime, to record one specific update to the tracker without a full wrap.
+- **SYNC:** anytime, to reconcile the timeline + other docs against the tracker (figures out the drift itself).
 
 Not a replacement for a team standup — it is the per-developer discipline that *feeds* one. Think shift-change handover / SRE runbook: same checklist, run the same way each time.
 
@@ -96,10 +97,27 @@ Writes a single update to the **tracker** without the full EOD sweep. For "I jus
 2. **Verify-before-claiming:** only record what the user stated or what can be confirmed. Do not upgrade an item to "done" beyond what the update says.
 3. **Tracker — Remaining:** tick / reword the one item the update affects (add it if new).
 4. **Tracker — Daily log:** append or amend today's entry with the update (append-only across days; same-day amendments are fine).
-5. **Timeline — offer, don't force (Option A).** `LOG` writes the **tracker only**. If the update looks *material* (a gate cleared, a deploy verified, scope/ownership changed, a date moved), say so and **ask** whether to add a timeline snapshot now — only write the timeline on a yes. Otherwise leave the timeline to the next `EOD`.
-6. **Report** the one-line change made, and flag it if a timeline snapshot was offered/declined.
+5. **Report** the one-line change made. If the update looks *material* (a gate cleared, a deploy verified, scope/ownership changed, a date moved), just note "this looks timeline-worthy — run `SYNC` when ready." Do **not** touch the timeline or other docs.
 
-`LOG` is scoped: it touches the tracker and, only on explicit confirmation, the timeline. The full banner + timeline + cross-doc sweep stays in `EOD`.
+`LOG` is tracker-only by design. It never writes the timeline or any other doc — reconciling those is `SYNC`'s job (or `EOD`). This keeps `LOG` a quick, safe capture.
+
+## SYNC — Reconcile the docs (anytime, self-directed)
+
+Reconciles the **timeline and any other project tracking docs against the tracker** — figuring out what has drifted on its own, rather than the user naming what to sync. Run it anytime the tracker has moved ahead of the rest (after a batch of `LOG`s, before a meeting, mid-day). `EOD` runs this same reconciliation as part of its wrap.
+
+**Trigger (paste):** `SYNC: reconcile docs` (optionally scope: `— timeline only`).
+
+**Steps:**
+1. **Resolve "today"** per the date rules.
+2. **Read the tracker** (Remaining + recent daily log) as the source of truth for current state.
+3. **Compare** the timeline (its latest snapshot + "as of" markers) and any other project docs against the tracker. Identify drift: items the tracker shows resolved/changed that the timeline still shows stale, dates/"as of" markers behind, scope/ownership shifts not reflected.
+4. **Apply by impact:**
+   - **Trivial tracker-internal consistency** (a stale "as of" date, a checklist marker that contradicts its own log line) → fix and report.
+   - **Anything touching the timeline or another stakeholder-facing doc** (a new snapshot, a baseline-adjacent change, status wording a PM reads) → **show the proposed change and ask before writing.** The timeline is stakeholder-facing; it is not edited silently.
+5. **Verify-before-claiming:** never sync an unverified item into the timeline as done. If the tracker itself marks something unverified, carry that qualification across; don't upgrade it.
+6. **Report** what was reconciled (auto-applied) and what is awaiting confirmation (timeline-facing).
+
+`SYNC` does not invent status — it only propagates what the tracker already records. If the tracker is behind reality, `LOG` it first, then `SYNC`.
 
 ## EOD — End of Day (Wrap)
 
@@ -110,9 +128,8 @@ Writes a single update to the **tracker** without the full EOD sweep. For "I jus
 1. **Tracker — Remaining:** tick completed items; add new items that surfaced; reword any item whose status changed. Keep wording neutral and factual.
 2. **Tracker — Daily log:** append a new dated entry (append-only — never edit past entries). Capture: what was done, decisions made, what's still open, and anything unverified.
 3. **Priority banner / "as of" markers:** update the date and the ordered priority list if it changed.
-4. **Timeline:** add a dated snapshot **only if** something material changed (a gate cleared, a deploy landed, scope/ownership shifted, a date moved). Leave the preserved baseline untouched.
-5. **Other project docs:** if the day's work contradicts another tracking doc, sync it too. Keep the tracker and timeline consistent with each other.
-6. **Report** a one-paragraph summary of what you changed and list anything still unverified.
+4. **Run the `SYNC` reconciliation** (see above): add a dated timeline snapshot if something material changed, and bring any other drifted project docs in line with the tracker. The preserved baseline stays untouched; timeline-facing changes still surface for confirmation per `SYNC`'s rules.
+5. **Report** a one-paragraph summary of what you changed and list anything still unverified.
 
 ## Output Shape (SOD report example)
 
